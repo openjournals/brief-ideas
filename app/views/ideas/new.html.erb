@@ -1,1 +1,16 @@
-<p>Signed in as <%= current_user.name %> &middot; <%= image_tag current_user.avatar_url %> <%= link_to "Sign out", signout_path %></p>
+<div class="page-header">
+  <h1>Submit a new idea <small>Remember. Keep it short, keep it sweet.</small></h1>
+  <br style=clear:both;/>
+</div>
+
+<div class="row">
+  <div class="col-sm-8">
+  <%= render :partial => "form"%>
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <span class="login-block">
+      <%= image_tag current_user.avatar_url, :class => "avatar" %>
+      <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
+    </span>
+  </div>
+</div>
