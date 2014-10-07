@@ -12,4 +12,11 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 
+group :test do
+  gem 'factory_girl_rails', '~> 4.4.1'
+  gem 'rspec-rails', '~> 3.1.0'
+  gem 'shoulda-matchers', '~> 2.7.0'
+  gem 'webmock', '~> 1.19.0'
+end
+
 gem 'pry', group: [:development, :test]

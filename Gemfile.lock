@@ -38,8 +38,16 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    crack (0.4.2)
+      safe_yaml (~> 1.0.0)
+    diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.2.1)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.4.1)
+      factory_girl (~> 4.4.0)
+      railties (>= 3.0.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     faraday-http-cache (0.4.2)
@@ -95,6 +103,23 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.3.2)
+    rspec-core (3.1.5)
+      rspec-support (~> 3.1.0)
+    rspec-expectations (3.1.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.1.0)
+    rspec-mocks (3.1.2)
+      rspec-support (~> 3.1.0)
+    rspec-rails (3.1.0)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 3.1.0)
+      rspec-expectations (~> 3.1.0)
+      rspec-mocks (~> 3.1.0)
+      rspec-support (~> 3.1.0)
+    rspec-support (3.1.1)
+    safe_yaml (1.0.4)
     sass (3.2.19)
     sass-rails (4.0.3)
       railties (>= 4.0.0, < 5.0)
@@ -104,6 +129,8 @@ GEM
     sawyer (0.5.5)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
+    shoulda-matchers (2.7.0)
+      activesupport (>= 3.0.0)
     slop (3.6.0)
     sprockets (2.11.0)
       hike (~> 1.2)
@@ -124,12 +151,16 @@ GEM
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    webmock (1.19.0)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   coffee-rails (~> 4.0.0)
+  factory_girl_rails (~> 4.4.1)
   faraday-http-cache
   jbuilder (~> 2.0)
   jquery-rails
@@ -138,6 +169,9 @@ DEPENDENCIES
   polymer-rails
   pry
   rails (= 4.1.6)
+  rspec-rails (~> 3.1.0)
   sass-rails (~> 4.0.3)
+  shoulda-matchers (~> 2.7.0)
   turbolinks
   uglifier (>= 1.3.0)
+  webmock (~> 1.19.0)
