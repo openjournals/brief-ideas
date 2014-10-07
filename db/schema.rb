@@ -11,9 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141007171654) do
+ActiveRecord::Schema.define(version: 20141007173050) do
 
   create_table "ideas", force: true do |t|
+    t.string   "gist_url"
+    t.integer  "user_id"
+    t.string   "state"
+    t.string   "current_sha"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "name"
+    t.string   "oauth_token"
+    t.string   "oauth_expires_at"
+    t.string   "avatar_url"
+    t.text     "extra"
+    t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
