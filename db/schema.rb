@@ -14,10 +14,11 @@
 ActiveRecord::Schema.define(version: 20141007173050) do
 
   create_table "ideas", force: true do |t|
-    t.string   "gist_url"
+    t.string   "sha"
     t.integer  "user_id"
     t.string   "state"
-    t.string   "current_sha"
+    t.text     "body"
+    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -31,6 +32,8 @@ ActiveRecord::Schema.define(version: 20141007173050) do
     t.string   "avatar_url"
     t.text     "extra"
     t.string   "email"
+    t.string   "sha"
+    t.boolean  "admin",            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

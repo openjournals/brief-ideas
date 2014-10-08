@@ -1,10 +1,11 @@
 class CreateIdeas < ActiveRecord::Migration
   def change
     create_table :ideas do |t|
-      t.string  :gist_url
+      t.string  :sha
       t.integer :user_id
       t.string  :state
-      t.string  :current_sha
+      t.text    :body
+      t.integer :parent_id
       t.timestamps
     end
   end
