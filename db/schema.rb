@@ -14,6 +14,7 @@
 ActiveRecord::Schema.define(version: 20141007173050) do
 
   create_table "ideas", force: true do |t|
+    t.string   "title"
     t.string   "sha"
     t.integer  "user_id"
     t.string   "state"
