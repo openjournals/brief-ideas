@@ -1,11 +1,11 @@
 <div class="page-header">
-  <h1>Submit a new idea <small>Remember. Keep it short, keep it sweet.</small></h1>
-  <br style=clear:both;/>
+  <h1>The Journal of Brief Ideas.<small> Submit a new idea.</small></h1>
 </div>
 
 <div class="row">
   <div class="col-sm-8">
-  <%= render :partial => "form"%>
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+    <%= render :partial => "form"%>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
     <span class="login-block">
