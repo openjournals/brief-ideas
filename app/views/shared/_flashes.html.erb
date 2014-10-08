@@ -1,0 +1,5 @@
+<%- [:error, :warning, :notice].each do |level| -%>
+  <%- if flash[level] -%>
+		<p class="<%= flash_class_for(level.to_s) %>"><%= flash[level] %></p>
+  <%- end -%>
+<%- end -%>
