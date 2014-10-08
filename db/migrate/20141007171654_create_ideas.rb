@@ -1,6 +1,7 @@
 class CreateIdeas < ActiveRecord::Migration
   def change
     create_table :ideas do |t|
+      t.string  :title
       t.string  :sha
       t.integer :user_id
       t.string  :state

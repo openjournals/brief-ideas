@@ -1,8 +1,9 @@
 <div class="row">
   <div class="col-sm-8">
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
-    <p class="lead">Submit a new idea.</p>
-    <%= render :partial => "form"%>
+    <p class="lead"><%= @idea.title %></p>
+
+    <p><%= @idea.body %></p>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
     <span class="login-block">

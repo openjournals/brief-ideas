@@ -5,9 +5,12 @@ body
   font: 100% $font-stack
   color: $primary-color
 
-container
+.container
   width: 900px
   margin: 0px auto
+
+  p.text-muted
+    margin: 20px 0px
 
 .avatar
   width: 60px
@@ -24,3 +27,14 @@ container
 
 .bg-danger, .bg-warning, .bg-success, .bg-info
   padding: 15px
+
+.footer
+  position: absolute
+  bottom: 0
+  width: 100%
+  /* Set the fixed height of the footer here */
+  height: 60px
+  background-color: #f5f5f5
+
+p
+  white-space: pre-wrap
