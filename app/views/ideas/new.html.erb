@@ -1,13 +1,21 @@
+<div class="page-header">
+  <h1>Submit a new idea. <small>In 200 words or less.</small></h1>
+</div>
+
 <div class="row">
   <div class="col-sm-8">
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
-    <p class="lead">Submit a new idea.</p>
     <%= render :partial => "form"%>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
-    <span class="login-block">
+    <div class="login-block">
       <%= image_tag current_user.avatar_url, :class => "avatar" %>
       <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
-    </span>
+    </div>
+
+    <div class="help-block">
+      <h5>Formatting</h5>
+      <p>You can use Markdown to format your ideas. Read more about the supported syntax <a href="https://help.github.com/articles/github-flavored-markdown/">here</a>.</p>
+    </div>
   </div>
 </div>

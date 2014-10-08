@@ -14,16 +14,26 @@
 
 </head>
 <body>
-  <div class="container">
-    <div class="page-header">
-      <h1>The Journal of Brief Ideas.<small> Keep it short, keep it sweet.</small></h1>
+  <div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">The Journal of Brief Ideas.</a>
+      </div>
     </div>
+  </div>
 
+  <div class="container">
     <%= yield %>
   </div>
   <div class="footer">
     <div class="container">
-      <p class="text-muted"><%= link_to "The Journal of Brief Ideas", "https://github.com/openjournals/brief-ideas", :target => "_blank" %> &middot; Brought to you by <%= link_to "@arfon", "http://twitter.com/arfon", :class => "twitter" %>, <%= link_to "@physicsdavid", "http://twitter.com/physicsdavid", :class => "twitter" %> and <%= link_to "@stuart_lynn", "http://twitter.com/stuart_lynn", :class => "twitter" %></p>
+      <p class="text-muted"><%= link_to "The Journal of Brief Ideas", "https://github.com/openjournals/brief-ideas", :target => "_blank" %> &middot; Brought to you by <%= link_to "@physicsdavid", "http://twitter.com/physicsdavid", :class => "twitter" %>, <%= link_to "@arfon", "http://twitter.com/arfon", :class => "twitter" %> and <%= link_to "@stuart_lynn", "http://twitter.com/stuart_lynn", :class => "twitter" %></p>
     </div>
   </div>
 </body>
