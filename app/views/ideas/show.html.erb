@@ -3,7 +3,7 @@
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
     <p class="lead"><%= @idea.title %></p>
 
-    <p><%= @idea.body %></p>
+    <p><%= raw @idea.formatted_body %></p>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
     <span class="login-block">
