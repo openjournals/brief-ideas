@@ -52,8 +52,12 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday-http-cache (0.4.2)
       faraday (~> 0.8)
+    github-markdown (0.6.7)
     hashie (3.3.1)
     hike (1.2.3)
+    html-pipeline (1.11.0)
+      activesupport (>= 2)
+      nokogiri (~> 1.4)
     i18n (0.6.11)
     jbuilder (2.2.0)
       activesupport (>= 3.0.0, < 5)
@@ -182,6 +186,8 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   factory_girl_rails (~> 4.4.1)
   faraday-http-cache
+  github-markdown
+  html-pipeline
   jbuilder (~> 2.0)
   jquery-rails
   mysql2
