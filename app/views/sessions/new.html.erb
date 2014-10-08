@@ -1,6 +1,16 @@
-<%- if current_user -%>
-  <p>Signed in as <%= current_user.name %> &middot; <%= image_tag current_user.avatar_url %> <%= link_to "Sign out", signout_path %></p>
+<div class="page-header">
+  <h1>The Journal of Brief Ideas.<small> Keep it short, keep it sweet.</small></h1>
+</div>
 
-<%- else -%>
-  <p><%= link_to "Log in with GitHub", "/auth/github" %></p>
-<%- end -%>
+<div class="row">
+  <div class="col-sm-8">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+
+    This is it!
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <span class="login-block">
+      <p class="name"><%= link_to "Log in with GitHub", "/auth/github" %></p>
+    </span>
+  </div>
+</div>
