@@ -1,5 +1,5 @@
 class IdeasController < ApplicationController
-  before_filter :require_user
+  before_filter :require_user, :except => [ :preview, :show ]
 
   def new
     @idea = Idea.new
@@ -14,6 +14,11 @@ class IdeasController < ApplicationController
     else
       render :action => "edit"
     end
+  end
+
+  def preview
+    filter = HTML::Pipeline::MarkdownFilter.new(params[:idea])
+    render :text => filter.call
   end
 
   def show
