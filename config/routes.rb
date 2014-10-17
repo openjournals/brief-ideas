@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :ideas
+  resources :ideas do
+    collection do
+      get :preview
+    end
+  end
+  
   resources :users, :only => :show
 
   get '/sessions/new', to: 'sessions#new', as: 'new_session'
