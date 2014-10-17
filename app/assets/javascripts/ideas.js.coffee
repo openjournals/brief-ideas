@@ -18,11 +18,6 @@ $ ->
     html : 'true',
     content : 'GitHub Flavoured Markdown is supported here. Read more about the supported syntax <a href="https://help.github.com/articles/github-flavored-markdown/">here</a>.'});
 
-  check_body_contents = ->
-    idea = $("#idea-body")
-    if match = /consectetur adipiscing elit/.test(idea.val())
-      idea.empty()
-
   counter = ->
     value = $("#idea-body").val()
     if value.length is 0
@@ -44,4 +39,4 @@ $ ->
   $("#idea-body").keypress counter
   $("#idea-body").keyup counter
   $("#idea-body").blur counter
-  $("#idea-body").focus counter, check_body_contents
+  $("#idea-body").focus counter
