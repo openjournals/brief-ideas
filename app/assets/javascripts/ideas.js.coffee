@@ -2,13 +2,23 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$(document).ready ->
+$ ->
+  $(".auto-replace").focus ->
+    val = $(this).val()
+    if val is $(this).attr('data-default')
+      $(this).val('')
+
+  $(".auto-replace").blur ->
+    val = $(this).val()
+    if val is ""
+      $(this).val($(this).attr('data-default'))
+
   $('a.help').popover({
     placement : 'top',
     html : 'true',
     content : 'GitHub Flavoured Markdown is supported here. Read more about the supported syntax <a href="https://help.github.com/articles/github-flavored-markdown/">here</a>.'});
 
-  check_contents = ->
+  check_body_contents = ->
     idea = $("#idea-body")
     if match = /consectetur adipiscing elit/.test(idea.val())
       idea.empty()
@@ -34,4 +44,4 @@ $(document).ready ->
   $("#idea-body").keypress counter
   $("#idea-body").keyup counter
   $("#idea-body").blur counter
-  $("#idea-body").focus counter, check_contents
+  $("#idea-body").focus counter, check_body_contents
