@@ -7,4 +7,10 @@ describe Idea do
     assert !paper.sha.nil?
     expect(paper.sha.length).to eq(32)
   end
+
+  it "should be able to return formatted body" do
+    paper = create(:idea, :body => "# Title")
+
+    expect(paper.formatted_body).to eq("<h1>Title</h1>")
+  end
 end
