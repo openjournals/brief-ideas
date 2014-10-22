@@ -13,4 +13,10 @@ describe Idea do
 
     expect(paper.formatted_body).to eq("<h1>Title</h1>")
   end
+
+  it "should know how to parameterize itself properly" do
+    paper = create(:idea)
+
+    expect(paper.sha).to eq(paper.to_param)
+  end
 end
