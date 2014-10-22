@@ -8,4 +8,10 @@ describe User do
     expect(user.sha.length).to eq(32)
     assert !user.admin?
   end
+
+  it "should know how to parameterize itself properly" do
+    user = create(:user)
+
+    expect(user.sha).to eq(user.to_param)
+  end
 end
