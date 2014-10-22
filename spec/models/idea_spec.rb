@@ -15,8 +15,8 @@ describe Idea do
   end
 
   it "should know how to parameterize itself properly" do
-    paper = create(:idea)
+    idea = create(:idea)
 
-    expect(paper.sha).to eq(paper.to_param)
+    expect(idea.sha).to eq(idea.to_param)
   end
 end
