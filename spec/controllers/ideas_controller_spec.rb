@@ -25,4 +25,33 @@ describe IdeasController, :type => :controller do
       expect(response).to be_success
     end
   end
+
+  describe "GET #preview" do
+    it "should return content that's been through the HTML pipeline" do
+      idea_params = "# Aloha!"
+      get :preview, :idea => idea_params
+      expect(response.body).to eq("<h1>Aloha!</h1>")
+    end
+  end
+
+  describe "POST #create" do
+    it "NOT LOGGED IN responds with redirect" do
+      idea_params = {:title => "Yeah whateva"}
+      post :create, :idea => idea_params
+      expect(response).to be_redirect
+    end
+  end
+
+  describe "POST #create" do
+    it "LOGGED IN responds with success" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      idea_count = Idea.count
+
+      idea_params = {:title => "Yeah whateva", :body => "So profound"}
+      post :create, :idea => idea_params
+      expect(response).to be_redirect # as it's created the thing
+      expect(Idea.count).to eq(idea_count + 1)
+    end
+  end
 end
