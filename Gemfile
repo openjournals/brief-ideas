@@ -1,3 +1,4 @@
+ruby '2.1.2'
 source 'https://rubygems.org'
 
 gem 'coffee-rails', '~> 4.0.0'
