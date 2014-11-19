@@ -3,6 +3,7 @@ require 'html/pipeline'
 class Idea < ActiveRecord::Base
   belongs_to :user
   before_create :set_sha
+  after_create :zenodo_create
 
   def to_param
     sha
@@ -11,6 +12,10 @@ class Idea < ActiveRecord::Base
   def formatted_body
     filter = HTML::Pipeline::MarkdownFilter.new(body)
     filter.call
+  end
+
+  def zenodo_create
+    ZenodoWorker.perform_async(sha)
   end
 
   private
