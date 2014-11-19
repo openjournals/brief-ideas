@@ -23,4 +23,6 @@ group :test do
   gem 'webmock', '~> 1.19.0'
 end
 
+gem 'rails_12factor', group: :production
+
 gem 'pry', group: [:development, :test]
