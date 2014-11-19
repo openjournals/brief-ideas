@@ -51,7 +51,4 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: brief-ideas_production
-  username: brief-ideas
-  password: <%= ENV['BRIEF-IDEAS_DATABASE_PASSWORD'] %>
+  url: <%= ENV['CLEARDB_DATABASE_URL'] %>
