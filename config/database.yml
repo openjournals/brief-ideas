@@ -47,4 +47,6 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  url: <%= ENV['CLEARDB_DATABASE_URL'] %>
+  adapter: postgresql
+  encoding: unicode
+  url: <%= ENV['HEROKU_POSTGRESQL_VIOLET_URL'] %>
