@@ -18,6 +18,10 @@ class Idea < ActiveRecord::Base
     ZenodoWorker.perform_async(sha)
   end
 
+  def zenodo_keywords
+    subject.blank? ? "" : subject
+  end
+
   private
 
   def set_sha
