@@ -46,19 +46,4 @@
     // is compatible with the typeahead jQuery plugin
     source: subjects.ttAdapter()
   });
-
-
-  var tagRenderFunction = function(document_type, item) {
-    var out = '<p class="title">' + item['tags'] + '</p>';
-    return out;
-  };
-
-  $(function() {
-    $('#new_idea .st-search-input').swiftype({
-      engineKey: '<%= ENV['SWIFTYPE_ENGINE_KEY'] %>',
-      searchFields: {'ideas': ['tags']},
-      fetchFields: {'ideas': ['tags']},
-      renderFunction: tagRenderFunction,
-    });
-  });
 </script>
