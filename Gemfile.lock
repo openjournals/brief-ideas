@@ -29,6 +29,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.6)
     arel (5.0.1.20140414130214)
+    bootstrap-typeahead-rails (0.10.5.1)
+      railties (>= 3.0)
     builder (3.2.2)
     celluloid (0.15.2)
       timers (~> 1.1.0)
@@ -211,6 +213,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-typeahead-rails
   coffee-rails (~> 4.0.0)
   factory_girl_rails (~> 4.4.1)
   faraday-http-cache

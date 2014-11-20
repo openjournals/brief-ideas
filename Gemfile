@@ -17,6 +17,7 @@ gem 'rest_client'
 gem 'sass-rails', '~> 4.0.3'
 gem 'sidekiq'
 gem 'turbolinks'
+gem 'bootstrap-typeahead-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'unicorn'
 
