@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-typeahead-rails
+//= require jquery.swiftype.autocomplete
 //= require_tree .
