@@ -31,6 +31,6 @@ class SessionsController < ApplicationController
     given_name = data['orcid-profile']['orcid-bio']['personal-details']['given-names']['value']
     surname = data['orcid-profile']['orcid-bio']['personal-details']['family-name']['value']
 
-    return "#{given_name} #{surname}"
+    return "#{surname}, #{given_name}"
   end
 end
