@@ -4,8 +4,42 @@
     <%= f.text_field :title, :value => "Enter idea description", :class => "form-control auto-replace", :data => { :default => "Enter idea description" } %>
   </div>
   <div class="form-group">
+    <%= f.label :subject_area, :class => "full" %>
+    <%= f.text_field :subject, :class => "form-control typeahead", :placeholder => "Enter a subject" %>
+  </div>
+  <div class="form-group">
     <%= f.label "A Brief Idea" %> &middot; <span id="word-count">0</span>
     <%= f.text_area :body, :rows => "16", :id => "idea-body", :value => "This is what 200 words looks like: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum orci orci, lacinia a sagittis et, elementum ac eros. Ut ac posuere justo. Nunc nec libero vitae erat lacinia dapibus vel mollis ipsum. Integer tempor est quis eros eleifend tempus. Fusce sed orci vitae sapien blandit venenatis non nec nunc. Maecenas quam sapien, porttitor sit amet volutpat vitae, pharetra vel sem. Nullam vulputate libero accumsan porta ultricies. Praesent tortor mi, tempus quis odio sed, aliquet posuere magna. Etiam eget tellus id dui molestie imperdiet. Pellentesque vulputate, enim a pretium maximus, mauris ex viverra lectus, non consectetur enim ante at mauris. Mauris varius, mauris id varius varius, urna mi fringilla velit, quis bibendum leo justo sed justo. Etiam tincidunt turpis vestibulum justo vulputate iaculis. Vivamus tristique lacus at lorem molestie tempus. Pellentesque commodo laoreet lorem non ultrices. Morbi in imperdiet risus. Phasellus efficitur euismod felis at volutpat. Suspendisse viverra, dolor non volutpat fringilla, lorem risus accumsan quam, eget tempor ipsum nunc a purus. Sed tincidunt venenatis ante non feugiat. Nunc mattis risus at sapien eleifend, id iaculis orci dignissim. Suspendisse elementum nibh eget velit semper egestas. Suspendisse feugiat lorem eget urna laoreet, vel iaculis arcu.", :class => "form-control auto-replace", :data => {:default => "This is what 200 words looks like: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum orci orci, lacinia a sagittis et, elementum ac eros. Ut ac posuere justo. Nunc nec libero vitae erat lacinia dapibus vel mollis ipsum. Integer tempor est quis eros eleifend tempus. Fusce sed orci vitae sapien blandit venenatis non nec nunc. Maecenas quam sapien, porttitor sit amet volutpat vitae, pharetra vel sem. Nullam vulputate libero accumsan porta ultricies. Praesent tortor mi, tempus quis odio sed, aliquet posuere magna. Etiam eget tellus id dui molestie imperdiet. Pellentesque vulputate, enim a pretium maximus, mauris ex viverra lectus, non consectetur enim ante at mauris. Mauris varius, mauris id varius varius, urna mi fringilla velit, quis bibendum leo justo sed justo. Etiam tincidunt turpis vestibulum justo vulputate iaculis. Vivamus tristique lacus at lorem molestie tempus. Pellentesque commodo laoreet lorem non ultrices. Morbi in imperdiet risus. Phasellus efficitur euismod felis at volutpat. Suspendisse viverra, dolor non volutpat fringilla, lorem risus accumsan quam, eget tempor ipsum nunc a purus. Sed tincidunt venenatis ante non feugiat. Nunc mattis risus at sapien eleifend, id iaculis orci dignissim. Suspendisse elementum nibh eget velit semper egestas. Suspendisse feugiat lorem eget urna laoreet, vel iaculis arcu."} %>
   </div>
   <button type="submit" class="btn btn-default">Submit Idea</button>
 <% end %>
+
+<script>
+  var subjects = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    limit: 10,
+    prefetch: {
+      url: '../plos_truncated.json',
+      // the json file contains an array of strings, but the Bloodhound
+      // suggestion engine expects JavaScript objects so this converts all of
+      // those strings
+      filter: function(list) {
+        return $.map(list, function(subject) { return { name: subject }; });
+      }
+    }
+  });
+
+// kicks off the loading/processing of `local` and `prefetch`
+subjects.initialize();
+
+// passing in `null` for the `options` arguments will result in the default
+// options being used
+$('#new_idea .typeahead').typeahead(null, {
+  name: 'subjects',
+  displayKey: 'name',
+  // `ttAdapter` wraps the suggestion engine in an adapter that
+  // is compatible with the typeahead jQuery plugin
+  source: subjects.ttAdapter()
+});
+</script>
