@@ -13,6 +13,10 @@
 
 ActiveRecord::Schema.define(version: 20141120174756) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+  enable_extension "hstore"
+
   create_table "ideas", force: true do |t|
     t.string   "title"
     t.string   "sha"
@@ -25,7 +29,7 @@ ActiveRecord::Schema.define(version: 20141120174756) do
     t.integer  "zenodo_id"
     t.string   "doi"
     t.string   "subject"
-    t.text     "tags"
+    t.string   "tags",       default: [], array: true
   end
 
   create_table "users", force: true do |t|
@@ -35,12 +39,12 @@ ActiveRecord::Schema.define(version: 20141120174756) do
     t.string   "oauth_token"
     t.string   "oauth_expires_at"
     t.string   "avatar_url"
-    t.text     "extra"
     t.string   "email"
     t.string   "sha"
     t.boolean  "admin",            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.hstore   "extra"
   end
 
 end

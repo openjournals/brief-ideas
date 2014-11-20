@@ -7,6 +7,7 @@ class IdeasController < ApplicationController
 
   def create
     @idea = Idea.new(idea_params)
+    @idea.tags = idea_params['tags'].split(',')
     @idea.user = current_user
 
     if @idea.save
@@ -28,6 +29,6 @@ class IdeasController < ApplicationController
   private
 
   def idea_params
-    params.require(:idea).permit(:title, :body)
+    params.require(:idea).permit(:title, :body, :subject, :tags)
   end
 end

@@ -22,6 +22,10 @@ class Idea < ActiveRecord::Base
     subject.blank? ? "" : subject
   end
 
+  def formatted_tags
+    tags.any? ? tags.join(', ') : ""
+  end
+
   private
 
   def set_sha
