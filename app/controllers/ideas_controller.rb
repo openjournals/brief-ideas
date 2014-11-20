@@ -1,5 +1,5 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :except => [ :preview, :show ]
+  before_filter :require_user, :except => [ :preview, :show, :tags]
 
   def new
     @idea = Idea.new
@@ -20,6 +20,10 @@ class IdeasController < ApplicationController
   def preview
     filter = HTML::Pipeline::MarkdownFilter.new(params[:idea])
     render :text => filter.call
+  end
+
+  def tags
+    render :json => Idea.all_tags.to_json
   end
 
   def show
