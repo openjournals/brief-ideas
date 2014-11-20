@@ -9,6 +9,9 @@ class ZenodoWorker
 
     # Mark as published
     publish!(idea)
+
+    # Insert into Swiftype index
+    create_document(idea)
   end
 
   def create_deposit(idea)
@@ -31,7 +34,8 @@ class ZenodoWorker
         :upload_type => "publication",
         :publication_type => "article",
         :description => idea.formatted_body,
-        :creators => [{:name => idea.user.name, :affiliation => ""}]
+        :creators => [{:name => idea.user.name, :affiliation => ""}],
+        :keywords => [idea.zenodo_keywords]
       }
     }.to_json
   end
@@ -59,5 +63,19 @@ class ZenodoWorker
         response.return!(request, result, &block)
       end
     }
+  end
+
+  def create_document(idea)
+    client = Swiftype::Client.new
+    document = client.create_document('engine', 'ideas', {
+                :external_id => idea.sha,
+                :fields => [
+                  {:name => 'title', :value => idea.title, :type => 'string'},
+                  {:name => 'doi', :value => idea.doi, :type => 'enum'},
+                  {:name => 'body', :value => idea.body, :type => 'text'},
+                  {:name => 'subject', :value => idea.subject, :type => 'text'},
+                  {:name => 'author', :value => idea.user.name, :type => 'text'}
+                  ]})
+    puts "UPLOADING TO INDEX! #{idea.sha}"
   end
 end
