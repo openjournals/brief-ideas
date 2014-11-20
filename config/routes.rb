@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :ideas do
     collection do
       get :preview
+      get :tags
     end
   end
 

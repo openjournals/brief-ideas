@@ -9,7 +9,7 @@
   </div>
   <div class="form-group">
     <%= f.label :tags, :class => "full" %>
-    <%= f.text_field :tags, :class => "form-control st-search-input", :placeholder => "Tags" %>
+    <%= f.text_field :tags, :class => "form-control typeaheadtags", :placeholder => "Tags" %>
   </div>
   <div class="form-group">
     <%= f.label "A Brief Idea" %> &middot; <span id="word-count">0</span>
@@ -19,6 +19,34 @@
 <% end %>
 
 <script>
+  var tags = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    limit: 10,
+    prefetch: {
+      url: 'ideas/tags',
+      // the json file contains an array of strings, but the Bloodhound
+      // suggestion engine expects JavaScript objects so this converts all of
+      // those strings
+      filter: function(list) {
+        return $.map(list, function(tag) { return { name: tag }; });
+      }
+    }
+  });
+
+  // kicks off the loading/processing of `local` and `prefetch`
+  tags.initialize();
+
+  // passing in `null` for the `options` arguments will result in the default
+  // options being used
+  $('#new_idea .typeaheadtags').typeahead(null, {
+    name: 'tags',
+    displayKey: 'name',
+    // `ttAdapter` wraps the suggestion engine in an adapter that
+    // is compatible with the typeahead jQuery plugin
+    source: tags.ttAdapter()
+  });
+
   var subjects = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
