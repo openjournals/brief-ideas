@@ -7,7 +7,7 @@ class IdeasController < ApplicationController
 
   def create
     @idea = Idea.new(idea_params)
-    @idea.tags = idea_params['tags'].split(',')
+    @idea.tags = idea_params['tags'].split(',').collect(&:strip)
     @idea.user = current_user
 
     if @idea.save
