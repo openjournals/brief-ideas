@@ -26,6 +26,13 @@ class Idea < ActiveRecord::Base
     tags.any? ? tags.join(', ') : ""
   end
 
+  def self.all_tags
+    Rails.cache.fetch("all_tags") do
+      tags = []
+      all.each { |idea| tags << idea.tags.collect(&:strip) }
+      tags.flatten.uniq
+    end
+  end
   private
 
   def set_sha
