@@ -80,6 +80,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     mysql2 (0.3.16)
+    netrc (0.7.9)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     nokogumbo (1.1.12)
@@ -138,6 +139,8 @@ GEM
     redis (3.1.0)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
+    rest_client (1.8.2)
+      netrc (~> 0.7.7)
     rspec-core (3.1.5)
       rspec-support (~> 3.1.0)
     rspec-expectations (3.1.2)
@@ -215,6 +218,7 @@ DEPENDENCIES
   pry
   rails (= 4.1.8)
   rails_12factor
+  rest_client
   rspec-rails (~> 3.1.0)
   sass-rails (~> 4.0.3)
   shoulda-matchers (~> 2.7.0)
