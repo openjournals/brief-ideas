@@ -10,15 +10,11 @@
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
 #
 default: &default
-  adapter: mysql2
-  encoding: utf8
-  pool: 5
-  username: root
-  password:
+  adapter: postgresql
+  encoding: unicode
+  port: <%= ENV['BOXEN_POSTGRESQL_PORT'] || 5432 %>
   host: localhost
-  <% if ENV['GH_MYSQL_SOCKET'] %>
-  socket: /opt/boxen/data/mysql/socket
-  <% end %>
+
 
 development:
   <<: *default
