@@ -34,7 +34,7 @@ class ZenodoWorker
         :upload_type => "publication",
         :publication_type => "article",
         :description => idea.formatted_body,
-        :creators => [{:name => idea.user.name, :affiliation => ""}],
+        :creators => [{:name => idea.user.name, :affiliation => "", :orcid => idea.user.uid}],
         :keywords => [idea.zenodo_keywords]
       }
     }.to_json
