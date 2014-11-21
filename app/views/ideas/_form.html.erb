@@ -9,7 +9,7 @@
   </div>
   <div class="form-group">
     <%= f.label :tags, :class => "full" %>
-    <div class="typeaheadtags"></div>
+    <%= f.text_field :tags, :class => "form-control typeaheadtags", :placeholder => "Tag this idea", :value => "" %>
   </div>
   <div class="form-group">
     <%= f.label "A Brief Idea" %> &middot; <span id="word-count">0</span>
