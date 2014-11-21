@@ -11,5 +11,7 @@
  * file per style scope.
  *
  *= require_tree .
+ *= require select2-bootstrap.css
+ *= require select2.css
  *= require_self
  */
