@@ -9,6 +9,9 @@ input
   width: 100%
   &.typeahead
     width: 750px
+  &.typeaheadtags
+    width: 750px
+
 
 form#new_idea
   padding-bottom: 50px
@@ -32,3 +35,64 @@ form#new_idea
   box-shadow: 0 6px 12px rgba(0,0,0,.175)
   cursor: pointer
   cursor: hand
+
+// Tagging UI
+.select2-drop, .select2-drop-active
+  border: none !important
+  box-shadow: none !important
+  -webkit-box-shadow: none !important
+
+ul
+  &.select2-choices
+    margin-bottom: 5px
+
+  &.select2-results
+    background: white
+    padding: 3px 20px
+    font-weight: 400
+    line-height: 1.42857143
+    white-space: nowrap
+    color: #333
+    background-clip: padding-box
+    border: 1px solid #ccc
+    border: 1px solid rgba(0,0,0,.15)
+    border-top: none
+    border-radius: 4px
+    border-top-left-radius: 0px
+    border-top-right-radius: 0px
+    width: 750px
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175)
+    box-shadow: 0 6px 12px rgba(0,0,0,.175)
+    cursor: pointer
+    cursor: hand
+
+    .select2-highlighted
+      background: #efefef
+      color: black
+
+  &.select2-choices
+    padding: 0px
+    margin: 0px
+    border: 0px !important
+    background: none !important
+
+    li
+      // HACK HACK HACK HACK
+      // TODO - work out how to apply the select2 function to a bootstrap field
+      input
+        &.select2-input
+          width: 750px !important
+          height: 34px !important
+          padding: 6px 12px !important
+          font-size: 14px !important
+          line-height: 1.42857143 !important
+          color: #555 !important
+          background-color: #fff !important
+          background-image: none !important
+          border: 1px solid #ccc !important
+          border-radius: 4px !important
+          -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important
+          -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s !important
+          -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important
+          transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important

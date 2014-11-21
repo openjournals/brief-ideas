@@ -2,6 +2,7 @@ class IdeasController < ApplicationController
   before_filter :require_user, :except => [ :preview, :show, :tags]
 
   def new
+    @tags = Idea.all_tags
     @idea = Idea.new
   end
 
