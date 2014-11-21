@@ -12,7 +12,6 @@ input
   &.typeaheadtags
     width: 750px
 
-
 form#new_idea
   padding-bottom: 50px
 
@@ -42,13 +41,16 @@ form#new_idea
   box-shadow: none !important
   -webkit-box-shadow: none !important
 
+.select2-search-choice
+  margin-top: 5px !important
+
 ul
   &.select2-choices
     margin-bottom: 5px
 
   &.select2-results
     background: white
-    padding: 3px 20px
+    padding: 3px 20 3px 0px
     font-weight: 400
     line-height: 1.42857143
     white-space: nowrap
@@ -67,7 +69,7 @@ ul
     cursor: hand
 
     .select2-highlighted
-      background: #efefef
+      background: #ffffff
       color: black
 
   &.select2-choices
@@ -76,23 +78,8 @@ ul
     border: 0px !important
     background: none !important
 
-    li
-      // HACK HACK HACK HACK
-      // TODO - work out how to apply the select2 function to a bootstrap field
-      input
-        &.select2-input
-          width: 750px !important
-          height: 34px !important
-          padding: 6px 12px !important
-          font-size: 14px !important
-          line-height: 1.42857143 !important
-          color: #555 !important
-          background-color: #fff !important
-          background-image: none !important
-          border: 1px solid #ccc !important
-          border-radius: 4px !important
-          -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important
-          box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important
-          -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s !important
-          -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important
-          transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important
+// Idea#show
+
+.col-sm-8
+  &.idea
+    min-height: 700px
