@@ -35,7 +35,8 @@ class ZenodoWorker
         :publication_type => "article",
         :description => idea.formatted_body,
         :creators => [{:name => idea.user.name, :affiliation => "", :orcid => idea.user.uid}],
-        :keywords => [idea.zenodo_keywords]
+        :keywords => [idea.zenodo_keywords],
+        :license => "cc-by"
       }
     }.to_json
   end
