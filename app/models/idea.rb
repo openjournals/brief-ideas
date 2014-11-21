@@ -2,7 +2,7 @@ require 'html/pipeline'
 
 class Idea < ActiveRecord::Base
   belongs_to :user
-  before_create :set_sha
+  before_create :set_sha, :check_user_idea_count
   after_create :zenodo_create
 
   def to_param
@@ -26,6 +26,14 @@ class Idea < ActiveRecord::Base
     tags.any? ? tags.join(', ') : ""
   end
 
+  def formatted_doi
+    doi.gsub('http://dx.doi.org/', '')
+  end
+
+  def doi_badge_url
+    "https://dev.zenodo.org/badge/doi/#{formatted_doi}.svg"
+  end
+
   def self.all_tags
     Rails.cache.fetch("all_tags") do
       tags = []
@@ -37,5 +45,9 @@ class Idea < ActiveRecord::Base
 
   def set_sha
     self.sha = SecureRandom.hex
+  end
+
+  def check_user_idea_count
+    # TODO - make sure they've not created more than 5 ideas today
   end
 end
