@@ -25,7 +25,7 @@
 
     <div class="help-block">
       <h5>Metadata</h5>
-      <% unless @idea.doi.empty? %><p><%= link_to image_tag(@idea.doi_badge_url), @idea.doi %></p><% end %>
+      <% unless @idea.doi? %><p><%= link_to image_tag(@idea.doi_badge_url), @idea.doi %></p><% end %>
       <p>Author: <%= link_to @idea.user.name, @idea.user.orcid_url %></p>
     </div>
   </div>
