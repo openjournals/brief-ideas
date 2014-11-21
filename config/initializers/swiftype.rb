@@ -1,1 +1,3 @@
-Swiftype.authenticated_url = ENV['SWIFTYPE_URL']
+Swiftype.configure do |config|
+  config.authenticated_url = ENV['SWIFTYPE_URL']
+end
