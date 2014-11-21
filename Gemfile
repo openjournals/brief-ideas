@@ -16,6 +16,7 @@ gem 'rest_client'
 gem 'sass-rails', '~> 4.0.3'
 gem 'select2-rails'
 gem 'sidekiq'
+gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'swiftype', '~> 1.1.0'
 gem 'turbolinks'
 gem 'bootstrap-typeahead-rails'
