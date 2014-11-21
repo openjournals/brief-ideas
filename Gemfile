@@ -32,3 +32,4 @@ end
 gem 'rails_12factor', group: :production
 
 gem 'pry', group: [:development, :test]
+gem 'dotenv-rails', :groups => [:development, :test]
