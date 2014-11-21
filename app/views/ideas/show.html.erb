@@ -1,14 +1,32 @@
 <div class="row">
-  <div class="col-sm-8">
+  <div class="col-sm-8 idea">
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
-    <p class="lead"><%= @idea.title %></p>
+    <h1><%= @idea.title %></h1>
+    <p><em><%= @idea.subject %></em></p>
 
     <p><%= raw @idea.formatted_body %></p>
+
+    <p>By <%= link_to @idea.user.name, @idea.user.orcid_url %></p>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
     <span class="login-block">
       <%= image_tag current_user.avatar_url, :class => "avatar" %>
       <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
     </span>
+
+    <div class="help-block">
+      <h5>Idea Tags</h5>
+      <% if @idea.tags.any? %>
+        <p><%= @idea.formatted_tags %></p>
+      <% else %>
+        <p>This idea isn't tagged with anything</p>
+      <% end %>
+    </div>
+
+    <div class="help-block">
+      <h5>Metadata</h5>
+      <p><%= link_to image_tag(@idea.doi_badge_url), @idea.doi %></p>
+      <p>Author: <%= link_to @idea.user.name, @idea.user.orcid_url %></p>
+    </div>
   </div>
 </div>

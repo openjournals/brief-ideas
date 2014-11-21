@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
     sha
   end
 
+  def orcid_url
+    "http://orcid.org/" + uid
+  end
+
   private
 
   def set_sha
