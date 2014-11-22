@@ -15,4 +15,8 @@ Not really, we just think that sometimes you want to share an idea with the worl
 
 This is very much a work in progress. We've got a [milestone tracking](https://github.com/openjournals/brief-ideas/milestones) the beta release.
 
+### Is it green?
+
+Hopefully/probably? You can keep an eye on Travis stuff here:
+
 [![Build Status](https://travis-ci.org/openjournals/brief-ideas.svg?branch=master)](https://travis-ci.org/openjournals/brief-ideas)
