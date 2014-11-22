@@ -9,11 +9,11 @@ It's a work in progress by [@arfon](http://twitter.com/arfon), [@larshankat](htt
 
 You can see the latest build of this running at http://ideas.theoj.org
 
-### Oh I get it, you think you're changing the world
+## Oh I get it, you think you're changing the world
 
 Not really, we just think that sometimes you want to share an idea with the world, would like to receive credit for this idea but don't have a paper's worth of material. Why waffle on when it can be said in 200 words?
 
-### Development status
+## Development status
 
 This is very much a work in progress. We've got a [milestone tracking](https://github.com/openjournals/brief-ideas/milestones) the beta release.
 
