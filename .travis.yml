@@ -2,6 +2,7 @@ language: ruby
 rvm:
   - "2.1.2"
 before_script:
+  - cp .env-example .env
   - psql -c 'create database brief_ideas_test' -U postgres
   - bundle install
   - bundle exec rake db:schema:load
