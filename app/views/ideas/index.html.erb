@@ -5,12 +5,20 @@
 <div class="row form">
   <div class="col-sm-8">
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
-    <%= render :partial => "idea", collection: @ideas %>
+    <% if @ideas.any? %>
+      <%= render :partial => "idea", collection: @ideas %>
+    <% else %>
+      <p>There are no ideas currently. Would you like to <%= link_to "create one", new_idea_path %>?</p>
+    <% end %>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
     <div class="login-block">
-      <%= image_tag current_user.avatar_url, :class => "avatar" %>
-      <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
+      <% if current_user %>
+        <%= image_tag current_user.avatar_url, :class => "avatar" %>
+        <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
+      <% else %>
+        <p class="name"><%= link_to "Sign in with Orcid", "/auth/orcid" %></p>
+      <% end %>
     </div>
 
     <div class="help-block">
