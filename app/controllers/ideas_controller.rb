@@ -1,5 +1,9 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :except => [ :preview, :show, :tags]
+  before_filter :require_user, :except => [ :preview, :show, :tags, :index]
+
+  def index
+    @ideas = Idea.recent
+  end
 
   def new
     @tags = Idea.all_tags

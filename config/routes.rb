@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :votes, :only => :create
   resources :users, :only => :show
 
   get '/sessions/new', to: 'sessions#new', as: 'new_session'
@@ -16,5 +17,5 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 
-  root :to => 'ideas#new'
+  root :to => 'ideas#index'
 end
