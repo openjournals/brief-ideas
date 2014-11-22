@@ -2,6 +2,7 @@ require 'html/pipeline'
 
 class Idea < ActiveRecord::Base
   belongs_to :user
+  has_many :votes
   before_create :set_sha, :check_user_idea_count
   after_create :zenodo_create
 
