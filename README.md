@@ -1,2 +1,2 @@
-brief-ideas
+The Journal of Brief Ideas
 ===========
