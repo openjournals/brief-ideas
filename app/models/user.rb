@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
   has_many :ideas
+  has_many :votes
+  
   before_create :set_sha
 
   def self.from_omniauth(auth)
