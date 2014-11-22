@@ -1,6 +1,8 @@
 The Journal of Brief Ideas
 ===========
 
+![unicorn](https://cloud.githubusercontent.com/assets/4483/5155769/cc33e70e-725c-11e4-8462-8e77a7e438b1.jpg)
+
 What is this? It's a teeny tiny journal, composed entirely of 'brief ideas'. The goal here is to provide a place for short ideas to be described (in 200 words or less), for these ideas to be archived (courtesy of [Zenodo](http://zenodo.org)), searchable and citable.
 
 It's a work in progress by [@arfon](http://twitter.com/arfon), [@larshankat](http://twitter.com/larshankat), [@physicsdavid](http://twitter.com/physicsdavid) and [@stuart_lynn](http://twitter.com/stuart_lynn)
