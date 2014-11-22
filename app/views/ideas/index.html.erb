@@ -1,0 +1,21 @@
+<div class="page-header">
+  <h1>Ideas from the last week</h1>
+</div>
+
+<div class="row form">
+  <div class="col-sm-8">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+    <%= render :partial => "idea", collection: @ideas %>
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <div class="login-block">
+      <%= image_tag current_user.avatar_url, :class => "avatar" %>
+      <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
+    </div>
+
+    <div class="help-block">
+      <h5>Voting</h5>
+      <p>Vote!</p>
+    </div>
+  </div>
+</div>

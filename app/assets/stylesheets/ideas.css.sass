@@ -2,6 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$primary-color: #333
+
 .warning
   color: red
 
@@ -77,5 +79,26 @@ ul
     margin: 0px
     border: 0px !important
     background: none !important
+
+// Idea#index
+.lead
+  &.idea
+    margin: 0px 0px 10px 0px
+    font-style: italic
+    border-bottom: 1px solid #efefef
+    border-top: 1px solid #efefef
+    padding: 5px 0px
+    a, a:hover
+      color: $primary-color
+      text-decoration: none
+
+div.idea
+  padding: 10px 0px
+
+button
+  &.vote
+
+  &.voted
+    background: #99FF66
 
 // Idea#show

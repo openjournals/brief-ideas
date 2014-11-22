@@ -5,8 +5,22 @@ class Idea < ActiveRecord::Base
   before_create :set_sha, :check_user_idea_count
   after_create :zenodo_create
 
+  scope :recent, lambda { where('created_at > ?', 1.week.ago) }
+
   def to_param
     sha
+  end
+
+  def current_vote
+    vote_count
+  end
+
+  def voted_on_by?(user)
+    user.voter_for?(self)
+  end
+
+  def creator
+    user
   end
 
   def formatted_body
@@ -41,7 +55,8 @@ class Idea < ActiveRecord::Base
       tags.flatten.uniq
     end
   end
-  private
+
+private
 
   def set_sha
     self.sha = SecureRandom.hex

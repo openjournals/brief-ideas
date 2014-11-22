@@ -16,6 +16,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def voter_for?(idea)
+    Vote.where(:user_id => self.id, :idea_id => idea.id).exists?
+  end
+
+  def vote_for!(idea)
+    Vote.create(:user => self, :idea => idea) unless idea.creator == self
+  end
+
   def to_param
     sha
   end
