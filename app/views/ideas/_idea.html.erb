@@ -1,6 +1,5 @@
 <div class="idea">
   <p class="lead idea"><%= link_to(idea.title, idea_path(idea)) %></p>
   <p><%= truncate(idea.body, :length => 300, :omission => "... ") { link_to "continue reading", idea_path(idea) } %></p>
-  <!-- TODO clean this up -->
   <div id="button_<%= idea.id %>"><%= render :partial => "votes/button", :locals => { :idea => idea } %></div>
 </div>
