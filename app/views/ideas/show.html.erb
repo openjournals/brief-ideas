@@ -32,6 +32,8 @@
       <% if @idea.doi? %><p><%= link_to image_tag(@idea.doi_badge_url), @idea.doi %></p><% end %>
       <p>Author: <%= link_to @idea.user.name, @idea.user.orcid_url %></p>
       <p>Published: <%= @idea.created_at.strftime("%e/%m/%Y") %></p>
+      <% if @idea.parent? %><p><%= link_to "Prior art", idea_path(@idea.parent) %></p><% end %>
+      <p><%= link_to "New idea based on this", new_idea_path(:references_id => @idea.sha) %></p>
       <p><%= link_to image_tag("cc-by.png"), "https://creativecommons.org/licenses/by/4.0/legalcode" %></p>
     </div>
   </div>
