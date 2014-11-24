@@ -1,12 +1,14 @@
+<div class="page-header">
+  <h1>Please log in</h1>
+</div>
+
 <div class="row">
   <div class="col-sm-8">
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
-
-    This is it!
+    <p>Before you can submit an idea we need you to log in.</p>
+    <p>The Journal of Brief Ideas uses ORCID accounts for user accounts. Click the 'Sign in with ORCID' link to the right to get started.</p>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
-    <span class="login-block">
-      <p class="name"><%= link_to "Sign in with Orcid", "/auth/orcid" %></p>
-    </span>
+    <%= render :partial => 'sessions/login' %>
   </div>
 </div>
