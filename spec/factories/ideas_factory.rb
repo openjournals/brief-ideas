@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :idea do
     state       'published'
+    title       'Profound thoughts'
     body        'Cows are actually very large sheep that have been taught to make a different sound'
     subject     'Physics > Astrology'
     tags        ['Nuthin', 'Interesting']

@@ -9,6 +9,8 @@ class Idea < ActiveRecord::Base
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
 
+  validates_presence_of :title, :body, :subject
+
   # TODO - perhaps make this a 'has_one' association?
   def parent
     Idea.find_by_id(parent_id)

@@ -36,7 +36,7 @@ describe IdeasController, :type => :controller do
 
   describe "POST #create" do
     it "NOT LOGGED IN responds with redirect" do
-      idea_params = {:title => "Yeah whateva", :body => "something", :tags => "Hello, my, name, is"}
+      idea_params = {:title => "Yeah whateva", :body => "something", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is"}
       post :create, :idea => idea_params
       expect(response).to be_redirect
     end
@@ -48,7 +48,7 @@ describe IdeasController, :type => :controller do
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       idea_count = Idea.count
 
-      idea_params = {:title => "Yeah whateva", :body => "something", :tags => "Hello, my, name, is"}
+      idea_params = {:title => "Yeah whateva", :body => "something", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is"}
       post :create, :idea => idea_params
       expect(response).to be_redirect # as it's created the thing
       expect(Idea.count).to eq(idea_count + 1)
