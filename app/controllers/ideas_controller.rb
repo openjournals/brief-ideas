@@ -19,7 +19,7 @@ class IdeasController < ApplicationController
     if @idea.save
       redirect_to idea_path(@idea), :notice => "Idea created"
     else
-      render :action => "edit"
+      render :action => "new"
     end
   end
 
