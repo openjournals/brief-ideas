@@ -6,6 +6,7 @@ class Idea < ActiveRecord::Base
   before_create :set_sha, :check_user_idea_count
   after_create :zenodo_create
 
+  scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
 
   def to_param
@@ -63,7 +64,11 @@ private
     self.sha = SecureRandom.hex
   end
 
+  # Don't let people create more than 5 ideas in 24 hours
   def check_user_idea_count
-    # TODO - make sure they've not created more than 5 ideas today
+    if Idea.today.count(:user => user) >= 5
+      self.errors[:base] << "You've already created 5 ideas today, please come back tomorrow."
+      return false
+    end
   end
 end
