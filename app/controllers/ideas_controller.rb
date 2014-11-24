@@ -1,5 +1,6 @@
 class IdeasController < ApplicationController
   before_filter :require_user, :except => [ :preview, :show, :tags, :index]
+  before_filter :check_references, :only => [ :new ]
 
   def index
     @ideas = Idea.recent
@@ -37,7 +38,13 @@ class IdeasController < ApplicationController
 
   private
 
+  def check_references
+    if params[:references_id]
+      redirect_to ideas_path, :warning => "Could not find referenced idea" unless @references = Idea.find_by_sha(params[:references_id])
+    end
+  end
+
   def idea_params
-    params.require(:idea).permit(:title, :body, :subject, :tags)
+    params.require(:idea).permit(:title, :body, :subject, :tags, :parent_id)
   end
 end
