@@ -1,0 +1,9 @@
+<div class="well derivatives">
+  <p><strong>Ideas referencing this work</strong></p>
+
+  <ul>
+    <% idea.children.each do |child| %>
+    <li><%= link_to child.title, idea_path(child) %></li>
+    <% end %>
+  </ul>
+</div>

@@ -81,4 +81,20 @@ describe Idea do
     expect(idea.errors[:base]).to eq(["You've already created 5 ideas today, please come back tomorrow."])
     expect(Idea.count).to eq(5)
   end
+
+  # Parent/child relationships
+  it "should know about its parent" do
+    parent = create(:idea)
+    child = create(:idea, :parent_id => parent.id)
+
+    expect(child.parent).to eq(parent)
+  end
+
+  it "should know about its parent" do
+    parent = create(:idea)
+    create(:idea, :parent_id => parent.id)
+    create(:idea, :parent_id => parent.id)
+
+    expect(parent.children.size).to eq(2)
+  end
 end

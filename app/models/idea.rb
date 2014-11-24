@@ -20,6 +20,14 @@ class Idea < ActiveRecord::Base
     parent
   end
 
+  def children
+    Idea.where(:parent_id => self.id)
+  end
+
+  def has_related_works?
+    parent? || children
+  end
+
   def to_param
     sha
   end
