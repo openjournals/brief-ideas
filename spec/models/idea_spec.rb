@@ -62,11 +62,23 @@ describe Idea do
   end
 
   # Tags
-
   it "should know what all of the tags available are" do
     create(:idea, :tags => ['so', 'very'])
     create(:idea, :tags => ['very', 'funky', 'yeah'])
 
     expect(Idea.all_tags).to eq(['so', 'very', 'funky', 'yeah'])
+  end
+
+  # Rate limiting of Idea creation
+  it "should only allow a User to create up to 5 ideas per day" do
+    user = create(:user)
+    5.times do
+      create(:idea, :user => user)
+    end
+
+    idea = build(:idea, :user => user)
+    idea.save
+    expect(idea.errors[:base]).to eq(["You've already created 5 ideas today, please come back tomorrow."])
+    expect(Idea.count).to eq(5)
   end
 end
