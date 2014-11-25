@@ -29,7 +29,6 @@
 
     <div class="help-block">
       <h5>Actions</h5>
-      <% if @idea.parent? %><p><%= link_to "Prior art", idea_path(@idea.parent) %></p><% end %>
       <p><%= link_to "New idea based on this", new_idea_path(:references_id => @idea.sha) %></p>
     </div>
 
