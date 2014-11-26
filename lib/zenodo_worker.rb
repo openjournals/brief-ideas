@@ -11,7 +11,7 @@ class ZenodoWorker
     publish!(idea)
 
     # Insert into Swiftype index
-    create_document(idea)
+    # create_document(idea)
   end
 
   def create_deposit(idea)
@@ -42,7 +42,7 @@ class ZenodoWorker
   end
 
   def upload_files(idea)
-    RestClient.post("#{Rails.configuration.zenodo_url}/api/deposit/depositions/#{idea.zenodo_id}/files?access_token=#{Rails.configuration.zenodo_token}", { :file => File.new("#{Rails.root}/app/assets/images/unicorn.jpg", 'rb'), :name => "unicorn.jpg", :multipart => true}){ |response, request, result, &block|
+    RestClient.post("#{Rails.configuration.zenodo_url}/api/deposit/depositions/#{idea.zenodo_id}/files?access_token=#{Rails.configuration.zenodo_token}", { :file => File.new("#{Rails.root}/test/fixtures/unicorn.txt", 'rb'), :name => "unicorn.txt", :multipart => true}){ |response, request, result, &block|
       case response.code
       when 201
         zenodo_response = JSON.parse(response.body)

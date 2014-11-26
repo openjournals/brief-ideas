@@ -1,14 +1,16 @@
 require 'rails_helper'
+require 'sidekiq/testing'
 
 describe Idea do
   it { should belong_to(:user) }
   it { should have_many(:votes) }
 
-  it "should initialize properly" do
+  it "should initialize properly (including queueing ZenodoWorker)" do
     paper = create(:idea)
 
     assert !paper.sha.nil?
     expect(paper.sha.length).to eq(32)
+    expect(ZenodoWorker.jobs.size).to eq(1)
   end
 
   it "should be able to return formatted body" do
