@@ -11,7 +11,7 @@ class ZenodoWorker
     publish!(idea)
 
     # Insert into Swiftype index
-    # create_document(idea)
+    create_document(idea)
   end
 
   def create_deposit(idea)
