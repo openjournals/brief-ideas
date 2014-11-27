@@ -2,6 +2,10 @@ require 'rails_helper'
 require 'sidekiq/testing'
 
 describe Idea do
+  before(:each) do
+    Idea.destroy_all
+  end
+
   it { should belong_to(:user) }
   it { should have_many(:votes) }
 
@@ -74,6 +78,7 @@ describe Idea do
   # Rate limiting of Idea creation
   it "should only allow a User to create up to 5 ideas per day" do
     user = create(:user)
+
     5.times do
       create(:idea, :user => user)
     end
@@ -81,7 +86,7 @@ describe Idea do
     idea = build(:idea, :user => user)
     idea.save
     expect(idea.errors[:base]).to eq(["You've already created 5 ideas today, please come back tomorrow."])
-    expect(Idea.count).to eq(5)
+    expect(Idea.count(:user_id => user.id)).to eq(5)
   end
 
   # Parent/child relationships
