@@ -1,14 +1,20 @@
 require 'rails_helper'
+require 'sidekiq/testing'
 
 describe Idea do
+  before(:each) do
+    Idea.destroy_all
+  end
+
   it { should belong_to(:user) }
   it { should have_many(:votes) }
 
-  it "should initialize properly" do
+  it "should initialize properly (including queueing ZenodoWorker)" do
     paper = create(:idea)
 
     assert !paper.sha.nil?
     expect(paper.sha.length).to eq(32)
+    expect(ZenodoWorker.jobs.size).to eq(1)
   end
 
   it "should be able to return formatted body" do
@@ -72,6 +78,7 @@ describe Idea do
   # Rate limiting of Idea creation
   it "should only allow a User to create up to 5 ideas per day" do
     user = create(:user)
+
     5.times do
       create(:idea, :user => user)
     end
@@ -79,7 +86,7 @@ describe Idea do
     idea = build(:idea, :user => user)
     idea.save
     expect(idea.errors[:base]).to eq(["You've already created 5 ideas today, please come back tomorrow."])
-    expect(Idea.count).to eq(5)
+    expect(Idea.count(:user_id => user.id)).to eq(5)
   end
 
   # Parent/child relationships
