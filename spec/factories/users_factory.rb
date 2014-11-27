@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :user do
-    provider  'github'
+    provider  'orcid'
     name  'John Doe'
     created_at  { Time.now }
     email 'john@apple.com'
