@@ -20,7 +20,7 @@ class ZenodoWorker
       when 201
         zenodo_response = JSON.parse(response.body)
         idea.update_attribute(:zenodo_id, zenodo_response['id'])
-        puts "CREATED ZENODO DEPOSIT FOR #{idea.sha}, ZENODO ID #{zenodo_response['id']}"
+        Rails.logger.info "CREATED ZENODO DEPOSIT FOR #{idea.sha}, ZENODO ID #{zenodo_response['id']}"
       else
         response.return!(request, result, &block)
       end
@@ -46,7 +46,7 @@ class ZenodoWorker
       case response.code
       when 201
         zenodo_response = JSON.parse(response.body)
-        puts "UPLOADED FILES FOR #{idea.sha}, ZENODO ID #{zenodo_response['id']}"
+        Rails.logger.info "UPLOADED FILES FOR #{idea.sha}, ZENODO ID #{zenodo_response['id']}"
       else
         response.return!(request, result, &block)
       end
@@ -59,7 +59,7 @@ class ZenodoWorker
       when 202
         zenodo_response = JSON.parse(response.body)
         idea.update_attribute(:doi, zenodo_response['doi_url'])
-        puts "PUBLISHED! #{idea.sha}"
+        Rails.logger.info "PUBLISHED! #{idea.sha}"
       else
         response.return!(request, result, &block)
       end
@@ -79,6 +79,6 @@ class ZenodoWorker
                   {:name => 'tags', :value => idea.formatted_tags, :type => 'string'},
                   {:name => 'ordid_id', :value => idea.user.uid, :type => 'string'}
                   ]})
-    puts "UPLOADING TO INDEX! #{idea.sha}"
+    Rails.logger.info "UPLOADING TO INDEX! #{idea.sha}"
   end
 end
