@@ -6,8 +6,9 @@ class IdeasController < ApplicationController
     @ideas = Idea.recent
 
     respond_to do |format|
-      format.html
+      format.atom
       format.json { render json: @ideas }
+      format.html
     end
   end
 

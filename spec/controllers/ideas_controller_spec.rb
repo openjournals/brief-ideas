@@ -33,6 +33,16 @@ describe IdeasController, :type => :controller do
     end
   end
 
+  describe "GET #index with Atom" do
+    it "should respond with an Atom feed" do
+      idea = create(:idea, :tags => [])
+      get :index, :format => :atom
+
+      expect(response).to be_success
+      expect(response.status).to eq(200)
+    end
+  end
+
   describe "GET #show" do
     it "NOT LOGGED IN responds with success" do
       idea = create(:idea)
