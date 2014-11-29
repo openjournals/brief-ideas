@@ -4,6 +4,11 @@ class IdeasController < ApplicationController
 
   def index
     @ideas = Idea.recent
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @ideas }
+    end
   end
 
   def new
@@ -34,6 +39,11 @@ class IdeasController < ApplicationController
 
   def show
     @idea = Idea.find_by_sha(params[:id])
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @idea }
+    end
   end
 
   private

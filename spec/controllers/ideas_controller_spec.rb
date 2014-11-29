@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe IdeasController, :type => :controller do
+  before(:each) do
+    Idea.destroy_all
+  end
+
   describe "GET #new" do
     it "NOT LOGGED IN responds with a redirect" do
       get :new, :format => :html
@@ -18,11 +22,31 @@ describe IdeasController, :type => :controller do
     end
   end
 
+  describe "GET #index with JSON" do
+    it "should respond with JSON array" do
+      idea = create(:idea, :tags => [])
+      get :index, :format => :json
+
+      expect(response).to be_success
+      expect(response.status).to eq(200)
+      assert_equal hash_from_json(response.body).first["sha"], idea.sha
+    end
+  end
+
   describe "GET #show" do
     it "NOT LOGGED IN responds with success" do
       idea = create(:idea)
       get :show, :id => idea.to_param, :format => :html
       expect(response).to be_success
+    end
+  end
+
+  describe "GET #show with JSON" do
+    it "responds with JSON object" do
+      idea = create(:idea)
+      get :show, :id => idea.to_param, :format => :json
+      expect(response).to be_success
+      assert_equal hash_from_json(response.body)["sha"], idea.sha
     end
   end
 
