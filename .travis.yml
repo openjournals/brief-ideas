@@ -1,6 +1,9 @@
 language: ruby
 rvm:
-  - "2.1.2"
+  - 1.9.3
+  - 2.0.0
+  - 2.1
+  - 2.2
 before_script:
   - cp .env-example .env
   - psql -c 'create database brief_ideas_test' -U postgres
@@ -9,5 +12,5 @@ before_script:
 
 services:
   - redis-server
-  
+
 script: bundle exec rake
