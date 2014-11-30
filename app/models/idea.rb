@@ -4,7 +4,7 @@ class Idea < ActiveRecord::Base
   belongs_to :user
   has_many :votes
   before_create :set_sha, :check_user_idea_count
-  after_create :zenodo_create
+  after_create :zenodo_create, :push_tags
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
@@ -69,12 +69,14 @@ class Idea < ActiveRecord::Base
     "https://dev.zenodo.org/badge/doi/#{formatted_doi}.svg"
   end
 
+  def push_tags
+    @redis ||= Redis.new(:url => ENV['REDISTOGO_URL'])
+    tags.each { |tag| @redis.sadd("tags-#{Rails.env}", tag) }
+  end
+
   def self.all_tags
-    Rails.cache.fetch("all_tags") do
-      tags = []
-      all.each { |idea| tags << idea.tags.collect(&:strip) }
-      tags.flatten.uniq
-    end
+    @redis ||= Redis.new(:url => ENV['REDISTOGO_URL'])
+    @redis.smembers("tags-#{Rails.env}")
   end
 
 private

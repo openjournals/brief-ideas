@@ -3,6 +3,8 @@ require 'rails_helper'
 describe IdeasController, :type => :controller do
   before(:each) do
     Idea.destroy_all
+    @redis ||= Redis.new(:url => ENV['REDISTOGO_URL'])
+    @redis.del("tags-#{Rails.env}")
   end
 
   describe "GET #new" do
@@ -86,6 +88,10 @@ describe IdeasController, :type => :controller do
       post :create, :idea => idea_params
       expect(response).to be_redirect # as it's created the thing
       expect(Idea.count).to eq(idea_count + 1)
+
+      # Tags should be made lower case on creation
+      assert !Idea.all_tags.include?("Hello")
+      assert Idea.all_tags.include?("hello")
     end
   end
 end
