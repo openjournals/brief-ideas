@@ -4,6 +4,8 @@ require 'sidekiq/testing'
 describe Idea do
   before(:each) do
     Idea.destroy_all
+    @redis ||= Redis.new(:url => ENV['REDISTOGO_URL'])
+    @redis.del("tags-#{Rails.env}")
   end
 
   it { should belong_to(:user) }
@@ -72,7 +74,10 @@ describe Idea do
     create(:idea, :tags => ['so', 'very'])
     create(:idea, :tags => ['very', 'funky', 'yeah'])
 
-    expect(Idea.all_tags).to eq(['so', 'very', 'funky', 'yeah'])
+    ['so', 'very', 'funky', 'yeah'].each do |tag|
+      assert Idea.all_tags.include?(tag)
+    end
+    expect(Idea.all_tags.size).to eq(4)
   end
 
   # Rate limiting of Idea creation
