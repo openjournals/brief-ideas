@@ -17,3 +17,5 @@
 
 # Ignore configs
 .env
+.env.development
+.env.production
