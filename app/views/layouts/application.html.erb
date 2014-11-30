@@ -20,7 +20,7 @@
   <script type="text/javascript">stLight.options({publisher: "982bb29b-ce20-4d3f-b9bb-75a04b7fadcf", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 
   <!-- Twitter cards -->
-  <% if @idea %>
+  <% if @idea && !@idea.new_record? %>
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@jofbriefideas" />
   <meta name="twitter:title" content="<%= @idea.title %>" />

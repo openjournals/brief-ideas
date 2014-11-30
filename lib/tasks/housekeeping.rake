@@ -1,5 +1,5 @@
 desc 'Cleanup'
-task :cleanup_ideas => :environment do
+task :cleanup => :environment do
   Idea.all.each do |idea|
     puts "CLEANING UP #{idea.sha}"
     client = Swiftype::Client.new
