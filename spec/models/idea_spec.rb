@@ -25,6 +25,12 @@ describe Idea do
     expect(paper.formatted_body).to eq("<h1>Title</h1>")
   end
 
+  it "should santize bad stuff" do
+    paper = create(:idea, :body => "Hello, <script>alert('I am a bad guy');</script>")
+
+    expect(paper.formatted_body).to eq("<p>Hello, </p>")
+  end
+
   it "should know how to parameterize itself properly" do
     idea = create(:idea)
 

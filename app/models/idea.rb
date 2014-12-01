@@ -45,8 +45,12 @@ class Idea < ActiveRecord::Base
   end
 
   def formatted_body
-    filter = HTML::Pipeline::MarkdownFilter.new(body)
-    filter.call
+    pipeline = HTML::Pipeline.new [
+      HTML::Pipeline::MarkdownFilter,
+      HTML::Pipeline::SanitizationFilter
+    ]
+    result = pipeline.call(body)
+    result[:output].to_s
   end
 
   def zenodo_create
