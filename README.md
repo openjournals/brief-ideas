@@ -13,7 +13,7 @@ You can see the latest build of this running at http://ideas.theoj.org
 
 ## Why are you doing this?
 
-We think that that there is an inherent inefficiency in scientific publishing due to the quantum (or minimum publishable amount) being too large. It can takes many years to do enough research for a publications in a top-tier journal. Meanwhile, all that intellectual capital is tied up solely in the heads of the researchers rather than circulating where it could be doing some good. Also, many research ideas and results are not publishable because they are small, negative, partial, or just don't fit the criteria of other journals. But many of them can be expressed briefly and could aid other researchers.
+We think that that there is an inherent inefficiency in scientific publishing due to the quantum (or minimum publishable amount) of research being too large. It can takes many years to do enough research for a publication in a top-tier journal. Meanwhile, all that intellectual capital is tied up solely in the heads of the researchers rather than circulating where it could be doing some good. Also, many research ideas and results are not publishable because they are small, negative, partial, or just don't fit the criteria of other journals. But many of them can be expressed briefly and could aid other researchers.
 
 ## Why would I put out a partial or in-progress result to the world? Won't it just get stolen?
 
