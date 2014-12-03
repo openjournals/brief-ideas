@@ -25,6 +25,10 @@ In addition, if you are a good researcher, you have more ideas than you can purs
 
 For something as brief as 200-words, wouldn't you rather just judge the quality of an idea yourself rather than have that judgement proxied by an anonymous peer reviewer? It is impractical to have 200-word ideas reviewed pre-publication so we choose to have a post-publication review system. There is a rating for each idea and for each researcher so you can judge quality by those ratings if you don't trust your own judgement. 
 
+# So are you against peer review?
+
+Not at all. Peer review is quite appropriate for many types of publications and for grant applications and funding, but peer review doesn't seem very workable when the idea is so brief. Any review is likely to be longer than the idea itself and so would be better off put out there as a further idea building on the original.
+
 ## 200 words? Really? What can you say in 200 words?
 
 If we go back into the vaults of history, we find the original scientific journals published primarily letters that were often around the 200 words length. Somehow, they managed to say important things in that length. There's no reason why you can't also. Publishing a brief idea doesn't prohibit you form expanding on the idea at length and publishing a fuller version in some other journal, of course.
