@@ -14,7 +14,7 @@ describe 'ideas/show.html.erb' do
       expect(rendered).to have_content idea.user.name
       expect(rendered).to have_content 'New idea based on this'
       expect(rendered).to have_content 'Funky'
-      expect(rendered).to have_content idea.created_at.strftime("%e/%m/%Y")
+      expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
     end
   end
 
@@ -32,7 +32,7 @@ describe 'ideas/show.html.erb' do
       expect(rendered).to have_content idea.user.name
       expect(rendered).to have_content 'New idea based on this'
       expect(rendered).to have_content "This idea isn't tagged with anything"
-      expect(rendered).to have_content idea.created_at.strftime("%e/%m/%Y")
+      expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
     end
   end
 end
