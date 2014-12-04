@@ -33,7 +33,7 @@ class ZenodoWorker
         :title => idea.title,
         :upload_type => "publication",
         :publication_type => "article",
-        :description => idea.formatted_body,
+        :description => "A brief idea",
         :creators => [{:name => idea.user.name, :affiliation => "", :orcid => idea.user.uid}],
         :keywords => [idea.zenodo_keywords],
         :license => "cc-by"
@@ -42,7 +42,10 @@ class ZenodoWorker
   end
 
   def upload_files(idea)
-    RestClient.post("#{Rails.configuration.zenodo_url}/api/deposit/depositions/#{idea.zenodo_id}/files?access_token=#{Rails.configuration.zenodo_token}", { :file => File.new("#{Rails.root}/test/fixtures/unicorn.txt", 'rb'), :name => "unicorn.txt", :multipart => true}){ |response, request, result, &block|
+    # First write out a temp file with the idea contents
+    File.open("#{Rails.root}/tmp/#{idea.sha}.md", "w") {|f| f.write(idea.body.to_s) }
+
+    RestClient.post("#{Rails.configuration.zenodo_url}/api/deposit/depositions/#{idea.zenodo_id}/files?access_token=#{Rails.configuration.zenodo_token}", { :file => File.new("#{Rails.root}/tmp/#{idea.sha}.md"), :name => "#{idea.sha}.md", :multipart => true}){ |response, request, result, &block|
       case response.code
       when 201
         zenodo_response = JSON.parse(response.body)
