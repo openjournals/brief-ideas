@@ -47,6 +47,10 @@ class IdeasController < ApplicationController
     end
   end
 
+  def about
+
+  end
+
   private
 
   def check_references
