@@ -1,5 +1,5 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :except => [ :preview, :show, :tags, :index]
+  before_filter :require_user, :except => [ :preview, :show, :tags, :index, :about]
   before_filter :check_references, :only => [ :new ]
 
   def index
