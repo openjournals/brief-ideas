@@ -39,7 +39,7 @@ class IdeasController < ApplicationController
   end
 
   def show
-    @idea = Idea.find_by_sha(params[:id])
+    @idea = Idea.find_by_sha(params[:id])  || Idea.find_by_doi(params[:id])
 
     respond_to do |format|
       format.html
