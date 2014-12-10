@@ -7,16 +7,16 @@ $ ->
     val = $(this).val()
     if val is $(this).attr('data-default')
       $(this).val('')
+    else
+      console.log "Not replacing because value is " + val
+
 
   $(".auto-replace").blur ->
     val = $(this).val()
     if val is ""
       $(this).val($(this).attr('data-default'))
-
-  $('a.help').popover({
-    placement : 'top',
-    html : 'true',
-    content : 'GitHub Flavoured Markdown is supported here. Read more about the supported syntax <a href="https://help.github.com/articles/github-flavored-markdown/">here</a>.'});
+    else
+      console.log "Not replacing because value is " + val
 
   counter = ->
     value = $("#idea-body").val()
