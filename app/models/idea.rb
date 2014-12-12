@@ -70,7 +70,7 @@ class Idea < ActiveRecord::Base
   end
 
   def doi_badge_url
-    "https://dev.zenodo.org/badge/doi/#{formatted_doi}.svg"
+    "https://sandbox.zenodo.org/badge/doi/#{formatted_doi}.svg"
   end
 
   def push_tags
