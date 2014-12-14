@@ -3,6 +3,14 @@ require 'html/pipeline'
 class Idea < ActiveRecord::Base
   belongs_to :user
   has_many :votes
+
+  # Citations/references
+  has_many :idea_references
+  has_many :references, :through => :idea_references, :source => 'idea'
+
+  has_many :idea_citations, :class_name => 'IdeaReference', :foreign_key => 'referenced_id'
+  has_many :citations, :through => :idea_citations, :source => :idea
+
   before_create :set_sha, :check_user_idea_count
   after_create :zenodo_create, :push_tags
 

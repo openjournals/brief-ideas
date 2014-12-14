@@ -11,11 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141214025235) do
+ActiveRecord::Schema.define(version: 20141214151615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+
+  create_table "idea_references", force: true do |t|
+    t.integer  "idea_id"
+    t.integer  "referenced_id"
+    t.string   "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "idea_references", ["body"], name: "index_idea_references_on_body", using: :btree
+  add_index "idea_references", ["idea_id"], name: "index_idea_references_on_idea_id", using: :btree
+  add_index "idea_references", ["referenced_id"], name: "index_idea_references_on_referenced_id", using: :btree
 
   create_table "ideas", force: true do |t|
     t.string   "title"
