@@ -36,6 +36,7 @@ class ZenodoWorker
         :description => "A brief idea",
         :creators => [{:name => idea.user.name, :affiliation => "", :orcid => idea.user.uid}],
         :keywords => [idea.zenodo_keywords],
+        :communities => [{:identifier => "briefideas"}],
         :license => "cc-by"
       }
     }.to_json
