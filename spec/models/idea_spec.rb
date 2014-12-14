@@ -10,6 +10,8 @@ describe Idea do
 
   it { should belong_to(:user) }
   it { should have_many(:votes) }
+  it { should have_many(:citations) }
+  it { should have_many(:references) }
 
   it "should initialize properly (including queueing ZenodoWorker)" do
     paper = create(:idea)

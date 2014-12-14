@@ -1,5 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe IdeaReference, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe IdeaReference do
+  it { should belong_to(:idea) }
+  it { should belong_to(:referenced) }
 end
