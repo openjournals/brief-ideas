@@ -41,6 +41,8 @@ class IdeasController < ApplicationController
   def show
     @idea = Idea.find_by_sha(params[:id])
 
+    impressionist(@idea)
+
     respond_to do |format|
       format.html
       format.json { render json: @idea }

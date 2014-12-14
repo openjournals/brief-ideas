@@ -11,6 +11,9 @@ class Idea < ActiveRecord::Base
 
   validates_presence_of :title, :body, :subject
 
+  # Logging views of ideas with impressionist. Only one count per user session
+  is_impressionable :counter_cache => true, :column_name => :view_count, :unique => :true
+
   # TODO - perhaps make this a 'has_one' association?
   def parent
     Idea.find_by_id(parent_id)

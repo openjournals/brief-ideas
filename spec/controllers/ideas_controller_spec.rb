@@ -53,6 +53,17 @@ describe IdeasController, :type => :controller do
     end
   end
 
+  describe "GET #show" do
+    it "LOGGED IN responds with success" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:idea)
+      get :show, :id => idea.to_param, :format => :html
+      expect(response).to be_success
+    end
+  end
+
   describe "GET #show with JSON" do
     it "responds with JSON object" do
       idea = create(:idea)
