@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_many :ideas
   has_many :votes
-  
+
   before_create :set_sha
 
   def self.from_omniauth(auth)
@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
 
   def to_param
     sha
+  end
+
+  def nice_name
+    name.split(',').collect(&:strip).reverse.join(' ')
   end
 
   def orcid_url

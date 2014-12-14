@@ -31,7 +31,7 @@ describe 'ideas/index.html.erb' do
 
       expect(rendered).to have_selector('div.idea', :count => 0)
       expect(rendered).to have_content 'There are no ideas currently'
-      expect(rendered).to have_content user.name
+      expect(rendered).to have_content user.nice_name
     end
   end
 end
