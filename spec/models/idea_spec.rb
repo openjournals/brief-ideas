@@ -72,7 +72,7 @@ describe Idea do
 
     expect(idea.formatted_doi).to eq("10.0000/zenodo.12345")
     # TODO - this will need changing when shipped to production Zenodo URL
-    expect(idea.doi_badge_url).to eq("https://sandbox.zenodo.org/badge/doi/10.0000/zenodo.12345.svg")
+    expect(idea.doi_badge_url).to eq("#{Rails.configuration.zenodo_url}/badge/doi/10.0000/zenodo.12345.svg")
   end
 
   # Tags
