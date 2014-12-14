@@ -66,10 +66,11 @@
       </nav>
 
     <div class="container">
+      <% if Rails.env.production? %>
       <span class="alert alert-danger">
         HEADS UP: This site is in preview mode and will launch soon. For now, please don't submit ideas that you don't mind us deleting before launch.
       </span>
-
+      <% end %>
 
       <%= yield %>
     </div>
