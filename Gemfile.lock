@@ -73,7 +73,11 @@ GEM
     html-pipeline (1.11.0)
       activesupport (>= 2)
       nokogiri (~> 1.4)
+    httpclient (2.5.3.3)
     i18n (0.6.11)
+    impressionist (1.5.1)
+      httpclient (~> 2.2)
+      nokogiri (~> 1.5)
     informant-rails (0.7.1)
       rails (>= 3.0.0, < 4.2.0)
     jbuilder (2.2.0)
@@ -247,6 +251,7 @@ DEPENDENCIES
   faraday-http-cache
   github-markdown
   html-pipeline
+  impressionist (~> 1.5.1)
   informant-rails (~> 0.7.1)
   jbuilder (~> 2.0)
   jquery-rails
