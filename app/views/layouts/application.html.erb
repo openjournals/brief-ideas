@@ -40,6 +40,11 @@
   <% end %>
 </head>
 <body>
+  <% if Rails.env.production? %>
+  <div class="staging-alert">
+    <p>HEADS UP: This site is in preview mode and will launch soon. For now, please don't submit ideas that you don't mind us deleting before launch.</p>
+  </div>
+  <% end %>
   <div id="wrap">
       <!-- Static navbar -->
       <nav class="navbar navbar-default" role="navigation">
@@ -66,12 +71,6 @@
       </nav>
 
     <div class="container">
-      <% if Rails.env.production? %>
-      <span class="alert alert-danger">
-        HEADS UP: This site is in preview mode and will launch soon. For now, please don't submit ideas that you don't mind us deleting before launch.
-      </span>
-      <% end %>
-
       <%= yield %>
     </div>
     <div id="push"></div>
