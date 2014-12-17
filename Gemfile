@@ -25,7 +25,8 @@ gem 'turbolinks'
 gem 'bootstrap-typeahead-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'unicorn'
-gem 'will_paginate'
+gem 'will_paginate' , '~> 3.0.7'
+gem 'will_paginate-bootstrap' , '~> 1.0.1'
 
 group :test do
   gem 'capybara', '~> 2.4.4'
