@@ -115,4 +115,18 @@ describe Idea do
 
     expect(parent.children.size).to eq(2)
   end
+
+  it "should be selectable by searching for all tags" do
+    idea = create(:idea, :tags=>["space", "dog"])
+
+    expect(Idea.has_all_tags(["space", "dog"]).count).to eq(1)
+    expect(Idea.has_all_tags(["space", "cat"]).count).to eq(0)
+  end
+
+  it "should be selectable by searching for any tags" do
+    idea = create(:idea, :tags=>["space", "dog"])
+
+    expect(Idea.has_any_tags(["space", "cat"]).count).to eq(1)
+    expect(Idea.has_all_tags(["monkey", "cat"]).count).to eq(0)
+  end
 end
