@@ -8,6 +8,8 @@ class Idea < ActiveRecord::Base
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
+  scope :has_all_tags, ->(tags){ where("ARRAY[?]::varchar[] <@ tags::varchar[]", tags) }
+  scope :has_any_tags, ->(tags){ where("ARRAY[?]::varchar[] && tags::varchar[]", tags) }
 
   validates_presence_of :title, :body, :subject
 
