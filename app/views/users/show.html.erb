@@ -5,8 +5,11 @@
 <div class="row form">
   <div class="col-sm-8">
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
-    <% if @user.ideas.any? %>
-    <%= render :partial => "ideas/idea", collection: @user.ideas %>
+    <% if @ideas.any? %>
+    <%= render :partial => "ideas/idea", collection: @ideas %>
+    <div class="text-center">
+      <%= will_paginate @ideas, renderer: BootstrapPagination::Rails %>
+    </div>
     <% else %>
     <p>There are no ideas currently. Would you like to <%= link_to "create one", new_idea_path %>?</p>
     <% end %>

@@ -3,7 +3,7 @@ class IdeasController < ApplicationController
   before_filter :check_references, :only => [ :new ]
 
   def index
-    @ideas = Idea.recent.paginate(:page => params[:page], :per_page => 1)
+    @ideas = Idea.recent.paginate(:page => params[:page], :per_page => 10)
 
     respond_to do |format|
       format.atom
