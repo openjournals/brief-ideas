@@ -4,7 +4,8 @@ class IdeasController < ApplicationController
 
   def index
     if params[:tags]
-      @ideas = Idea.has_all_tags(params[:tags].split(","))
+      @tags  = params[:tags].split(",")
+      @ideas = Idea.has_all_tags(@tags)
     else
       @ideas = Idea.recent
     end
