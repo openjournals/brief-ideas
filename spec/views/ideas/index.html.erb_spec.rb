@@ -9,7 +9,7 @@ describe 'ideas/index.html.erb' do
         create(:idea)
       end
 
-      assign(:ideas, Idea.all.paginate(:page=>1, :per_page=>10))
+      assign(:ideas, Idea.all.paginate(:page => 1, :per_page => 10))
 
       render :template => "ideas/index.html.erb"
 
@@ -25,7 +25,7 @@ describe 'ideas/index.html.erb' do
       allow(view).to receive(:current_user).and_return(user)
       ideas = []
 
-      assign(:ideas, Idea.all.paginate(:page=>1, :per_page=>10))
+      assign(:ideas, Idea.all.paginate(:page => 1, :per_page => 10))
 
       render :template => "ideas/index.html.erb"
 
