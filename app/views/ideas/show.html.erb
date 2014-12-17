@@ -22,9 +22,7 @@
       <h5>Content Tags</h5>
       <% if @idea.tags.any? %>
         <p>
-          <% @idea.tags.each_with_index do |tag,index| %>
-            <%=link_to tag, ideas_path({tags:tag}) %><%="," unless index == @idea.tags.count - 1%>
-          <%end%>
+          <%= render partial:"shared/clickable_tag_list", :locals=>{tags:@idea.tags}%>
         </p>
       <% else %>
         <p>This idea isn't tagged with anything</p>
