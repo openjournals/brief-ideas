@@ -1,0 +1,3 @@
+<% tags.each_with_index do |tag,index| %>
+  <%=link_to tag, ideas_path({tags:tag}) %><%="," unless index == tags.count - 1%>
+<%end%>
