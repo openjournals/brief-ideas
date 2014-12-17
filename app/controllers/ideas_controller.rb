@@ -3,7 +3,11 @@ class IdeasController < ApplicationController
   before_filter :check_references, :only => [ :new ]
 
   def index
-    @ideas = Idea.recent
+    if params[:tags]
+      @ideas = Idea.has_all_tags(params[:tags].split(","))
+    else
+      @ideas = Idea.recent
+    end
 
     respond_to do |format|
       format.atom
