@@ -22,9 +22,21 @@ class Idea < ActiveRecord::Base
   # Logging views of ideas with impressionist. Only one count per user session
   is_impressionable :counter_cache => true, :column_name => :view_count, :unique => :true
 
-  # TODO - perhaps make this a 'has_one' association?
+  # TODO - work out what do do with these
+  def parents
+    references
+  end
+
   def parent
-    Idea.find_by_id(parent_id)
+    parents.first
+  end
+
+  def build_references(params)
+    return unless params[:idea][:citation_ids]
+    params[:idea][:citation_ids].each do |id|
+      next unless Idea.find_by_id(id)
+      self.idea_references.build(:referenced_id => id)
+    end
   end
 
   def parent?
@@ -32,7 +44,7 @@ class Idea < ActiveRecord::Base
   end
 
   def children
-    Idea.where(:parent_id => self.id)
+    citations
   end
 
   def has_related_works?
