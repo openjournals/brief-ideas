@@ -10,17 +10,6 @@ username_strategy =
   template: (entry)->
     "@#{entry}"
 
-doi_strategy =
-  match: /(10.(\d)+/([^(\s\>\"\<)])+)/;
-  search: (name, callback)->
-    search_call = $.getJSON("/user_lookup",{name: name})
-    search_call.done (result)->
-      callback( result.map (r)-> r.name)
-    search_call.fail -> callback([],true)
-  replace: (entry)->
-    " @#{entry} "
-  template: (entry)->
-    "@#{entry}"
 
 stratagies = [username_strategy]
 
