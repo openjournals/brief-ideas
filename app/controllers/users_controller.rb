@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   end
 
   def lookup
-    @results = User.fuzzy_search(params[:name]).limit(10)
+    @results = User.fuzzy_search(params[:query]).limit(10)
     respond_with @results
   end
 end
