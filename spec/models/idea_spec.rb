@@ -115,4 +115,15 @@ describe Idea do
 
     expect(parent.children.size).to eq(2)
   end
+
+
+  it "should be matched by a fuzzy search" do
+    idea1 = create(:idea, title:"A idea about who ideas rock")
+    idea2 = create(:idea, title:"A response to the idea that dogs cant lookup")
+
+    result = Idea.fuzzy_search_by_title("dogs").all
+
+    expect(result.first.sha).to eq(idea2.sha)
+    expect(result.count).to eq(1)
+  end
 end

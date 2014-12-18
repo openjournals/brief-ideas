@@ -105,4 +105,18 @@ describe IdeasController, :type => :controller do
       assert Idea.all_tags.include?("hello")
     end
   end
+
+  describe "GET #lookup" do
+    it "responds with correct fuzzy search matches" do
+      idea1 = create(:idea, title:"A idea about who ideas rock")
+      idea2 = create(:idea, title:"A response to the idea that dogs cant lookup")
+
+      get :lookup_title, :query => "dogs", :format => :json
+
+      expect(response).to be_success
+      assert_equal hash_from_json(response.body).first["sha"], idea2.sha
+      assert_equal hash_from_json(response.body).count, 1
+    end
+  end
+
 end

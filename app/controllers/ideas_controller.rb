@@ -1,6 +1,7 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :except => [ :preview, :show, :tags, :index, :about]
+  before_filter :require_user, :except => [ :preview, :show, :tags, :index, :about ]
   before_filter :check_references, :only => [ :new ]
+  respond_to :json, :html, :atom
 
   def index
     @ideas = Idea.recent.paginate(:page => params[:page], :per_page => 10)
@@ -51,6 +52,11 @@ class IdeasController < ApplicationController
 
   def about
 
+  end
+
+  def lookup_title
+    @results = Idea.fuzzy_search_by_title(params[:query]).limit(3)
+    respond_with @results
   end
 
   private
