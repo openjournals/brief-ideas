@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
 
   before_create :set_sha
 
+  scope :fuzzy_search, -> (name) { where("name ILIKE ?", "%#{name}%")}
+
   def self.from_omniauth(auth)
     where(:provider => auth.provider, :uid => auth.uid).first_or_create do |user|
       user.provider = auth.provider

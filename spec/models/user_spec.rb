@@ -39,4 +39,14 @@ describe User do
     expect(idea.reload.current_vote).to eq(1)
     assert user.voter_for?(idea)
   end
+
+  it "should be matched by a fuzzy search" do
+    user1 = create(:user, name:"cosmicbob21")
+    user2 = create(:user, name:"earthyalice")
+
+    result = User.fuzzy_search("bob").all
+
+    expect(result.first.sha).to eq(user1.sha)
+    expect(result.count).to eq(1)
+  end
 end
