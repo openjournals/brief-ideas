@@ -8,4 +8,18 @@ describe UsersController, :type => :controller do
       expect(response).to be_success
     end
   end
+
+  describe "GET #lookup" do
+    it "responds with correct fuzzy search matches" do
+      user1 = create(:user, name:"cosmicbob21")
+      user2 = create(:user, name:"earthyalice")
+
+      get :lookup, :name => "bob", :format => :json
+
+      expect(response).to be_success
+      assert_equal hash_from_json(response.body).first["sha"], user1.sha
+      assert_equal hash_from_json(response.body).count, 1
+    end
+  end
+
 end

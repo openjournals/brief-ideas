@@ -7,7 +7,11 @@ Rails.application.routes.draw do
   end
 
   resources :votes, :only => :create
-  resources :users, :only => :show
+  resources :users, :only => :show do
+    collection do
+      get :lookup
+    end
+  end
 
   get '/about', to: 'ideas#about', as: 'about'
   get '/search', to: 'search#search', as: 'search'
