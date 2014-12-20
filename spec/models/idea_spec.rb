@@ -10,6 +10,8 @@ describe Idea do
 
   it { should belong_to(:user) }
   it { should have_many(:votes) }
+  it { should have_many(:citations) }
+  it { should have_many(:references) }
 
   it "should initialize properly (including queueing ZenodoWorker)" do
     paper = create(:idea)
@@ -101,18 +103,22 @@ describe Idea do
   end
 
   # Parent/child relationships
-  it "should know about its parent" do
-    parent = create(:idea)
-    child = create(:idea, :parent_id => parent.id)
+  it "should know about its references" do
+    reference_1 = create(:idea)
+    reference_2 = create(:idea)
+    idea = build(:idea)
+    idea.idea_references.build(:referenced_id => reference_1.id)
+    idea.idea_references.build(:referenced_id => reference_2.id)
+    idea.save
 
-    expect(child.parent).to eq(parent)
+    expect(idea.references.size).to eq(2)
   end
 
   it "should know about its parent" do
-    parent = create(:idea)
-    create(:idea, :parent_id => parent.id)
-    create(:idea, :parent_id => parent.id)
+    referenced_idea = create(:idea)
+    citing_idea = create(:idea)
+    citing_idea.idea_references.create(:referenced_id => referenced_idea.id)
 
-    expect(parent.children.size).to eq(2)
+    expect(referenced_idea.citations).to eq([citing_idea])
   end
 end
