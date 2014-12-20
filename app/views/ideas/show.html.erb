@@ -12,7 +12,7 @@
       <p><%= raw @idea.formatted_body %></p>
       <div id="button_<%= @idea.id %>"><%= render :partial => "votes/button", :locals => { :idea => @idea } %></div>
 
-      <%= render :partial => 'ideas/derivatives', :locals => { :idea => @idea } if @idea.children.any? %>
+      <%= render :partial => 'ideas/derivatives', :locals => { :idea => @idea } if @idea.citations.any? %>
     </div>
   </div>
   <div class="col-sm-3 col-sm-offset-1">

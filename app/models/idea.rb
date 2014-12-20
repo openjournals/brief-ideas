@@ -3,6 +3,14 @@ require 'html/pipeline'
 class Idea < ActiveRecord::Base
   belongs_to :user
   has_many :votes
+
+  # Citations/references
+  has_many :idea_references
+  has_many :references, :through => :idea_references, :source => 'idea'
+
+  has_many :idea_citations, :class_name => 'IdeaReference', :foreign_key => 'referenced_id'
+  has_many :citations, :through => :idea_citations, :source => :idea
+
   before_create :set_sha, :check_user_idea_count
   after_create :zenodo_create, :push_tags
 
@@ -16,9 +24,21 @@ class Idea < ActiveRecord::Base
   # Logging views of ideas with impressionist. Only one count per user session
   is_impressionable :counter_cache => true, :column_name => :view_count, :unique => :true
 
-  # TODO - perhaps make this a 'has_one' association?
+  # TODO - work out what do do with these
+  def parents
+    references
+  end
+
   def parent
-    Idea.find_by_id(parent_id)
+    parents.first
+  end
+
+  def build_references(params)
+    return unless params[:idea][:citation_ids]
+    params[:idea][:citation_ids].each do |id|
+      next unless Idea.find_by_id(id)
+      self.idea_references.build(:referenced_id => id)
+    end
   end
 
   def parent?
@@ -26,7 +46,7 @@ class Idea < ActiveRecord::Base
   end
 
   def children
-    Idea.where(:parent_id => self.id)
+    citations
   end
 
   def has_related_works?

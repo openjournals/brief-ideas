@@ -119,4 +119,25 @@ describe IdeasController, :type => :controller do
     end
   end
 
+  describe "POST #create with a some citation_ids" do
+    it "LOGGED IN responds with success" do
+      parent_idea = create(:idea)
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      idea_count = Idea.count
+
+      idea_params = {:title => "Yeah whateva", :body => "something", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is", :citation_ids => [ parent_idea.id ]}
+      post :create, :idea => idea_params
+      expect(response).to be_redirect # as it's created the thing
+      expect(Idea.count).to eq(idea_count + 1)
+
+      # Citations/references
+      expect(parent_idea.citations.count).to eq(1)
+      expect(Idea.last.references.count).to eq(1)
+
+      # Tags should be made lower case on creation
+      assert !Idea.all_tags.include?("Hello")
+      assert Idea.all_tags.include?("hello")
+    end
+  end
 end
