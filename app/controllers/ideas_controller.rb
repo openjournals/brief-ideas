@@ -22,6 +22,7 @@ class IdeasController < ApplicationController
     @idea = Idea.new(idea_params)
     @idea.tags = idea_params['tags'].split(',').collect(&:strip).collect(&:downcase)
     @idea.user = current_user
+    @idea.build_references(params)
 
     if @idea.save
       redirect_to idea_path(@idea), :notice => "Idea created"
@@ -68,6 +69,6 @@ class IdeasController < ApplicationController
   end
 
   def idea_params
-    params.require(:idea).permit(:title, :body, :subject, :tags, :parent_id)
+    params.require(:idea).permit(:title, :body, :subject, :tags, :citation_ids)
   end
 end
