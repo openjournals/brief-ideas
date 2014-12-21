@@ -1,5 +1,5 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :except => [ :preview, :show, :tags, :index, :about ]
+  before_filter :require_user, :except => [ :preview, :show, :tags, :index, :about, :lookup_title ]
   before_filter :check_references, :only => [ :new ]
   respond_to :json, :html, :atom
 
