@@ -22,8 +22,7 @@ idea_title_strategy =
   template: (entry)->
     "#{entry.title}"
 
-stratagies = [username_strategy, idea_title_strategy ]
-
+strategies = [username_strategy, idea_title_strategy ]
 
 $ ->
-  $(".auto-complete").textcomplete(stratagies,{})
+  $(".auto-complete").textcomplete(strategies,{})
