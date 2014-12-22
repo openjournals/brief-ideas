@@ -3,7 +3,7 @@ username_strategy =
   search: (name, callback)->
     search_call = $.getJSON("/user_lookup", {query: name})
     search_call.done (result)->
-      callback( result.map (r)-> r.name)
+      callback( result.map (r)-> r.nice_name)
     search_call.fail -> callback([],true)
   replace: (entry)->
     "@#{entry} "
