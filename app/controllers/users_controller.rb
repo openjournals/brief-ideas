@@ -8,6 +8,6 @@ class UsersController < ApplicationController
 
   def lookup
     @users = User.fuzzy_search(params[:query]).limit(10)
-    respond_with @users.as_json(:methods => [:nice_name])
+    respond_with @users.as_json(:methods => [ :nice_name, :sha ])
   end
 end
