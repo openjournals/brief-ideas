@@ -12,7 +12,6 @@ describe 'ideas/show.html.erb' do
       expect(rendered).to have_content 'Sign in with ORCID'
       expect(rendered).to have_content idea.title
       expect(rendered).to have_content idea.user.nice_name
-      expect(rendered).to have_content 'New idea based on this'
       expect(rendered).to have_content 'Funky'
       expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
     end
@@ -30,7 +29,6 @@ describe 'ideas/show.html.erb' do
       expect(rendered).to have_content user.nice_name
       expect(rendered).to have_content idea.title
       expect(rendered).to have_content idea.user.nice_name
-      expect(rendered).to have_content 'New idea based on this'
       expect(rendered).to have_content "This idea isn't tagged with anything"
       expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
     end

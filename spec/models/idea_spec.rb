@@ -105,20 +105,30 @@ describe Idea do
   # Parent/child relationships
   it "should know about its references" do
     reference_1 = create(:idea)
-    reference_2 = create(:idea)
     idea = build(:idea)
     idea.idea_references.build(:referenced_id => reference_1.id)
-    idea.idea_references.build(:referenced_id => reference_2.id)
     idea.save
 
-    expect(idea.references.size).to eq(2)
+    expect(idea.references.size).to eq(1)
+    expect(idea.references).to eq([reference_1])
   end
 
-  it "should know about its parent" do
+  it "should know about its citations" do
     referenced_idea = create(:idea)
     citing_idea = create(:idea)
     citing_idea.idea_references.create(:referenced_id => referenced_idea.id)
 
     expect(referenced_idea.citations).to eq([citing_idea])
+  end
+
+
+  it "should be matched by a fuzzy search" do
+    idea1 = create(:idea, title:"A idea about who ideas rock")
+    idea2 = create(:idea, title:"A response to the idea that dogs cant lookup")
+
+    result = Idea.fuzzy_search_by_title("dogs").all
+
+    expect(result.first.sha).to eq(idea2.sha)
+    expect(result.count).to eq(1)
   end
 end

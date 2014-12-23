@@ -106,14 +106,27 @@ describe IdeasController, :type => :controller do
     end
   end
 
-  describe "POST #create with a some citation_ids" do
+  describe "GET #lookup" do
+    it "responds with correct fuzzy search matches" do
+      idea1 = create(:idea, title:"A idea about who ideas rock")
+      idea2 = create(:idea, title:"A response to the idea that dogs cant lookup")
+
+      get :lookup_title, :query => "dogs", :format => :json
+
+      expect(response).to be_success
+      assert_equal hash_from_json(response.body).first["sha"], idea2.sha
+      assert_equal hash_from_json(response.body).count, 1
+    end
+  end
+
+  describe "POST #create with a some citations in the body" do
     it "LOGGED IN responds with success" do
-      parent_idea = create(:idea)
+      parent_idea = create(:idea, :doi => "http://doi.arfon.doi.org")
       user = create(:user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       idea_count = Idea.count
 
-      idea_params = {:title => "Yeah whateva", :body => "something", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is", :citation_ids => [ parent_idea.id ]}
+      idea_params = {:title => "Yeah whateva", :body => "something [A citation to Arfon's work](http://doi.arfon.doi.org) and som more [A citation to Arfon's work](http://doi.notreal.doi.org)", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is"}
       post :create, :idea => idea_params
       expect(response).to be_redirect # as it's created the thing
       expect(Idea.count).to eq(idea_count + 1)

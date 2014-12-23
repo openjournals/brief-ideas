@@ -7,7 +7,7 @@ describe 'ideas/_references.html.erb' do
       citing_idea = create(:idea)
       citing_idea.idea_references.create(:referenced_id => parent.id)
 
-      render 'ideas/references', :idea => citing_idea
+      render 'ideas/references', :references => citing_idea.references
 
       expect(rendered).to match /#{parent.title}/
     end
