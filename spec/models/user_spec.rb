@@ -24,6 +24,12 @@ describe User do
     expect(user.orcid_url).to eq("http://orcid.org/#{user.uid}")
   end
 
+  it "should know how to format its name" do
+    user = create(:user, :uid => "0000-0000-0000-1111", :name => "Einstein, Albert")
+
+    expect(user.nice_name).to eq("Albert Einstein")
+  end
+
   # Voting
   it "should know how to create a vote" do
     idea = create(:idea)
@@ -32,5 +38,15 @@ describe User do
 
     expect(idea.reload.current_vote).to eq(1)
     assert user.voter_for?(idea)
+  end
+
+  it "should be matched by a fuzzy search" do
+    user1 = create(:user, name:"cosmicbob21")
+    user2 = create(:user, name:"earthyalice")
+
+    result = User.fuzzy_search("bob").all
+
+    expect(result.first.sha).to eq(user1.sha)
+    expect(result.count).to eq(1)
   end
 end

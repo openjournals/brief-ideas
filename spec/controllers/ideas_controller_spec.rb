@@ -67,6 +67,17 @@ describe IdeasController, :type => :controller do
     end
   end
 
+  describe "GET #show" do
+    it "LOGGED IN responds with success" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:idea)
+      get :show, :id => idea.to_param, :format => :html
+      expect(response).to be_success
+    end
+  end
+
   describe "GET #show with JSON" do
     it "responds with JSON object" do
       idea = create(:idea)
@@ -102,6 +113,41 @@ describe IdeasController, :type => :controller do
       post :create, :idea => idea_params
       expect(response).to be_redirect # as it's created the thing
       expect(Idea.count).to eq(idea_count + 1)
+
+      # Tags should be made lower case on creation
+      assert !Idea.all_tags.include?("Hello")
+      assert Idea.all_tags.include?("hello")
+    end
+  end
+
+  describe "GET #lookup" do
+    it "responds with correct fuzzy search matches" do
+      idea1 = create(:idea, title:"A idea about who ideas rock")
+      idea2 = create(:idea, title:"A response to the idea that dogs cant lookup")
+
+      get :lookup_title, :query => "dogs", :format => :json
+
+      expect(response).to be_success
+      assert_equal hash_from_json(response.body).first["sha"], idea2.sha
+      assert_equal hash_from_json(response.body).count, 1
+    end
+  end
+
+  describe "POST #create with a some citations in the body" do
+    it "LOGGED IN responds with success" do
+      parent_idea = create(:idea, :doi => "http://doi.arfon.doi.org")
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      idea_count = Idea.count
+
+      idea_params = {:title => "Yeah whateva", :body => "something [A citation to Arfon's work](http://doi.arfon.doi.org) and som more [A citation to Arfon's work](http://doi.notreal.doi.org)", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is"}
+      post :create, :idea => idea_params
+      expect(response).to be_redirect # as it's created the thing
+      expect(Idea.count).to eq(idea_count + 1)
+
+      # Citations/references
+      expect(parent_idea.citations.count).to eq(1)
+      expect(Idea.last.references.count).to eq(1)
 
       # Tags should be made lower case on creation
       assert !Idea.all_tags.include?("Hello")

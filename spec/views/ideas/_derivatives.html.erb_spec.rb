@@ -5,7 +5,8 @@ describe 'ideas/_derivatives.html.erb' do
     it 'should list them out' do
       idea = create(:idea)
       3.times do
-        create(:idea, :parent_id => idea.id)
+        citing_idea = create(:idea)
+        citing_idea.idea_references.create(:referenced_id => idea.id)
       end
 
       render 'ideas/derivatives', :idea => idea

@@ -10,6 +10,8 @@ describe Idea do
 
   it { should belong_to(:user) }
   it { should have_many(:votes) }
+  it { should have_many(:citations) }
+  it { should have_many(:references) }
 
   it "should initialize properly (including queueing ZenodoWorker)" do
     paper = create(:idea)
@@ -72,7 +74,7 @@ describe Idea do
 
     expect(idea.formatted_doi).to eq("10.0000/zenodo.12345")
     # TODO - this will need changing when shipped to production Zenodo URL
-    expect(idea.doi_badge_url).to eq("https://dev.zenodo.org/badge/doi/10.0000/zenodo.12345.svg")
+    expect(idea.doi_badge_url).to eq("#{Rails.configuration.zenodo_url}/badge/doi/10.0000/zenodo.12345.svg")
   end
 
   # Tags
@@ -101,19 +103,33 @@ describe Idea do
   end
 
   # Parent/child relationships
-  it "should know about its parent" do
-    parent = create(:idea)
-    child = create(:idea, :parent_id => parent.id)
+  it "should know about its references" do
+    reference_1 = create(:idea)
+    idea = build(:idea)
+    idea.idea_references.build(:referenced_id => reference_1.id)
+    idea.save
 
-    expect(child.parent).to eq(parent)
+    expect(idea.references.size).to eq(1)
+    expect(idea.references).to eq([reference_1])
   end
 
-  it "should know about its parent" do
-    parent = create(:idea)
-    create(:idea, :parent_id => parent.id)
-    create(:idea, :parent_id => parent.id)
+  it "should know about its citations" do
+    referenced_idea = create(:idea)
+    citing_idea = create(:idea)
+    citing_idea.idea_references.create(:referenced_id => referenced_idea.id)
 
-    expect(parent.children.size).to eq(2)
+    expect(referenced_idea.citations).to eq([citing_idea])
+  end
+
+
+  it "should be matched by a fuzzy search" do
+    idea1 = create(:idea, title:"A idea about who ideas rock")
+    idea2 = create(:idea, title:"A response to the idea that dogs cant lookup")
+
+    result = Idea.fuzzy_search_by_title("dogs").all
+
+    expect(result.first.sha).to eq(idea2.sha)
+    expect(result.count).to eq(1)
   end
 
   it "should be selectable by searching for all tags" do

@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
   has_many :ideas
   has_many :votes
-  
+
   before_create :set_sha
+
+  scope :fuzzy_search, -> (name) { where("name ILIKE ?", "%#{name}%")}
 
   def self.from_omniauth(auth)
     where(:provider => auth.provider, :uid => auth.uid).first_or_create do |user|
@@ -28,6 +30,10 @@ class User < ActiveRecord::Base
 
   def to_param
     sha
+  end
+
+  def nice_name
+    name.split(',').collect(&:strip).reverse.join(' ')
   end
 
   def orcid_url

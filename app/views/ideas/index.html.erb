@@ -14,7 +14,12 @@
     <% else %>
       <p>There are no ideas currently. Would you like to <%= link_to "create one", new_idea_path %>?</p>
     <% end %>
+
+    <div class="text-center">
+      <%= will_paginate @ideas, renderer: BootstrapPagination::Rails %>
+    </div>
   </div>
+
 
   <div class="col-sm-3 col-sm-offset-1">
     <%= render :partial => 'sessions/login' %>
