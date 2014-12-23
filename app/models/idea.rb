@@ -11,6 +11,7 @@ class Idea < ActiveRecord::Base
   has_many :idea_citations, :class_name => 'IdeaReference', :foreign_key => 'referenced_id'
   has_many :citations, :through => :idea_citations, :source => 'idea'
 
+  before_create :set_sha, :check_user_idea_count, :parse_references
   after_create :zenodo_create, :push_tags
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
@@ -31,11 +32,22 @@ class Idea < ActiveRecord::Base
     parents.first
   end
 
-  def build_references(params)
-    return unless params[:idea][:citation_ids]
-    params[:idea][:citation_ids].each do |id|
-      next unless Idea.find_by_id(id)
-      self.idea_references.build(:referenced_id => id)
+  # TODO - test these regexes and work out what to do with non-JOBI references
+  def parse_references
+    globbed_references = body.scan(/(.*?\))/)
+
+    globbed_references.each do |reference|
+      url = reference.first.scan(/(?<=\().*(?=\))/).first
+      next unless url
+
+      if url.include?('users')
+        # Do nothing for now when it's a mention of a user
+      elsif idea = Idea.find_by_doi(url)
+        # When this is an idea we know about, make a hard link
+        self.idea_references.build(:referenced_id => idea.id)
+      else
+        # Just leave it in the body without doing anything.
+      end
     end
   end
 
