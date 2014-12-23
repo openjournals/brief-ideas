@@ -48,7 +48,8 @@ class Idea < ActiveRecord::Base
 
       if url.include?('users')
         # Do nothing for now when it's a mention of a user
-      elsif idea = Idea.find_by_doi(url)
+      # FIXME - this is junk
+      elsif url.include?('ideas') && idea = Idea.find_by_sha(url.gsub('/ideas/', ''))
         # When this is an idea we know about, make a hard link
         self.idea_references.build(:referenced_id => idea.id)
       else
@@ -132,6 +133,7 @@ private
 
   # Don't let people create more than 5 ideas in 24 hours
   def check_user_idea_count
+    return true if Rails.env.development?
     if Idea.today.count(:user => user) >= 5
       self.errors[:base] << "You've already created 5 ideas today, please come back tomorrow."
       return false

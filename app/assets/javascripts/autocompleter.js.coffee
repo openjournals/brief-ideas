@@ -18,7 +18,7 @@ idea_title_strategy =
       callback result
     search_call.fail -> callback([],true)
   replace: (entry)->
-    "[#{entry.title.substring(0,10).replace(" ","_")}](#{entry.doi}) "
+    "[#{entry.title.substring(0,10).replace(" ","_")}](/ideas/#{entry.sha}) "
   template: (entry)->
     "#{entry.title}"
 

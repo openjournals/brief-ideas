@@ -126,14 +126,14 @@ describe IdeasController, :type => :controller do
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       idea_count = Idea.count
 
-      idea_params = {:title => "Yeah whateva", :body => "something [A citation to Arfon's work](http://doi.arfon.doi.org) and som more [A citation to Arfon's work](http://doi.notreal.doi.org)", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is"}
+      idea_params = {:title => "Yeah whateva", :body => "something [A citation to Arfon's work](/ideas/#{parent_idea.sha}) and some more [A citation to Arfon's work](http://external.doi)", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is"}
       post :create, :idea => idea_params
       expect(response).to be_redirect # as it's created the thing
       expect(Idea.count).to eq(idea_count + 1)
 
       # Citations/references
       expect(parent_idea.citations.count).to eq(1)
-      expect(Idea.last.references.count).to eq(1)
+      expect(Idea.first.references.count).to eq(1)
 
       # Tags should be made lower case on creation
       assert !Idea.all_tags.include?("Hello")
