@@ -7,8 +7,13 @@
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
     <%= form_tag search_path, :method => :get do %>
     <div class="form-group">
-      <%= label_tag :search %>
-      <%= text_field_tag :query, (params[:query] ? params[:query] : "Enter search string"), :class => "form-control auto-replace", :data => { :default => "Enter search string" } %>
+      <% if @tags %>
+        <%= label_tag "Search by tags" %>
+        <%= text_field_tag :tags, ( @tags || "Enter tags to search by"), :class => "form-control auto-replace", :data => { :default => "Enter tags to search by" } %>
+      <%else%>
+        <%= label_tag :search %>
+        <%= text_field_tag :query, (params[:query] ? params[:query] : "Enter search string"), :class => "form-control auto-replace", :data => { :default => "Enter search string" } %>
+      <%end%>
     </div>
     <% end %>
 
@@ -21,7 +26,7 @@
           <h4><em><%= link_to (idea['highlight'].try(:[], 'title').try(:html_safe) || idea['title']), idea_path(idea['external_id']) %></em></h4>
           <p><%= truncate((idea['highlight'].try(:[], 'body').try(:html_safe) || idea['body']), :length => 300, :omission => "... ") %></p>
 
-          <p>By <%= link_to idea['author'], "http://orcid.org/#{idea['0000-0002-3957-2474']}" %></p>
+          <p>By <%= link_to idea['author'], users_link(idea["author"]) %></p>
         </div>
       <% end %>
 
@@ -32,6 +37,18 @@
       <% if @results.num_pages > @results.current_page %>
         <%= link_to 'next >', search_path(:q => params[:q], :page => @results.current_page + 1) %>
       <% end %>
+      <% end %>
+    <% end %>
+
+    <% if @tags %>
+      <% if @ideas.empty? %>
+        <p>Sorry, there were no results for your query.</p>
+      <% else %>
+        <% @ideas.each do |idea| %>
+          <h4><em><%= link_to idea.title, idea_path(idea) %></em></h4>
+          <p><%= truncate(raw(idea.body), :length => 300, :omission => "... ") %></p>
+          <p>By <%= link_to idea.user.name, idea.user %></p>
+        <% end %>
       <% end %>
     <% end %>
   </div>
