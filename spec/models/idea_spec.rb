@@ -105,16 +105,15 @@ describe Idea do
   # Parent/child relationships
   it "should know about its references" do
     reference_1 = create(:idea)
-    reference_2 = create(:idea)
     idea = build(:idea)
     idea.idea_references.build(:referenced_id => reference_1.id)
-    idea.idea_references.build(:referenced_id => reference_2.id)
     idea.save
 
-    expect(idea.references.size).to eq(2)
+    expect(idea.references.size).to eq(1)
+    expect(idea.references).to eq([reference_1])
   end
 
-  it "should know about its parent" do
+  it "should know about its citations" do
     referenced_idea = create(:idea)
     citing_idea = create(:idea)
     citing_idea.idea_references.create(:referenced_id => referenced_idea.id)

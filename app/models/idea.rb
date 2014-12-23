@@ -6,18 +6,16 @@ class Idea < ActiveRecord::Base
 
   # Citations/references
   has_many :idea_references
-  has_many :references, :through => :idea_references, :source => 'idea'
+  has_many :references, :through => :idea_references, :source => 'referenced'
 
   has_many :idea_citations, :class_name => 'IdeaReference', :foreign_key => 'referenced_id'
-  has_many :citations, :through => :idea_citations, :source => :idea
+  has_many :citations, :through => :idea_citations, :source => 'idea'
 
-  before_create :set_sha, :check_user_idea_count
   after_create :zenodo_create, :push_tags
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
   scope :fuzzy_search_by_title, -> (title) { where("title ILIKE ?", "%#{title}%")}
-
 
   validates_presence_of :title, :body, :subject
 
