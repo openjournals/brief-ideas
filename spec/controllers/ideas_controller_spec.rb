@@ -35,7 +35,6 @@ describe IdeasController, :type => :controller do
     end
   end
 
-
   describe "GET #index with Atom" do
     it "should respond with an Atom feed" do
       idea = create(:idea, :tags => [])

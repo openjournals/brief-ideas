@@ -1,9 +1,9 @@
 <div class="page-header">
-  <%if @tags%>
-    <h1>Ideas tagged with <%=@tags.join(",")%></h1>
-  <%else%>
+  <% if @tags %>
+    <h1>Ideas tagged with <%= @tags.join(",") %></h1>
+  <% else %>
     <h1>Ideas from the last week</h1>
-  <%end%>
+  <% end %>
 </div>
 
 <div class="row form">

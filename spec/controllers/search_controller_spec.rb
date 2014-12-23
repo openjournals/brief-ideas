@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SearchController, :type => :controller do
-
+describe SearchController, :type => :controller do    
   describe "GET #search with JSON when specifying tags" do
     it "should respond with just the tagged objects" do
       idea1 = create(:idea, :tags => ["space", "dog"])
@@ -15,5 +14,4 @@ RSpec.describe SearchController, :type => :controller do
       assert_equal hash_from_json(response.body).count,  1
     end
   end
-
 end

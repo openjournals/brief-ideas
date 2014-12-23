@@ -9,11 +9,11 @@
     <div class="form-group">
       <% if @tags %>
         <%= label_tag "Search by tags" %>
-        <%= text_field_tag :tags, ( @tags || "Enter tags to search by"), :class => "form-control auto-replace", :data => { :default => "Enter tags to search by" } %>
-      <%else%>
+        <%= text_field_tag :tags, (@tags || "Enter tags to search by"), :class => "form-control auto-replace", :data => { :default => "Enter tags to search by" } %>
+      <% else %>
         <%= label_tag :search %>
         <%= text_field_tag :query, (params[:query] ? params[:query] : "Enter search string"), :class => "form-control auto-replace", :data => { :default => "Enter search string" } %>
-      <%end%>
+      <% end %>
     </div>
     <% end %>
 
