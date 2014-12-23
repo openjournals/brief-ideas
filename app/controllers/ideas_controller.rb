@@ -1,6 +1,5 @@
 class IdeasController < ApplicationController
   before_filter :require_user, :except => [ :preview, :show, :tags, :index, :about, :lookup_title ]
-  before_filter :check_references, :only => [ :new ]
   respond_to :json, :html, :atom
 
   def index
@@ -22,7 +21,6 @@ class IdeasController < ApplicationController
     @idea = Idea.new(idea_params)
     @idea.tags = idea_params['tags'].split(',').collect(&:strip).collect(&:downcase)
     @idea.user = current_user
-    @idea.build_references(params)
 
     if @idea.save
       redirect_to idea_path(@idea), :notice => "Idea created"
@@ -61,12 +59,6 @@ class IdeasController < ApplicationController
   end
 
   private
-
-  def check_references
-    if params[:references_id]
-      redirect_to ideas_path, :warning => "Could not find referenced idea" unless @references = Idea.find_by_sha(params[:references_id])
-    end
-  end
 
   def idea_params
     params.require(:idea).permit(:title, :body, :subject, :tags, :citation_ids)

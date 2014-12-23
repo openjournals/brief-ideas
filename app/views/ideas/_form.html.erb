@@ -1,8 +1,4 @@
 <%= form_for @idea do |f| %>
-  <% if @references %>
-    <%= f.hidden_field :parent_id, :value => @references.id %>
-    <%= render :partial => 'ideas/references', :locals => { :idea => @references } %>
-  <% end %>
   <div class="form-group">
     <%= f.label :title %>
     <%= f.text_field :title, :value => "Enter idea description", :class => "form-control auto-replace", :data => { :default => "Enter idea description" } %>
