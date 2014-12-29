@@ -10,7 +10,6 @@ $ ->
     else
       console.log "Not replacing because value is " + val
 
-
   $(".auto-replace").blur ->
     val = $(this).val()
     if val is ""
@@ -24,7 +23,7 @@ $ ->
       $("#word-count").html 0
       return
     regex = /\s+/g
-    wordCount = value.trim().replace(regex, " ").split(" ").length
+    wordCount = value.trim().replace(/\[[^\]]*\]/g,'').replace(/\([^\)]*\)/g,'').replace(regex, " ").split(" ").length
     if wordCount > 200
       $("#word-count").addClass("warning")
       $("form#new_idea button").attr("disabled", "disabled")
