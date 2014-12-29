@@ -6,9 +6,9 @@ username_strategy =
       callback result
     search_call.fail -> callback([],true)
   replace: (entry)->
-    "[#{entry.nice_name}](/users/#{entry.sha}) "
+    " [#{entry.nice_name}](/users/#{entry.sha}) "
   template: (entry)->
-    "@#{entry.nice_name}"
+    " @#{entry.nice_name}"
 
 idea_title_strategy =
   match: /(^|\s)#(\w*)$/;
@@ -18,9 +18,9 @@ idea_title_strategy =
       callback result
     search_call.fail -> callback([],true)
   replace: (entry)->
-    "[#{entry.title.substring(0,10).replace(" ","_")}](/ideas/#{entry.sha}) "
+    " [#{entry.title.substring(0,10).replace(" ","_")}](/ideas/#{entry.sha}) "
   template: (entry)->
-    "#{entry.title}"
+    " #{entry.title}"
 
 strategies = [username_strategy, idea_title_strategy ]
 
