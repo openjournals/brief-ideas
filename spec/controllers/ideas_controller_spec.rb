@@ -45,6 +45,20 @@ describe IdeasController, :type => :controller do
     end
   end
 
+  # Trending
+
+  describe "GET #trending with JSON" do
+    it "should respond with JSON array" do
+      idea = create(:idea, :tags => [], :score => 100)
+      create(:idea, :score => 10)
+      get :trending, :format => :json
+
+      expect(response).to be_success
+      expect(response.status).to eq(200)
+      assert_equal hash_from_json(response.body).first["sha"], idea.sha
+    end
+  end
+
   describe "GET #show" do
     it "NOT LOGGED IN responds with success" do
       idea = create(:idea)
@@ -133,7 +147,7 @@ describe IdeasController, :type => :controller do
 
       # Citations/references
       expect(parent_idea.citations.count).to eq(1)
-      expect(Idea.first.references.count).to eq(1)
+      expect(Idea.by_date.first.references.count).to eq(1)
 
       # Tags should be made lower case on creation
       assert !Idea.all_tags.include?("Hello")

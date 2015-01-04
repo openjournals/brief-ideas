@@ -1,14 +1,25 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :except => [ :preview, :show, :tags, :index, :about, :lookup_title ]
+  before_filter :require_user, :only => [ :new, :create ]
   respond_to :json, :html, :atom
 
   def index
-    @ideas = Idea.recent.paginate(:page => params[:page], :per_page => 10)
+    @ideas = Idea.by_date.recent.paginate(:page => params[:page], :per_page => 10)
 
     respond_to do |format|
       format.atom
-      format.json { render json: @ideas }
+      format.json { render :json => @ideas }
       format.html
+    end
+  end
+
+  def trending
+    @ideas = Idea.trending.by_date.paginate(:page => params[:page], :per_page => 10)
+    @trending = true
+
+    respond_to do |format|
+      format.atom { render :template => 'ideas/index' }
+      format.json { render :json => @ideas }
+      format.html { render :template => 'ideas/index' }
     end
   end
 
@@ -45,7 +56,7 @@ class IdeasController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @idea }
+      format.json { render :json => @idea }
     end
   end
 

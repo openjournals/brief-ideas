@@ -1,6 +1,8 @@
 <div class="page-header">
   <% if @tags %>
     <h1>Ideas tagged with <%= @tags.join(",") %></h1>
+  <% elsif @trending %>
+    <h1>Trending ideas</h1>
   <% else %>
     <h1>Ideas from the last week</h1>
   <% end %>
