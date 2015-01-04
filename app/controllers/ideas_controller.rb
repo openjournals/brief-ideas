@@ -7,7 +7,7 @@ class IdeasController < ApplicationController
 
     respond_to do |format|
       format.atom
-      format.json { render json: @ideas }
+      format.json { render :json => @ideas }
       format.html
     end
   end
@@ -45,7 +45,7 @@ class IdeasController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @idea }
+      format.json { render :json => @idea }
     end
   end
 
