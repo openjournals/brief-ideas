@@ -16,8 +16,7 @@ class Idea < ActiveRecord::Base
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
-
-  default_scope { order('created_at DESC') }
+  scope :by_date, -> { order('created_at DESC') }
 
   scope :has_all_tags, ->(tags){ where("ARRAY[?]::varchar[] <@ tags::varchar[]", tags) }
   scope :has_any_tags, ->(tags){ where("ARRAY[?]::varchar[] && tags::varchar[]", tags) }

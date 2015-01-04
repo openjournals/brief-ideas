@@ -3,7 +3,7 @@ class IdeasController < ApplicationController
   respond_to :json, :html, :atom
 
   def index
-    @ideas = Idea.recent.paginate(:page => params[:page], :per_page => 10)
+    @ideas = Idea.by_date.recent.paginate(:page => params[:page], :per_page => 10)
 
     respond_to do |format|
       format.atom
