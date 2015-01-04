@@ -12,6 +12,17 @@ class IdeasController < ApplicationController
     end
   end
 
+  def trending
+    @ideas = Idea.trending.by_date.paginate(:page => params[:page], :per_page => 10)
+    @trending = true
+    
+    respond_to do |format|
+      format.atom { render :template => 'ideas/index' }
+      format.json { render :json => @ideas }
+      format.html { render :template => 'ideas/index' }
+    end
+  end
+
   def new
     @tags = Idea.all_tags
     @idea = Idea.new
