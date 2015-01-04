@@ -128,3 +128,7 @@ end
 def hash_from_json(json)
   return JSON.parse(json)
 end
+
+def cite(idea, citing_idea)
+  citing_idea.idea_references.create(:referenced_id => idea.id)
+end

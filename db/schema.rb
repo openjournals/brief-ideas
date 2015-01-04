@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141217155347) do
+ActiveRecord::Schema.define(version: 20150104001749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,9 +44,11 @@ ActiveRecord::Schema.define(version: 20141217155347) do
     t.integer  "vote_count",    default: 0
     t.integer  "view_count"
     t.integer  "counter_cache", default: 0
+    t.float    "score", default: 0.0
   end
 
   add_index "ideas", ["counter_cache"], name: "index_ideas_on_counter_cache", using: :btree
+  add_index "ideas", ["score"], name: "index_ideas_on_score", using: :btree
   add_index "ideas", ["tags"], name: "index_ideas_on_tags", using: :gin
   add_index "ideas", ["view_count"], name: "index_ideas_on_view_count", using: :btree
   add_index "ideas", ["vote_count"], name: "index_ideas_on_vote_count", using: :btree

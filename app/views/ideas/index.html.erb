@@ -10,7 +10,7 @@
   <div class="col-sm-8">
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
     <% if @ideas.any? %>
-      <%= render :partial => "idea", collection: @ideas %>
+      <%= render :partial => "idea", :collection => @ideas %>
     <% else %>
       <p>There are no ideas currently. Would you like to <%= link_to "create one", new_idea_path %>?</p>
     <% end %>
@@ -19,7 +19,6 @@
       <%= will_paginate @ideas, renderer: BootstrapPagination::Rails %>
     </div>
   </div>
-
 
   <div class="col-sm-3 col-sm-offset-1">
     <%= render :partial => 'sessions/login' %>
