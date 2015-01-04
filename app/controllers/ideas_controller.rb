@@ -15,7 +15,7 @@ class IdeasController < ApplicationController
   def trending
     @ideas = Idea.trending.by_date.paginate(:page => params[:page], :per_page => 10)
     @trending = true
-    
+
     respond_to do |format|
       format.atom { render :template => 'ideas/index' }
       format.json { render :json => @ideas }

@@ -45,6 +45,20 @@ describe IdeasController, :type => :controller do
     end
   end
 
+  # Trending
+
+  describe "GET #trending with JSON" do
+    it "should respond with JSON array" do
+      idea = create(:idea, :tags => [], :score => 100)
+      create(:idea, :score => 10)
+      get :trending, :format => :json
+
+      expect(response).to be_success
+      expect(response.status).to eq(200)
+      assert_equal hash_from_json(response.body).first["sha"], idea.sha
+    end
+  end
+
   describe "GET #show" do
     it "NOT LOGGED IN responds with success" do
       idea = create(:idea)
