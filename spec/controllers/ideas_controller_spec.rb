@@ -133,7 +133,7 @@ describe IdeasController, :type => :controller do
 
       # Citations/references
       expect(parent_idea.citations.count).to eq(1)
-      expect(Idea.first.references.count).to eq(1)
+      expect(Idea.by_date.first.references.count).to eq(1)
 
       # Tags should be made lower case on creation
       assert !Idea.all_tags.include?("Hello")
