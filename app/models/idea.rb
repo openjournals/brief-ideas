@@ -125,6 +125,42 @@ class Idea < ActiveRecord::Base
     @redis.smembers("tags-#{Rails.env}")
   end
 
+  def has_citations?
+    citations.any?
+  end
+
+  # Calculate the score for the citations at depth 'N'
+  def score_at(depth)
+    return self.citations.count * depth
+  end
+
+  # Method to walk all nodes of the citation tree, returning the citation and
+  # depth 'N' for each element
+  def traverse_tree(idea=self, depth=1, &blk)
+    if idea.has_citations?
+      blk.call(idea, depth)
+      depth += 1
+      idea.citations.each { |citation| traverse_tree(citation, depth, &blk) }
+    else
+      blk.call(idea, depth)
+    end
+  end
+
+  # Walk the citation tree and calculate a ranking. This method should only be
+  # called in a worker (see lib/rating_worker.rb)
+  def citation_score
+    total = 0
+    traverse_tree do |citation, depth|
+      total += citation.score_at(depth)
+    end
+
+    return total
+  end
+
+  def trending_score
+    vote_count + (view_count.to_f / 10) + citation_score
+  end
+
 private
 
   def set_sha
@@ -134,7 +170,7 @@ private
   # Don't let people create more than 5 ideas in 24 hours
   def check_user_idea_count
     return true if Rails.env.development?
-    if Idea.today.count(:user => user) >= 5
+    if Idea.today.where(:user_id => user.id).count >= 5
       self.errors[:base] << "You've already created 5 ideas today, please come back tomorrow."
       return false
     end
