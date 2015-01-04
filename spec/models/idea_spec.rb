@@ -19,6 +19,7 @@ describe Idea do
     assert !paper.sha.nil?
     expect(paper.sha.length).to eq(32)
     expect(ZenodoWorker.jobs.size).to eq(1)
+    expect(RatingWorker.jobs.size).to eq(0)
   end
 
   it "should be able to return formatted body" do
