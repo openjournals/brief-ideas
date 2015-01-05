@@ -1,9 +1,9 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :except => [ :preview, :show, :tags, :index, :about]
-  before_filter :check_references, :only => [ :new ]
+  before_filter :require_user, :except => [ :preview, :show, :tags, :index, :about, :lookup_title ]
+  respond_to :json, :html, :atom
 
   def index
-    @ideas = Idea.recent
+    @ideas = Idea.recent.paginate(:page => params[:page], :per_page => 10)
 
     respond_to do |format|
       format.atom
@@ -41,6 +41,8 @@ class IdeasController < ApplicationController
   def show
     @idea = Idea.find_by_sha(params[:id])
 
+    impressionist(@idea)
+
     respond_to do |format|
       format.html
       format.json { render json: @idea }
@@ -51,15 +53,14 @@ class IdeasController < ApplicationController
 
   end
 
-  private
-
-  def check_references
-    if params[:references_id]
-      redirect_to ideas_path, :warning => "Could not find referenced idea" unless @references = Idea.find_by_sha(params[:references_id])
-    end
+  def lookup_title
+    @results = Idea.fuzzy_search_by_title(params[:query]).limit(3)
+    respond_with @results
   end
 
+  private
+
   def idea_params
-    params.require(:idea).permit(:title, :body, :subject, :tags, :parent_id)
+    params.require(:idea).permit(:title, :body, :subject, :tags, :citation_ids)
   end
 end

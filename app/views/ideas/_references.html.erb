@@ -1,5 +1,11 @@
 <div class="form-group">
   <div class="well references">
-    This idea is a response to <%= link_to idea.title, idea_path(idea) %>
+    <p><strong>Journal of Brief Ideas references</strong></p>
+
+    <ul>
+    <% references.each do |reference| %>
+      <li><%= link_to reference.title, idea_path(reference) %></li>
+    <% end %>
+    </ul>
   </div>
 </div>

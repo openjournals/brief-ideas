@@ -7,6 +7,7 @@ FactoryGirl.define do
     tags        ['Nuthin', 'Interesting']
     doi         'http://dx.doi.org/10.0001/zenodo.12345'
     vote_count  0
+    view_count  0
     created_at  { Time.now }
     updated_at  { Time.now }
     user

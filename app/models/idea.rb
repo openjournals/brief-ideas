@@ -3,17 +3,52 @@ require 'html/pipeline'
 class Idea < ActiveRecord::Base
   belongs_to :user
   has_many :votes
-  before_create :set_sha, :check_user_idea_count
+
+  # Citations/references
+  has_many :idea_references
+  has_many :references, :through => :idea_references, :source => 'referenced'
+
+  has_many :idea_citations, :class_name => 'IdeaReference', :foreign_key => 'referenced_id'
+  has_many :citations, :through => :idea_citations, :source => 'idea'
+
+  before_create :set_sha, :check_user_idea_count, :parse_references
   after_create :zenodo_create, :push_tags
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
+  scope :fuzzy_search_by_title, -> (title) { where("title ILIKE ?", "%#{title}%")}
 
   validates_presence_of :title, :body, :subject
 
-  # TODO - perhaps make this a 'has_one' association?
+  # Logging views of ideas with impressionist. Only one count per user session
+  is_impressionable :counter_cache => true, :column_name => :view_count, :unique => :true
+
+  # TODO - work out what do do with these
+  def parents
+    references
+  end
+
   def parent
-    Idea.find_by_id(parent_id)
+    parents.first
+  end
+
+  # TODO - test these regexes and work out what to do with non-JOBI references
+  def parse_references
+    globbed_references = body.scan(/(.*?\))/)
+
+    globbed_references.each do |reference|
+      url = reference.first.scan(/(?<=\().*(?=\))/).first
+      next unless url
+
+      if url.include?('users')
+        # Do nothing for now when it's a mention of a user
+      elsif idea = Idea.find_by_doi(url)
+        # When this is an idea we know about, make a hard link
+        self.idea_references.build(:referenced_id => idea.id)
+      else
+        # Just leave it in the body without doing anything.
+      end
+    end
   end
 
   def parent?
@@ -21,7 +56,7 @@ class Idea < ActiveRecord::Base
   end
 
   def children
-    Idea.where(:parent_id => self.id)
+    citations
   end
 
   def has_related_works?
@@ -70,7 +105,7 @@ class Idea < ActiveRecord::Base
   end
 
   def doi_badge_url
-    "https://dev.zenodo.org/badge/doi/#{formatted_doi}.svg"
+    "#{Rails.configuration.zenodo_url}/badge/doi/#{formatted_doi}.svg"
   end
 
   def push_tags

@@ -1,1 +1,34 @@
-Hello
+<div class="page-header">
+  <h1><%= @user.nice_name %>'s ideas</h1>
+</div>
+
+<div class="row form">
+  <div class="col-sm-8">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+    <% if @ideas.any? %>
+    <%= render :partial => "ideas/idea", collection: @ideas %>
+    <div class="text-center">
+      <%= will_paginate @ideas, renderer: BootstrapPagination::Rails %>
+    </div>
+    <% else %>
+    <p>There are no ideas currently. Would you like to <%= link_to "create one", new_idea_path %>?</p>
+    <% end %>
+  </div>
+
+  <div class="col-sm-3 col-sm-offset-1">
+    <%= render :partial => 'sessions/login' %>
+
+    <% unless current_user %>
+    <div class="help-block">
+      <h5>Welcome</h5>
+      <p>This is the Journal of Brief Ideas - citable ideas in fewer than 200 words.</p>
+      <p>Before you can create a new idea, you'll need to log in using the link above. You also can't vote on existing ideas without signing in too.</p>
+    </div>
+    <% end %>
+
+    <div class="help-block">
+      <h5>Voting</h5>
+      <p>Click on the <button class="btn btn-default btn-xs vote"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></button> icon to vote on an idea. You can't vote on your own ideas.</p>
+    </div>
+  </div>
+</div>
