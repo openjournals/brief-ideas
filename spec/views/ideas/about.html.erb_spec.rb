@@ -7,7 +7,7 @@ describe 'ideas/about.html.erb' do
 
       render :template => "ideas/about.html.erb"
 
-      expect(rendered).to have_content 'What is this?'
+      expect(rendered).to have_content 'Why are you doing this?'
     end
   end
 end
