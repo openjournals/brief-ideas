@@ -46,7 +46,11 @@ class IdeasController < ApplicationController
   end
 
   def similar
+    @ideas = Idea.similar_ideas(params[:idea])
 
+    respond_to do |format|
+      format.html { render :layout => false }
+    end
   end
 
   def tags
