@@ -41,3 +41,18 @@ $ ->
       error    : (xhr, status, err) ->
         alert "There was a problem with the idea preview"
       complete : (xhr, status) ->
+
+  do poll = ->
+    setTimeout poll, 10000
+
+    md_title = $('#idea_title').val()
+    md_body = $('#idea-body').val()
+
+    if (md_title or md_body)
+      $.ajax '/ideas/similar',
+        data :
+          idea : md_title + " " + md_body
+        success  : (res, status, xhr) ->
+          $('#similar-results').html(res)
+        error    : (xhr, status, err) ->
+        complete : (xhr, status) ->

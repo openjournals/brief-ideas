@@ -45,6 +45,14 @@ class IdeasController < ApplicationController
     render :text => filter.call
   end
 
+  def similar
+    @ideas = Idea.similar_ideas(params[:idea])
+
+    respond_to do |format|
+      format.html { render :layout => false }
+    end
+  end
+
   def tags
     render :json => Idea.all_tags.to_json
   end

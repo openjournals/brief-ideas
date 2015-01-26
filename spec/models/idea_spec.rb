@@ -22,6 +22,18 @@ describe Idea do
     expect(RatingWorker.jobs.size).to eq(0)
   end
 
+
+  it "should be properly ranked when searching for similar ideas" do
+    paper1 = create(:idea, :title => 'Blah', :body => "The domestic cat (Felis catus or Felis silvestris catus) is a small, usually furry, domesticated, and carnivorous mammal. It is often called a housecat when kept as an indoor pet.")
+    paper2 = create(:idea, :title => 'Foo', :body => "The domestic dog (Canis lupus familiaris) is a canid that is known as man's best friend. The dog was the first domesticated animal and has been widely kept as a working, hunting, and pet companion")
+    paper3 = create(:idea, :title => 'Foo', :body => "Dogs are friends")
+
+    results = Idea.similar_ideas("dogs are a man's best friend", 2)
+
+    expect(results.last.id).to eq(paper2.id)
+  end
+
+
   it "should be able to return formatted body" do
     paper = create(:idea, :body => "# Title")
 

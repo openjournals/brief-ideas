@@ -1,0 +1,8 @@
+<ul class="similar">
+  <%- unless @ideas.any? %>
+  <li>There are no similar ideas</li>
+  <%- end %>
+<%- @ideas.each do |idea| %>
+  <li><%= link_to(idea.title, idea_path(idea), :target => "_blank") %></li>
+<%- end %>
+</ul>

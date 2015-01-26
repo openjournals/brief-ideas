@@ -125,6 +125,10 @@ class Idea < ActiveRecord::Base
     @redis.smembers("tags-#{Rails.env}")
   end
 
+  def self.similar_ideas(query, limit=4)
+    Idea.find_by_sql ["select * from ideas order by ts_rank_cd(to_tsvector('english', ideas.title || ' ' || ideas.body), replace(plainto_tsquery(?)::text, ' & ', ' | ')::tsquery, 8) DESC Limit ? ", query, limit]
+  end
+
   def has_citations?
     citations.any?
   end
