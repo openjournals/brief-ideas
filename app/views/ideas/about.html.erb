@@ -1,18 +1,13 @@
 <div class="page-header">
-  <h1>The Journal of Brief Ideas</h1>
+  <h1>About The Journal of Brief Ideas</h1>
 </div>
 
 <div class="row form">
-  <div class="col-sm-12">
+  <div class="col-sm-8">
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
 
-    <h3>What is this?</h3>
-
-    <p>It's a research journal, composed entirely of 'brief ideas'. The goal here is to provide a place for short ideas to be described (in 200 words or less), for these ideas to be archived (courtesy of <a href="http://zenodo.org">Zenodo</a>), searchable and citable.</p>
-
-    <p>It's a work in progress by <a href="http://twitter.com/arfon">@arfon</a>, <a href="http://twitter.com/larshankat">@larshankat</a>, <a href="http://twitter.com/physicsdavid">@physicsdavid</a> and <a href="http://twitter.com/stuart_lynn">@stuart_lynn</a></p>
-
-    <p>You can see the latest build of this running at <a href="http://ideas.theoj.org">http://ideas.theoj.org</a></p>
+    <p class="lead">The Journal of Brief Ideas is a research journal, composed entirely of 'brief ideas'. The goal here is to provide a place for short ideas to be described - <em>in 200 words or less</em> - for these ideas to be archived (courtesy of <a href="http://zenodo.org">Zenodo</a>), searchable and citable.</p>
+    <a name="faq"></a>
 
     <h3>Why are you doing this?</h3>
 
@@ -36,10 +31,86 @@
 
     <p>If we go back into the vaults of history, we find the original scientific journals published primarily letters that were often around the 200 words length. Somehow, they managed to say important things in that length. There's no reason why you can't also. Publishing a brief idea doesn't prohibit you form expanding on the idea at length and publishing a fuller version in some other journal, of course.</p>
 
-    <h3>Who's building this thing, how can I help?</h3>
+    <br />
+    <a name="team"></a>
+    <h2>Team</h2>
 
-    <p>This is very much a work in progress. We've got a <a href="https://github.com/openjournals/brief-ideas/milestones">milestone tracking</a> the beta release.</p>
+    <div class="media">
+      <div class="media-left">
+        <a href="#">
+          <%= image_tag "people/david.jpg", :class => "media-object", :size => "100x100" %>
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">David Harris, <a href="http://twitter.com/physicsdavid" target="_blank">@physicsdavid</a> - Editor-in-chief</h4>
+        Co-founder of The Journal of Brief Ideas. Founding editor of symmetry magazine, previously magazine editor at PNAS <%= link_to "sciartica.net", "http://sciartica.net/", :target => "_blank" %>.
+      </div>
+    </div>
+    <div class="media">
+      <div class="media-left">
+        <a href="#">
+          <%= image_tag "people/arfon.jpg", :class => "media-object", :size => "100x100" %>
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">Arfon Smith, <a href="http://twitter.com/arfon" target="_blank">@arfon</a> - Technical Lead</h4>
+        Co-founder of The Journal of Brief Ideas, Scientist at GitHub. Co-creator of the <%= link_to "Zooniverse", "http://zooniverse.org", :target => "_blank" %>, <%= link_to "once wrote a thesis about dust", "http://www.arfon.org/thesis", :target => "_blank" %>, publishes the <a href="http://arxiv.org/find/all/1/all:+arfon/0/1/0/all/0/1" target="_blank">odd paper</a>, sporadically blogs at <a href="http://arfon.org" target="_blank">arfon.org</a>.
+      </div>
+    </div>
+    <div class="media">
+      <div class="media-left">
+        <a href="#">
+          <%= image_tag "people/stuart.png", :class => "media-object", :size => "100x100" %>
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">Stuart Lynn, <a href="http://twitter.com/stuart_lynn" target="_blank">@stuart_lynn</a> - Lead Engineer</h4>
+        Technical lead of the Zooniverse, works at the Adler Planetarium in Chicago. Fascinated by how web technologies can change both participating in science and museums.
+      </div>
+    </div>
+
+    <div class="media">
+      <div class="media-left">
+        <a href="#">
+          <%= image_tag "people/lars.jpg", :class => "media-object", :size => "100x100" %>
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">Lars Holm Nielsen, <a href="http://twitter.com/larshankat" target="_blank">@larshankat</a> - ZENODO Project Lead</h4>
+        Software Engineer at CERN, responsible for ZENODO, an innovative research data management service for long-tail science. Specialities includes bringing innovative web-based products from the initial thought to successful launch in short time.
+      </div>
+    </div>
 
     <br />
+
+    <a name="licensing"></a>
+    <h2>Content Licensing</h2>
+    <p>Copyright on any brief idea published in The Journal of Brief Ideas is retained by the author(s). Authors grant The Journal of Brief Ideas a license to publish the article and identify itself as the original publisher. Authors also grant any third party the right to use the article freely as long as its original authors, citation details and publisher are identified.</p>
+    <p>The <%= link_to "Creative Commons Attribution License (CC-BY)", "https://creativecommons.org/licenses/by/4.0/legalcode", :target => "_blank" %> allows users to copy, distribute and transmit an article, adapt the article and make commercial use of the article. The CC BY license permits commercial and non-commercial re-use of an open access article, as long as the author is properly attributed.</p>
+
+    <br />
+
+    <a name="software"></a>
+    <h2>Software</h2>
+    <p>The software behind The Journal of Brief Ideas is hosted on <%= link_to "GitHub", "https://github.com/openjournals/brief-ideas", :target => "_blank" %> and freely available for reuse.</p>
+    <ul>
+      <li><%= link_to "GitHub repository", "https://github.com/openjournals/brief-ideas", :target => "_blank" %></li>
+      <li><%= link_to "Ask a question", "https://github.com/openjournals/brief-ideas/issues/new?title=Hello&labels=question", :target => "_blank" %></li>
+      <li><%= link_to "Known issues", "https://github.com/openjournals/brief-ideas/issues", :target => "_blank" %></li>
+      <li><%= link_to "Report a bug", "https://github.com/openjournals/brief-ideas/issues/new?title=I%20Found%20A%20Bug&labels=bug", :target => "_blank" %></li>
+    </ul>
+    <br />
+
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <div class="about-nav" data-spy="affix" data-offset-top="120">
+      <h5>Contents</h5>
+      <ul class="similar">
+        <li><a href="#faq">Frequently asked questions</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#licensing">Content Licensing</a></li>
+        <li><a href="#software">Software</a></li>
+      </ul>
+    </div>
   </div>
 </div>
