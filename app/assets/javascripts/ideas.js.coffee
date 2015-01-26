@@ -39,3 +39,31 @@ $ ->
   $("#idea-body").keyup counter
   $("#idea-body").blur counter
   $("#idea-body").focus counter
+
+  $("#preview-button").on 'click', (e) ->
+    e.preventDefault()
+
+  $('#myModal').on 'show.bs.modal', (e) ->
+    md_title = $('#idea_title').val()
+    md_body = $('#idea-body').val()
+    $.ajax '/ideas/preview',
+      data :
+        idea : md_body
+      success  : (res, status, xhr) ->
+        $(e.currentTarget).find('#modalIdeaTitle').html(md_title)
+        $(e.currentTarget).find('#modalIdeaBody').html(res)
+      error    : (xhr, status, err) ->
+        alert "There was a problem with the idea preview"
+      complete : (xhr, status) ->
+
+  do poll = ->
+    $.ajax '/ideas/similar',
+      data :
+        idea : 'hello'
+      success  : (res, status, xhr) ->
+
+      error    : (xhr, status, err) ->
+        alert "There was a problem with the idea preview"
+      complete : (xhr, status) ->
+
+    setTimeout poll, 5000

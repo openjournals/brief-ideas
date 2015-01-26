@@ -45,6 +45,10 @@ class IdeasController < ApplicationController
     render :text => filter.call
   end
 
+  def similar
+
+  end
+
   def tags
     render :json => Idea.all_tags.to_json
   end
