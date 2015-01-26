@@ -3,20 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
-  $(".auto-replace").focus ->
-    val = $(this).val()
-    if val is $(this).attr('data-default')
-      $(this).val('')
-    else
-      console.log "Not replacing because value is " + val
-
-  $(".auto-replace").blur ->
-    val = $(this).val()
-    if val is ""
-      $(this).val($(this).attr('data-default'))
-    else
-      console.log "Not replacing because value is " + val
-
   counter = ->
     value = $("#idea-body").val()
     if value.length is 0
