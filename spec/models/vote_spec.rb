@@ -9,6 +9,7 @@ describe Vote do
     idea = create(:idea, :user => user)
     user.vote_for!(idea)
 
+    expect(RatingWorker.jobs.size).to eq(0)
     expect(idea.reload.current_vote).to eq(0)
   end
 
@@ -18,6 +19,7 @@ describe Vote do
     user.vote_for!(idea)
     user.vote_for!(idea)
 
+    expect(RatingWorker.jobs.size).to eq(1)
     expect(idea.reload.current_vote).to eq(1)
   end
 end

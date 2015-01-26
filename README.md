@@ -9,7 +9,7 @@ It's a research journal, composed entirely of 'brief ideas'. The goal here is to
 
 It's a work in progress by [@arfon](http://twitter.com/arfon), [@larshankat](http://twitter.com/larshankat), [@physicsdavid](http://twitter.com/physicsdavid) and [@stuart_lynn](http://twitter.com/stuart_lynn)
 
-You can see the latest build of this running at http://ideas.theoj.org
+You can see the latest build of this running at http://beta.briefideas.org
 
 ## Why are you doing this?
 

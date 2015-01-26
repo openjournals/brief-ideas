@@ -16,6 +16,12 @@ class Idea < ActiveRecord::Base
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
+  scope :by_date, -> { order('created_at DESC') }
+  scope :trending, -> { order('score DESC') }
+
+  scope :has_all_tags, ->(tags){ where("ARRAY[?]::varchar[] <@ tags::varchar[]", tags) }
+  scope :has_any_tags, ->(tags){ where("ARRAY[?]::varchar[] && tags::varchar[]", tags) }
+
   scope :fuzzy_search_by_title, -> (title) { where("title ILIKE ?", "%#{title}%")}
 
   validates_presence_of :title, :body, :subject
@@ -42,7 +48,8 @@ class Idea < ActiveRecord::Base
 
       if url.include?('users')
         # Do nothing for now when it's a mention of a user
-      elsif idea = Idea.find_by_doi(url)
+      # FIXME - this is junk
+      elsif url.include?('ideas') && idea = Idea.find_by_sha(url.gsub('/ideas/', ''))
         # When this is an idea we know about, make a hard link
         self.idea_references.build(:referenced_id => idea.id)
       else
@@ -122,6 +129,42 @@ class Idea < ActiveRecord::Base
     Idea.find_by_sql ["select * from ideas order by ts_rank_cd(to_tsvector('english', ideas.title || ' ' || ideas.body), replace(plainto_tsquery(?)::text, ' & ', ' | ')::tsquery, 8) DESC Limit ? ", query, limit]
   end
 
+  def has_citations?
+    citations.any?
+  end
+
+  # Calculate the score for the citations at depth 'N'
+  def score_at(depth)
+    return self.citations.count * depth
+  end
+
+  # Method to walk all nodes of the citation tree, returning the citation and
+  # depth 'N' for each element
+  def traverse_tree(idea=self, depth=1, &blk)
+    if idea.has_citations?
+      blk.call(idea, depth)
+      depth += 1
+      idea.citations.each { |citation| traverse_tree(citation, depth, &blk) }
+    else
+      blk.call(idea, depth)
+    end
+  end
+
+  # Walk the citation tree and calculate a ranking. This method should only be
+  # called in a worker (see lib/rating_worker.rb)
+  def citation_score
+    total = 0
+    traverse_tree do |citation, depth|
+      total += citation.score_at(depth)
+    end
+
+    return total
+  end
+
+  def trending_score
+    vote_count + (view_count.to_f / 10) + citation_score
+  end
+
 private
 
   def set_sha
@@ -130,7 +173,8 @@ private
 
   # Don't let people create more than 5 ideas in 24 hours
   def check_user_idea_count
-    if Idea.today.count(:user => user) >= 5
+    return true if Rails.env.development?
+    if Idea.today.where(:user_id => user.id).count >= 5
       self.errors[:base] << "You've already created 5 ideas today, please come back tomorrow."
       return false
     end
