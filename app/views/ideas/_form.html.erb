@@ -1,19 +1,22 @@
-<%= form_for @idea do |f| %>
+<%= form_for @idea, :html => {:data => {:toggle => "validator"}} do |f| %>
   <div class="form-group">
-    <%= f.label :title %>
-    <%= f.text_field :title, :value => "Enter idea description", :class => "form-control auto-replace", :data => { :default => "Enter idea description" } %>
+    <%= f.label :title, :class => "control-label" %>
+    <%= f.text_field :title, :class => "form-control", "placeholder" => "Enter idea description", :required => "" %>
+    <div class="help-block with-errors"></div>
   </div>
   <div class="form-group">
-    <%= f.label :subject_area, :class => "full" %>
-    <%= f.text_field :subject, :class => "form-control typeahead", :placeholder => "Enter a subject" %>
+    <%= f.label :subject_area, :class => "full control-label" %>
+    <%= f.text_field :subject, :class => "form-control typeahead", :placeholder => "Enter a subject", :required => "" %>
+    <div class="help-block with-errors"></div>
   </div>
   <div class="form-group">
-    <%= f.label :tags, :class => "full" %>
+    <%= f.label :tags, :class => "full control-label" %>
     <%= f.text_field :tags, :class => "form-control typeaheadtags", :placeholder => "Tag this idea", :value => "" %>
   </div>
   <div class="form-group">
-    <%= f.label "A Brief Idea" %> &middot; <span id="word-count">0</span>
-    <%= f.text_area :body, :rows => "16", :id => "idea-body", :value => "This is what 200 words looks like: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum orci orci, lacinia a sagittis et, elementum ac eros. Ut ac posuere justo. Nunc nec libero vitae erat lacinia dapibus vel mollis ipsum. Integer tempor est quis eros eleifend tempus. Fusce sed orci vitae sapien blandit venenatis non nec nunc. Maecenas quam sapien, porttitor sit amet volutpat vitae, pharetra vel sem. Nullam vulputate libero accumsan porta ultricies. Praesent tortor mi, tempus quis odio sed, aliquet posuere magna. Etiam eget tellus id dui molestie imperdiet. Pellentesque vulputate, enim a pretium maximus, mauris ex viverra lectus, non consectetur enim ante at mauris. Mauris varius, mauris id varius varius, urna mi fringilla velit, quis bibendum leo justo sed justo. Etiam tincidunt turpis vestibulum justo vulputate iaculis. Vivamus tristique lacus at lorem molestie tempus. Pellentesque commodo laoreet lorem non ultrices. Morbi in imperdiet risus. Phasellus efficitur euismod felis at volutpat. Suspendisse viverra, dolor non volutpat fringilla, lorem risus accumsan quam, eget tempor ipsum nunc a purus. Sed tincidunt venenatis ante non feugiat. Nunc mattis risus at sapien eleifend, id iaculis orci dignissim. Suspendisse elementum nibh eget velit semper egestas. Suspendisse feugiat lorem eget urna laoreet, vel iaculis arcu.", :class => "form-control auto-complete auto-replace", :data => {:default => "This is what 200 words looks like: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum orci orci, lacinia a sagittis et, elementum ac eros. Ut ac posuere justo. Nunc nec libero vitae erat lacinia dapibus vel mollis ipsum. Integer tempor est quis eros eleifend tempus. Fusce sed orci vitae sapien blandit venenatis non nec nunc. Maecenas quam sapien, porttitor sit amet volutpat vitae, pharetra vel sem. Nullam vulputate libero accumsan porta ultricies. Praesent tortor mi, tempus quis odio sed, aliquet posuere magna. Etiam eget tellus id dui molestie imperdiet. Pellentesque vulputate, enim a pretium maximus, mauris ex viverra lectus, non consectetur enim ante at mauris. Mauris varius, mauris id varius varius, urna mi fringilla velit, quis bibendum leo justo sed justo. Etiam tincidunt turpis vestibulum justo vulputate iaculis. Vivamus tristique lacus at lorem molestie tempus. Pellentesque commodo laoreet lorem non ultrices. Morbi in imperdiet risus. Phasellus efficitur euismod felis at volutpat. Suspendisse viverra, dolor non volutpat fringilla, lorem risus accumsan quam, eget tempor ipsum nunc a purus. Sed tincidunt venenatis ante non feugiat. Nunc mattis risus at sapien eleifend, id iaculis orci dignissim. Suspendisse elementum nibh eget velit semper egestas. Suspendisse feugiat lorem eget urna laoreet, vel iaculis arcu."} %>
+    <%= f.label "A Brief Idea", :class => "control-label" %> &middot; <span id="word-count">0</span>
+    <%= f.text_area :body, :rows => "16", :id => "idea-body", :placeholder => "This is what 200 words looks like: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum orci orci, lacinia a sagittis et, elementum ac eros. Ut ac posuere justo. Nunc nec libero vitae erat lacinia dapibus vel mollis ipsum. Integer tempor est quis eros eleifend tempus. Fusce sed orci vitae sapien blandit venenatis non nec nunc. Maecenas quam sapien, porttitor sit amet volutpat vitae, pharetra vel sem. Nullam vulputate libero accumsan porta ultricies. Praesent tortor mi, tempus quis odio sed, aliquet posuere magna. Etiam eget tellus id dui molestie imperdiet. Pellentesque vulputate, enim a pretium maximus, mauris ex viverra lectus, non consectetur enim ante at mauris. Mauris varius, mauris id varius varius, urna mi fringilla velit, quis bibendum leo justo sed justo. Etiam tincidunt turpis vestibulum justo vulputate iaculis. Vivamus tristique lacus at lorem molestie tempus. Pellentesque commodo laoreet lorem non ultrices. Morbi in imperdiet risus. Phasellus efficitur euismod felis at volutpat. Suspendisse viverra, dolor non volutpat fringilla, lorem risus accumsan quam, eget tempor ipsum nunc a purus. Sed tincidunt venenatis ante non feugiat. Nunc mattis risus at sapien eleifend, id iaculis orci dignissim. Suspendisse elementum nibh eget velit semper egestas. Suspendisse feugiat lorem eget urna laoreet, vel iaculis arcu.", :class => "form-control auto-complete", :required => ""  %>
+    <div class="help-block with-errors"></div>
   </div>
   <button type="submit" class="btn btn-default">Submit Idea</button> <button class="btn btn-primary" id="preview-button" data-toggle="modal" data-target="#myModal">Preview</button>
 <% end %>
