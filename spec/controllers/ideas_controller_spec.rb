@@ -26,7 +26,7 @@ describe IdeasController, :type => :controller do
 
   describe "GET #index with JSON" do
     it "should respond with JSON array" do
-      idea = create(:idea, :tags => [])
+      idea = create(:idea, :tags => ['tag'])
       get :index, :format => :json
 
       expect(response).to be_success
@@ -37,7 +37,7 @@ describe IdeasController, :type => :controller do
 
   describe "GET #index with Atom" do
     it "should respond with an Atom feed" do
-      idea = create(:idea, :tags => [])
+      idea = create(:idea, :tags => ['tag'])
       get :index, :format => :atom
 
       expect(response).to be_success
@@ -49,7 +49,7 @@ describe IdeasController, :type => :controller do
 
   describe "GET #trending with JSON" do
     it "should respond with JSON array" do
-      idea = create(:idea, :tags => [], :score => 100)
+      idea = create(:idea, :tags => ['tag'], :score => 100)
       create(:idea, :score => 10)
       get :trending, :format => :json
 

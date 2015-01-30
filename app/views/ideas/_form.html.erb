@@ -5,13 +5,9 @@
     <div class="help-block with-errors"></div>
   </div>
   <div class="form-group">
-    <%= f.label :subject_area, :class => "full control-label" %>
-    <%= f.text_field :subject, :class => "form-control typeahead", :placeholder => "Enter a subject", :required => "" %>
-    <div class="help-block with-errors"></div>
-  </div>
-  <div class="form-group">
     <%= f.label :tags, :class => "full control-label" %>
-    <%= f.text_field :tags, :class => "form-control typeaheadtags", :placeholder => "Tag this idea", :value => "" %>
+    <%= f.text_field :tags, :class => "form-control typeaheadtags", :placeholder => "Tag this idea", :value => "", :required => "" %>
+    <div class="help-block with-errors"></div>
   </div>
   <div class="form-group">
     <%= f.label "A Brief Idea", :class => "control-label" %> &middot; <span id="word-count">0</span>
@@ -44,31 +40,4 @@
                 tags: <%= raw @tags %>,
                 tokenSeparators: [",", " "]});
 
-  var subjects = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    limit: 10,
-    prefetch: {
-      url: '../plos_truncated.json',
-      // the json file contains an array of strings, but the Bloodhound
-      // suggestion engine expects JavaScript objects so this converts all of
-      // those strings
-      filter: function(list) {
-        return $.map(list, function(subject) { return { name: subject }; });
-      }
-    }
-  });
-
-  // kicks off the loading/processing of `local` and `prefetch`
-  subjects.initialize();
-
-  // passing in `null` for the `options` arguments will result in the default
-  // options being used
-  $('#new_idea .typeahead').typeahead(null, {
-    name: 'subjects',
-    displayKey: 'name',
-    // `ttAdapter` wraps the suggestion engine in an adapter that
-    // is compatible with the typeahead jQuery plugin
-    source: subjects.ttAdapter()
-  });
 </script>

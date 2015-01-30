@@ -35,7 +35,7 @@ class ZenodoWorker
         :publication_type => "article",
         :description => "A brief idea",
         :creators => [{:name => idea.user.name, :affiliation => "", :orcid => idea.user.uid}],
-        :keywords => [idea.zenodo_keywords],
+        :keywords => idea.tags,
         :communities => [{:identifier => "briefideas"}],
         :license => "cc-by"
       }

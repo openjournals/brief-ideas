@@ -24,7 +24,7 @@ class Idea < ActiveRecord::Base
 
   scope :fuzzy_search_by_title, -> (title) { where("title ILIKE ?", "%#{title}%")}
 
-  validates_presence_of :title, :body, :subject
+  validates_presence_of :title, :body, :tags
 
   # Logging views of ideas with impressionist. Only one count per user session
   is_impressionable :counter_cache => true, :column_name => :view_count, :unique => :true
