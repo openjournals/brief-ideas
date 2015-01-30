@@ -53,13 +53,6 @@
     <% end %>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
-    <div class="login-block">
-      <% if current_user %>
-        <%= image_tag current_user.avatar_url, :class => "avatar" %>
-        <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
-      <% else %>
-        <p class="name"><%= link_to "Sign in with Orcid", "/auth/orcid" %></p>
-      <% end %>
-    </div>
+    <%= render :partial => 'sessions/login' %>
   </div>
 </div>
