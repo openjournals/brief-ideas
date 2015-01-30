@@ -1,8 +1,8 @@
 # Default endpoint URLs for the ORCID OAuth API
 
 production:
-  site: http://ideas.theoj.org
-  authorize_url: http://orcid.org/oauth/authorize#show_login
+  site: http://beta.briefideas.org
+  authorize_url: http://orcid.org/oauth/authorize?show_login=true
   token_url: http://pub.orcid.org/oauth/token
   client_id: <%= ENV["ORCID_KEY"] %>
   client_secret: <%= ENV["ORCID_SECRET"] %>
