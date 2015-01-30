@@ -78,7 +78,6 @@ class ZenodoWorker
                   {:name => 'title', :value => idea.title, :type => 'string'},
                   {:name => 'doi', :value => idea.doi, :type => 'enum'},
                   {:name => 'body', :value => idea.body, :type => 'text'},
-                  {:name => 'subject', :value => idea.subject, :type => 'text'},
                   {:name => 'author', :value => idea.user.name, :type => 'text'},
                   {:name => 'tags', :value => idea.formatted_tags, :type => 'string'},
                   {:name => 'ordid_id', :value => idea.user.uid, :type => 'string'}
