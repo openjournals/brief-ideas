@@ -80,7 +80,7 @@ class ZenodoWorker
                   {:name => 'body', :value => idea.body, :type => 'text'},
                   {:name => 'author', :value => idea.user.name, :type => 'text'},
                   {:name => 'tags', :value => idea.formatted_tags, :type => 'string'},
-                  {:name => 'ordid_id', :value => idea.user.uid, :type => 'string'}
+                  {:name => 'orcid_id', :value => idea.user.uid, :type => 'string'}
                   ]})
     Rails.logger.info "UPLOADING TO INDEX! #{idea.sha}"
   end
