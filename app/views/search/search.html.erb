@@ -26,7 +26,7 @@
           <h4><em><%= link_to (idea['highlight'].try(:[], 'title').try(:html_safe) || idea['title']), idea_path(idea['external_id']) %></em></h4>
           <p><%= truncate((idea['highlight'].try(:[], 'body').try(:html_safe) || idea['body']), :length => 300, :omission => "... ") %></p>
 
-          <p>By <%= link_to idea['author'], users_link(idea["author"]) %></p>
+          <p>By <%= idea['author'] %></p>
         </div>
       <% end %>
 
