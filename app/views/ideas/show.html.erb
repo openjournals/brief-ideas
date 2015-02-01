@@ -7,7 +7,14 @@
     <div class="idea single">
       <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
 
-      <p><em><%= @idea.subject %></em></p>
+      <% if @idea.tags.any? %>
+        <p>
+          <%= render :partial => "shared/clickable_tag_list", :locals => { :tags => @idea.tags } %>
+        </p>
+      <% else %>
+        <p>This idea isn't tagged with anything</p>
+      <% end %>
+
       <p><%= raw @idea.formatted_body %></p>
 
       <%= render :partial => 'ideas/references', :locals => { :references => @idea.references } if @idea.references.any? %>
@@ -16,17 +23,6 @@
   </div>
   <div class="col-sm-3 col-sm-offset-1">
     <%= render :partial => 'sessions/login' %>
-
-    <div class="help-block">
-      <h5>Content Tags</h5>
-      <% if @idea.tags.any? %>
-        <p>
-          <%= render :partial => "shared/clickable_tag_list", :locals => { :tags => @idea.tags } %>
-        </p>
-      <% else %>
-        <p>This idea isn't tagged with anything</p>
-      <% end %>
-    </div>
 
     <div class="help-block">
       <h5>Actions</h5>
