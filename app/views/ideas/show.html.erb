@@ -39,7 +39,7 @@
 
     <div class="help-block">
       <h5>Author</h5>
-      <p><%= image_tag "orcid_24x24.png" %> <%= link_to @idea.user.nice_name, @idea.user.orcid_url, :target => "_blank" %></p>
+      <p><%= link_to @idea.user.nice_name, @idea.user.orcid_url, :target => "_blank" %></p>
 
       <h5>Metadata</h5>
       <% if @idea.doi? %><p><%= link_to image_tag(@idea.doi_badge_url), @idea.doi %></p><% end %>
