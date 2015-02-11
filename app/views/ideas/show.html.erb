@@ -40,6 +40,7 @@
     <div class="help-block">
       <h5>Metadata</h5>
       <% if @idea.doi? %><p><%= link_to image_tag(@idea.doi_badge_url), @idea.doi %></p><% end %>
+      <p>Author: <%= link_to @idea.user.nice_name, @idea.user.orcid_url, :target => "_blank" %></p>
       <p>Published: <%= @idea.created_at.strftime("%e %b, %Y") %></p>
       <p><%= link_to image_tag("cc-by.png"), "https://creativecommons.org/licenses/by/4.0/legalcode" %></p>
     </div>
