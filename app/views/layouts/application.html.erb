@@ -57,6 +57,9 @@
             <ul class="nav navbar-nav">
               <%= nav_link 'Home', root_path %>
               <%= nav_link 'New idea', new_idea_path %>
+              <% if current_user %>
+                <%= nav_link 'Your ideas', user_path(current_user) %>
+              <%end%>
               <%= nav_link 'Trending ideas', trending_path %>
               <%= nav_link 'About', about_path %>
               <%= nav_link 'Search', search_path %>
