@@ -6,4 +6,8 @@
   <%= button_to({ :controller => 'votes', :action => "create", :idea_id => idea.id }, :remote => true, :class => "btn btn-default btn-xs vote") do %>
     <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <%= idea.current_vote %>
   <% end %>
+<% else  %>
+  <button type="button" class="btn btn-default btn-xs vote voted" disabled="disabled">
+    <%= idea.current_vote %> votes
+  </button>
 <% end %>
