@@ -1,6 +1,6 @@
 <% if current_user && idea.voted_on_by?(current_user) %>
   <button type="button" class="btn btn-default btn-xs vote voted">
-      <%= idea.current_vote %> votes
+    <%= pluralize(idea.current_vote, 'vote') %>
   </button>
 <% elsif current_user %>
   <%= button_to({ :controller => 'votes', :action => "create", :idea_id => idea.id }, :remote => true, :class => "btn btn-default btn-xs vote") do %>
@@ -8,6 +8,6 @@
   <% end %>
 <% else %>
   <button type="button" class="btn btn-default btn-xs vote voted" disabled="disabled">
-    <%= idea.current_vote %> votes
+    <%= pluralize(idea.current_vote, 'vote') %>
   </button>
 <% end %>
