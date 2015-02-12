@@ -27,10 +27,12 @@
     <%= render :partial => 'sessions/login' %>
 
     <div class="help-block">
+      <% if current_user %>
       <h5>Actions</h5>
       <div id="button_<%= @idea.id %>"><%= render :partial => "votes/button", :locals => { :idea => @idea } %></div>
-      <!-- <p><%= link_to "New idea based on this", new_idea_path(:references_id => @idea.sha) %></p> -->
       <p></p>
+      <% end %>
+
       <div class="social">
         <span class='st_facebook_hcount' displayText='Facebook'></span>
         <span class='st_twitter_hcount' displayText='Tweet'></span>
