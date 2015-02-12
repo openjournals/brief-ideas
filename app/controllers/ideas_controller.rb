@@ -13,7 +13,7 @@ class IdeasController < ApplicationController
   end
 
   def trending
-    @ideas = Idea.trending.visible.by_date.paginate(:page => params[:page], :per_page => 10)
+    @ideas = Idea.trending.visible.not_muted.by_date.paginate(:page => params[:page], :per_page => 10)
     @trending = true
 
     respond_to do |format|
