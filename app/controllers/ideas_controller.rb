@@ -3,7 +3,7 @@ class IdeasController < ApplicationController
   respond_to :json, :html, :atom
 
   def index
-    @ideas = Idea.by_date.recent.paginate(:page => params[:page], :per_page => 10)
+    @ideas = Idea.by_date.recent.visible.not_muted.paginate(:page => params[:page], :per_page => 10)
 
     respond_to do |format|
       format.atom
@@ -13,7 +13,7 @@ class IdeasController < ApplicationController
   end
 
   def trending
-    @ideas = Idea.trending.by_date.paginate(:page => params[:page], :per_page => 10)
+    @ideas = Idea.trending.visible.by_date.paginate(:page => params[:page], :per_page => 10)
     @trending = true
 
     respond_to do |format|

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150104001749) do
+ActiveRecord::Schema.define(version: 20150211225903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,14 +40,18 @@ ActiveRecord::Schema.define(version: 20150104001749) do
     t.integer  "zenodo_id"
     t.string   "doi"
     t.string   "subject"
-    t.string   "tags",          default: [], array: true
+    t.string   "tags",          default: [],    array: true
     t.integer  "vote_count",    default: 0
     t.integer  "view_count"
     t.integer  "counter_cache", default: 0
-    t.float    "score", default: 0.0
+    t.float    "score"
+    t.boolean  "deleted",       default: false
+    t.boolean  "muted",         default: false
   end
 
   add_index "ideas", ["counter_cache"], name: "index_ideas_on_counter_cache", using: :btree
+  add_index "ideas", ["deleted"], name: "index_ideas_on_deleted", using: :btree
+  add_index "ideas", ["muted"], name: "index_ideas_on_muted", using: :btree
   add_index "ideas", ["score"], name: "index_ideas_on_score", using: :btree
   add_index "ideas", ["tags"], name: "index_ideas_on_tags", using: :gin
   add_index "ideas", ["view_count"], name: "index_ideas_on_view_count", using: :btree
