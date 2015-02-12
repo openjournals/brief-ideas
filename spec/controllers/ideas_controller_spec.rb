@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe IdeasController, :type => :controller do
+  render_views
+
   before(:each) do
     Idea.destroy_all
     @redis ||= Redis.new(:url => ENV['REDISTOGO_URL'])
@@ -21,6 +23,48 @@ describe IdeasController, :type => :controller do
 
       get :new, :format => :html
       expect(response).to be_success
+    end
+  end
+
+  describe "GET #trending" do
+    it "doesn't show the muted and deleted ideas" do
+      idea = create(:idea, :muted => true, :title => "mute me")
+      idea = create(:idea, :muted => false, :title => "not muted")
+      idea = create(:idea, :deleted => true, :title => "deleted idea")
+
+      get :trending
+
+      expect(response.body).not_to match /mute me/im
+      expect(response.body).to match /not muted/im
+      expect(response.body).not_to match /deleted idea/im
+    end
+  end
+
+  describe "GET #index" do
+    it "doesn't show the muted and deleted ideas" do
+      idea = create(:idea, :muted => true, :title => "mute me")
+      idea = create(:idea, :muted => false, :title => "not muted")
+      idea = create(:idea, :deleted => true, :title => "deleted idea")
+
+      get :index
+
+      expect(response.body).not_to match /mute me/im
+      expect(response.body).to match /not muted/im
+      expect(response.body).not_to match /deleted idea/im
+    end
+  end
+
+  describe "GET #all" do
+    it "doesn't show the deleted ideas but does show muted ones" do
+      idea = create(:idea, :muted => true, :title => "mute me")
+      idea = create(:idea, :muted => false, :title => "not muted")
+      idea = create(:idea, :deleted => true, :title => "deleted idea")
+
+      get :all
+
+      expect(response.body).to match /mute me/im
+      expect(response.body).to match /not muted/im
+      expect(response.body).not_to match /deleted idea/im
     end
   end
 
