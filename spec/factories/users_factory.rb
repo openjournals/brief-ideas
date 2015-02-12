@@ -6,7 +6,7 @@ FactoryGirl.define do
     email 'john@apple.com'
     uid '0000-0000-0000-1234'
 
-    factory :admin do
+    factory :admin_user do
       admin true
     end
   end

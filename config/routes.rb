@@ -10,6 +10,13 @@ Rails.application.routes.draw do
   resources :votes, :only => :create
   resources :users, :only => :show
 
+  resources :admin do
+    member do
+      post :mute
+      post :delete
+    end
+  end
+
   get '/user_lookup', to: "users#lookup", as: 'user_lookup'
   get '/idea_title_lookup' , to: "ideas#lookup_title", as: 'idea_title_lookup'
 

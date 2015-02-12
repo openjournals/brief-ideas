@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
     redirect_to '/sessions/new' unless current_user
   end
 
+  def require_admin_user
+    redirect_to '/sessions/new' unless (current_user && current_user.admin?)
+  end
+
   private
 
   def current_user

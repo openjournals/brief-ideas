@@ -1,0 +1,53 @@
+<div class="page-header">
+  <h1>Ideas review</h1>
+</div>
+
+<div class="row form">
+  <div class="col-sm-8">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+
+    <table class="table table-striped">
+      <tr>
+        <th>Title</th><th>Published</th><th>Author</th><th colspan="2">Actions</th>
+      </tr>
+      <% @ideas.each do |idea| %>
+      <tr>
+        <td><%= link_to truncate(idea.title, :length => 30), idea_path(idea), :target => "_blank" %></td>
+        <td><%= idea.created_at %></td>
+        <td><%= link_to idea.user.nice_name, idea.user.orcid_url, :target => "_blank" %></td>
+        <% if idea.muted? %>
+        <td><%= button_to 'Mute', mute_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
+        <% else %>
+        <td><%= button_to 'Mute', mute_admin_path(idea), :class => 'btn btn-warning btn-xs' %></td>
+        <% end %>
+        <% if idea.deleted? %>
+        <td><%= button_to 'Remove', delete_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
+        <% else %>
+        <td><%= button_to 'Remove', delete_admin_path(idea), :class => 'btn btn-danger btn-xs' %></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </table>
+
+    <div class="text-center">
+      <%= will_paginate @ideas, renderer: BootstrapPagination::Rails %>
+    </div>
+  </div>
+
+  <div class="col-sm-3 col-sm-offset-1">
+    <% unless current_user %>
+    <div class="help-block">
+      <h5>Welcome</h5>
+      <p>This is the Journal of Brief Ideas - citable ideas in fewer than 200 words.</p>
+      <p>Before you can create a new idea, you'll need to log in using the link above. You also can't vote on existing ideas without signing in too.</p>
+    </div>
+    <% end %>
+
+    <div class="help-block">
+      <h5>Admin actions</h5>
+      <p>Clicking <button type="button" class="btn btn-warning btn-xs">Mute</button> will remove an idea from the front page.</p>
+      <p>Clicking <button type="button" class="btn btn-danger btn-xs">Remove</button> will remove an idea from public view entirely.</p>
+
+    </div>
+  </div>
+</div>

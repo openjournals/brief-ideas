@@ -18,6 +18,8 @@ class Idea < ActiveRecord::Base
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
   scope :by_date, -> { order('created_at DESC') }
   scope :trending, -> { order('score DESC') }
+  scope :visible, -> { where('deleted = ?', false) }
+  scope :not_muted, -> { where('muted = ?', false) }
 
   scope :has_all_tags, ->(tags){ where("ARRAY[?]::varchar[] <@ tags::varchar[]", tags) }
   scope :has_any_tags, ->(tags){ where("ARRAY[?]::varchar[] && tags::varchar[]", tags) }
@@ -163,6 +165,15 @@ class Idea < ActiveRecord::Base
 
   def trending_score
     vote_count + (view_count.to_f / 10) + citation_score
+  end
+
+  # Admin actions
+  def mute!
+    self.update_columns(:muted => true)
+  end
+
+  def delete!
+    self.update_columns(:deleted => true)
   end
 
 private
