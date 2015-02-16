@@ -21,5 +21,4 @@ describe UsersController, :type => :controller do
       assert_equal hash_from_json(response.body).count, 1
     end
   end
-
 end

@@ -1,13 +1,16 @@
 <% if current_user && idea.voted_on_by?(current_user) %>
-  <button type="button" class="btn btn-default btn-xs vote voted">
+  <button type="button" class="btn btn-default btn-xs vote voted pull-left">
     <%= pluralize(idea.current_vote, 'vote') %>
   </button>
 <% elsif current_user %>
-  <%= button_to({ :controller => 'votes', :action => "create", :idea_id => idea.id }, :remote => true, :class => "btn btn-default btn-xs vote") do %>
+  <%= button_to({ :controller => 'votes', :action => "create", :idea_id => idea.id }, :remote => true, :class => "btn btn-default btn-xs vote pull-left") do %>
     <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <%= pluralize(idea.current_vote, 'vote') %>
   <% end %>
+  <%= button_to({ :controller => 'ideas', :action => "hide", :id => idea.sha }, :class => "btn btn-default btn-xs dismiss pull-left") do %>
+    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Hide
+  <% end %>
 <% else %>
-  <button type="button" class="btn btn-default btn-xs vote voted" disabled="disabled">
+  <button type="button" class="btn btn-default btn-xs vote voted pull-left" disabled="disabled">
     <%= pluralize(idea.current_vote, 'vote') %>
   </button>
 <% end %>
