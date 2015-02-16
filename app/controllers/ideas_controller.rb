@@ -1,9 +1,9 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :only => [ :new, :create ]
+  before_filter :require_user, :only => [ :new, :create, :hide ]
   respond_to :json, :html, :atom
 
   def index
-    @ideas = Idea.by_date.recent.visible.not_muted.paginate(:page => params[:page], :per_page => 10)
+    @ideas = Idea.by_date.recent.visible.for_user(current_user).paginate(:page => params[:page], :per_page => 10)
 
     respond_to do |format|
       format.atom
@@ -13,7 +13,7 @@ class IdeasController < ApplicationController
   end
 
   def trending
-    @ideas = Idea.trending.visible.not_muted.by_date.paginate(:page => params[:page], :per_page => 10)
+    @ideas = Idea.trending.visible.by_date.for_user(current_user).paginate(:page => params[:page], :per_page => 10)
     @trending = true
 
     respond_to do |format|
@@ -24,7 +24,7 @@ class IdeasController < ApplicationController
   end
 
   def all
-    @ideas = Idea.by_date.visible.paginate(:page => params[:page], :per_page => 10)
+    @ideas = Idea.by_date.visible.for_user(current_user).paginate(:page => params[:page], :per_page => 10)
     @all = true
 
     respond_to do |format|
@@ -54,6 +54,12 @@ class IdeasController < ApplicationController
   def preview
     filter = HTML::Pipeline::MarkdownFilter.new(params[:idea])
     render :text => filter.call
+  end
+
+  def hide
+    @idea = Idea.find_by_sha(params[:id])
+    current_user.dismiss!(@idea)
+    redirect_to(:back, :notice => "Idea hidden")
   end
 
   def similar

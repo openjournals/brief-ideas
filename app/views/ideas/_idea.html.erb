@@ -1,4 +1,4 @@
-<div class="idea">
+<div class="idea clearfix">
   <p class="lead idea"><%= link_to(idea.title, idea_path(idea)) %></p>
   <p><%= truncated_formatted_body(idea) %></p>
   <div id="button_<%= idea.id %>"><%= render :partial => "votes/button", :locals => { :idea => idea } %></div>

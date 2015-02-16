@@ -55,14 +55,14 @@ describe IdeasController, :type => :controller do
   end
 
   describe "GET #all" do
-    it "doesn't show the deleted ideas but does show muted ones" do
+    it "doesn't show the deleted ideas or the muted ones" do
       idea = create(:idea, :muted => true, :title => "mute me")
       idea = create(:idea, :muted => false, :title => "not muted")
       idea = create(:idea, :deleted => true, :title => "deleted idea")
 
       get :all
 
-      expect(response.body).to match /mute me/im
+      expect(response.body).not_to match /mute me/im
       expect(response.body).to match /not muted/im
       expect(response.body).not_to match /deleted idea/im
     end
@@ -196,6 +196,27 @@ describe IdeasController, :type => :controller do
       # Tags should be made lower case on creation
       assert !Idea.all_tags.include?("Hello")
       assert Idea.all_tags.include?("hello")
+    end
+  end
+
+  # Idea dismissing
+
+  describe "POST #hide" do
+    it "NOT LOGGED IN responds with redirect" do
+      post :hide, :id => "idsss"
+      expect(response).to be_redirect
+    end
+  end
+
+  describe "POST #hide" do
+    it "LOGGED IN should hide the idea" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      idea = create(:idea, :title => "About to be hidden")
+      request.env["HTTP_REFERER"] = ideas_path
+
+      post :hide, :id => idea.sha
+      assert user.seen_idea_ids.include?(idea.id)
     end
   end
 end

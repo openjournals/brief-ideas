@@ -30,7 +30,8 @@
       <% if current_user %>
       <h5>Actions</h5>
       <div id="button_<%= @idea.id %>"><%= render :partial => "votes/button", :locals => { :idea => @idea } %></div>
-      <p></p>
+
+      <p class="clearfix"></p>
       <% end %>
 
       <div class="social">

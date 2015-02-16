@@ -20,6 +20,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def dismiss!(idea)
+    self.seen_idea_ids << idea.id
+    self.seen_idea_ids_will_change!
+    save
+  end
+
   def voter_for?(idea)
     Vote.where(:user_id => self.id, :idea_id => idea.id).exists?
   end

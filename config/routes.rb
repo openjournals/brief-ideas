@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   resources :ideas do
+    member do
+      post :hide
+    end
+
     collection do
       get :preview
       get :similar

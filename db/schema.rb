@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211225903) do
+ActiveRecord::Schema.define(version: 20150213221340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,7 +95,10 @@ ActiveRecord::Schema.define(version: 20150211225903) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.hstore   "extra"
+    t.integer  "seen_idea_ids",    default: [],    array: true
   end
+
+  add_index "users", ["seen_idea_ids"], name: "index_users_on_seen_idea_ids", using: :gin
 
   create_table "votes", force: true do |t|
     t.integer  "user_id"
