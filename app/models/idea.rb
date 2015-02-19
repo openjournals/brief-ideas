@@ -12,7 +12,7 @@ class Idea < ActiveRecord::Base
   has_many :citations, :through => :idea_citations, :source => 'idea'
 
   before_create :set_sha, :check_user_idea_count, :parse_references
-  after_create :zenodo_create, :push_tags
+  after_create :zenodo_create, :push_tags, :notify
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
@@ -20,7 +20,7 @@ class Idea < ActiveRecord::Base
   scope :trending, -> { order('score DESC') }
   scope :visible, -> { where('deleted = ? and muted = ?', false, false) }
   scope :for_user, lambda { |user = nil| where('id NOT IN (?)', user.seen_idea_ids) unless user.nil? }
-  
+
   scope :has_all_tags, ->(tags){ where("ARRAY[?]::varchar[] <@ tags::varchar[]", tags) }
   scope :has_any_tags, ->(tags){ where("ARRAY[?]::varchar[] && tags::varchar[]", tags) }
 
@@ -58,6 +58,10 @@ class Idea < ActiveRecord::Base
         # Just leave it in the body without doing anything.
       end
     end
+  end
+
+  def notify
+    Notification.submission_email(self).deliver
   end
 
   def parent?
