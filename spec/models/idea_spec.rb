@@ -20,6 +20,7 @@ describe Idea do
     expect(paper.sha.length).to eq(32)
     expect(ZenodoWorker.jobs.size).to eq(1)
     expect(RatingWorker.jobs.size).to eq(0)
+    expect {paper.notify}.to change { ActionMailer::Base.deliveries.count }.by(1)
   end
 
 
