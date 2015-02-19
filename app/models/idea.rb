@@ -1,6 +1,27 @@
 require 'html/pipeline'
 
 class Idea < ActiveRecord::Base
+  include AASM
+
+  aasm :column => :state do
+    state :pending, :initial => true
+    state :published
+    state :rejected
+
+    event :publish do
+      after do
+        zenodo_create
+        push_tags
+      end
+
+      transitions :to => :published
+    end
+
+    event :reject do
+      transitions :to => :rejected
+    end
+  end
+
   belongs_to :user
   has_many :votes
 
@@ -12,13 +33,13 @@ class Idea < ActiveRecord::Base
   has_many :citations, :through => :idea_citations, :source => 'idea'
 
   before_create :set_sha, :check_user_idea_count, :parse_references
-  after_create :zenodo_create, :push_tags, :notify
+  after_create :notify
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
   scope :by_date, -> { order('created_at DESC') }
   scope :trending, -> { order('score DESC') }
-  scope :visible, -> { where('deleted = ? and muted = ?', false, false) }
+  scope :visible, -> { where('deleted = ? and muted = ? and state = ?', false, false, 'published') }
   scope :for_user, lambda { |user = nil| where('id NOT IN (?)', user.seen_idea_ids) unless user.nil? }
 
   scope :has_all_tags, ->(tags){ where("ARRAY[?]::varchar[] <@ tags::varchar[]", tags) }
@@ -38,6 +59,14 @@ class Idea < ActiveRecord::Base
 
   def parent
     parents.first
+  end
+
+  def visible_to?(user)
+    if (creator == user || self.published?)
+      return true
+    else
+      return false
+    end
   end
 
   # TODO - test these regexes and work out what to do with non-JOBI references
@@ -132,7 +161,7 @@ class Idea < ActiveRecord::Base
   end
 
   def self.similar_ideas(query, limit=4)
-    Idea.find_by_sql ["select * from ideas order by ts_rank_cd(to_tsvector('english', ideas.title || ' ' || ideas.body), replace(plainto_tsquery(?)::text, ' & ', ' | ')::tsquery, 8) DESC Limit ? ", query, limit]
+    Idea.find_by_sql ["select * from ideas where state='published' order by ts_rank_cd(to_tsvector('english', ideas.title || ' ' || ideas.body), replace(plainto_tsquery(?)::text, ' & ', ' | ')::tsquery, 8) DESC Limit ? ", query, limit]
   end
 
   def has_citations?
@@ -176,6 +205,7 @@ class Idea < ActiveRecord::Base
     self.update_columns(:muted => true)
   end
 
+  # TODO remove this method
   def delete!
     self.update_columns(:deleted => true)
   end

@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :idea do
-    state       'published'
     title       'Profound thoughts'
     body        'Cows are actually very large sheep that have been taught to make a different sound'
     subject     'Physics > Astrology'
@@ -11,5 +10,13 @@ FactoryGirl.define do
     created_at  { Time.now }
     updated_at  { Time.now }
     user
+
+    factory :published_idea do
+      state 'published'
+    end
+
+    factory :rejected_idea do
+      state 'rejected'
+    end
   end
 end

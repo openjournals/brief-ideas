@@ -1,6 +1,7 @@
 ruby '2.1.2'
 source 'https://rubygems.org'
 
+gem 'aasm', '~> 4.0.8'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'faraday-http-cache'
 gem 'github-markdown'

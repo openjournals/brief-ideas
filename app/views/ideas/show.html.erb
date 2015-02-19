@@ -7,6 +7,15 @@
     <div class="idea single">
       <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
 
+      <% if @idea.pending? %>
+        <div class="alert alert-warning" role="alert">
+          Please note, this idea is pending acceptance by the editors of the Journal of Brief Ideas.
+        </div>
+      <% elsif @idea.rejected? && @idea.creator == current_user %>
+        <div class="alert alert-danger" role="alert">
+          This idea was not accepted into the Journal of Brief Ideas.
+        </div>
+      <% end %>
       <p class="lead"><em>By <%= link_to @idea.user.nice_name, user_path(@idea.user) %></em></p>
 
       <% if @idea.tags.any? %>

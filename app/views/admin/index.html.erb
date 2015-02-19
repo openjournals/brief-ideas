@@ -8,22 +8,27 @@
 
     <table class="table table-striped">
       <tr>
-        <th>Title</th><th>Published</th><th>Author</th><th colspan="2">Actions</th>
+        <th>Title</th><th>Submitted</th><th>Author</th><th colspan="3">Actions</th>
       </tr>
       <% @ideas.each do |idea| %>
       <tr>
         <td><%= link_to truncate(idea.title, :length => 30), idea_path(idea), :target => "_blank" %></td>
         <td><%= idea.created_at %></td>
         <td><%= link_to idea.user.nice_name, idea.user.orcid_url, :target => "_blank" %></td>
+        <% if idea.published? %>
+        <td><%= button_to 'Publish', publish_admin_path(idea), :class => 'btn btn-xs btn-success' %></td>
+        <% else %>
+        <td><%= button_to 'Publish', mute_admin_path(idea), :class => 'btn btn-xs btn-success', :disabled => "disabled" %></td>
+        <% end %>
         <% if idea.muted? %>
         <td><%= button_to 'Mute', mute_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
         <% else %>
         <td><%= button_to 'Mute', mute_admin_path(idea), :class => 'btn btn-warning btn-xs' %></td>
         <% end %>
         <% if idea.deleted? %>
-        <td><%= button_to 'Remove', delete_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
+        <td><%= button_to 'Reject', reject_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
         <% else %>
-        <td><%= button_to 'Remove', delete_admin_path(idea), :class => 'btn btn-danger btn-xs' %></td>
+        <td><%= button_to 'Reject', reject_admin_path(idea), :class => 'btn btn-danger btn-xs' %></td>
         <% end %>
       </tr>
       <% end %>
@@ -35,19 +40,11 @@
   </div>
 
   <div class="col-sm-3 col-sm-offset-1">
-    <% unless current_user %>
-    <div class="help-block">
-      <h5>Welcome</h5>
-      <p>This is the Journal of Brief Ideas - citable ideas in fewer than 200 words.</p>
-      <p>Before you can create a new idea, you'll need to log in using the link above. You also can't vote on existing ideas without signing in too.</p>
-    </div>
-    <% end %>
-
     <div class="help-block">
       <h5>Admin actions</h5>
+      <p>Clicking <button type="button" class="btn btn-success btn-xs">Publish</button> will publish and idea and add the record to Zenodo.</p>
       <p>Clicking <button type="button" class="btn btn-warning btn-xs">Mute</button> will remove an idea from the front page.</p>
       <p>Clicking <button type="button" class="btn btn-danger btn-xs">Remove</button> will remove an idea from public view entirely.</p>
-
     </div>
   </div>
 </div>
