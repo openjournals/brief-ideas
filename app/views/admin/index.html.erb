@@ -8,7 +8,7 @@
 
     <table class="table table-striped">
       <tr>
-        <th>Title</th><th>Submitted</th><th>Author</th><th colspan="3">Actions</th>
+        <th>Title</th><th>Submitted</th><th>Author</th><th colspan="4">Actions</th>
       </tr>
       <% @ideas.each do |idea| %>
       <tr>
@@ -29,6 +29,11 @@
         <td><%= button_to 'Rejected', reject_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
         <% else %>
         <td><%= button_to 'Reject', reject_admin_path(idea), :class => 'btn btn-danger btn-xs' %></td>
+        <% end %>
+        <% if idea.tweeted? %>
+        <td><%= button_to 'Tweeted', tweet_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
+        <% else %>
+        <td><%= button_to 'Tweet', tweet_admin_path(idea), :class => 'btn btn-info btn-xs' %></td>
         <% end %>
       </tr>
       <% end %>

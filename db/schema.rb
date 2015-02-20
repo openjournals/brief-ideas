@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219053225) do
+ActiveRecord::Schema.define(version: 20150220052243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20150219053225) do
     t.float    "score",      default: 0.0
     t.boolean  "deleted",    default: false
     t.boolean  "muted",      default: false
+    t.boolean  "tweeted",    default: false
   end
 
   add_index "ideas", ["deleted"], name: "index_ideas_on_deleted", using: :btree

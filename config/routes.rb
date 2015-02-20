@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       post :mute
       post :reject
       post :publish
+      post :tweet
     end
   end
 
