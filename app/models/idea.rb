@@ -63,7 +63,7 @@ class Idea < ActiveRecord::Base
   end
 
   def visible_to?(user)
-    if (creator == user || self.published?)
+    if (creator == user || self.published? || user.admin?)
       return true
     else
       return false
