@@ -9,6 +9,10 @@ class AdminController < ApplicationController
     end
   end
 
+  def audits
+    @idea = Idea.find_by_sha(params[:id])
+  end
+
   def publish
     @idea = Idea.find_by_sha(params[:id])
     @idea.publish!
@@ -40,6 +44,6 @@ class AdminController < ApplicationController
 protected
 
   def audit(action, user)
-    @idea.audit_logs.create(:user => current_user, :action => action)
+    @idea.audit_logs.create!(:user => current_user, :action => action)
   end
 end

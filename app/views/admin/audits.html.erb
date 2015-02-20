@@ -1,0 +1,29 @@
+<div class="page-header">
+  <h1><%= @idea.title %></h1>
+</div>
+
+<div class="row form">
+  <div class="col-sm-9">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+
+    <table class="table table-striped">
+      <tr>
+        <th>Timestamp</th><th>Actor</th><th>Action</th>
+      </tr>
+      <% @idea.audit_logs.each do |activity| %>
+      <tr>
+        <td><%= activity.created_at %></td>
+        <td><%= activity.user.nice_name %></td>
+        <td><%= activity.action %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <div class="col-sm-3">
+    <div class="help-block">
+      <h5>Audits</h5>
+      <p>This screen shows editor actions</p>
+    </div>
+  </div>
+</div>

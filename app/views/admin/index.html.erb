@@ -3,12 +3,12 @@
 </div>
 
 <div class="row form">
-  <div class="col-sm-8">
+  <div class="col-sm-9">
     <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
 
     <table class="table table-striped">
       <tr>
-        <th>Title</th><th>Submitted</th><th>Author</th><th colspan="4">Actions</th>
+        <th>Title</th><th>Submitted</th><th>Author</th><th colspan="5">Actions</th>
       </tr>
       <% @ideas.each do |idea| %>
       <tr>
@@ -35,6 +35,7 @@
         <% else %>
         <td><%= button_to 'Tweet', tweet_admin_path(idea), :class => 'btn btn-info btn-xs' %></td>
         <% end %>
+        <td><%= link_to "Logs", admin_audits_path(idea) %></td>
       </tr>
       <% end %>
     </table>
@@ -44,7 +45,7 @@
     </div>
   </div>
 
-  <div class="col-sm-3 col-sm-offset-1">
+  <div class="col-sm-3">
     <div class="help-block">
       <h5>Admin actions</h5>
       <p>Clicking <button type="button" class="btn btn-success btn-xs">Publish</button> will publish and idea and add the record to Zenodo.</p>

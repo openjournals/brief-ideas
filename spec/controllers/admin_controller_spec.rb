@@ -37,6 +37,7 @@ describe AdminController, :type => :controller do
 
       expect(response).to be_redirect # as it's created the thing
       assert idea.reload.muted?
+      assert_equal idea.audit_logs.count, 1
     end
   end
 
@@ -50,6 +51,7 @@ describe AdminController, :type => :controller do
       expect(response).to be_redirect # as it's created the thing
       expect(ZenodoWorker.jobs.size).to eq(1)
       assert idea.reload.published?
+      assert_equal idea.audit_logs.count, 1
     end
   end
 
@@ -62,6 +64,7 @@ describe AdminController, :type => :controller do
 
       expect(response).to be_redirect # as it's created the thing
       assert idea.reload.rejected?
+      assert_equal idea.audit_logs.count, 1
     end
   end
 end

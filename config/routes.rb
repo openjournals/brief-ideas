@@ -24,8 +24,9 @@ Rails.application.routes.draw do
   end
 
   get '/user_lookup', to: "users#lookup", as: 'user_lookup'
-  get '/idea_title_lookup' , to: "ideas#lookup_title", as: 'idea_title_lookup'
+  get '/idea_title_lookup', to: "ideas#lookup_title", as: 'idea_title_lookup'
 
+  get '/admin/audits/:id', to: "admin#audits", as: 'admin_audits'
   get '/trending', :to => 'ideas#trending', :as => 'trending'
   get '/boom', :to => 'ideas#boom'
   get '/all', :to => 'ideas#all', :as => 'all'
