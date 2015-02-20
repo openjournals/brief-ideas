@@ -25,7 +25,7 @@
         <% else %>
         <td><%= button_to 'Mute', mute_admin_path(idea), :class => 'btn btn-warning btn-xs' %></td>
         <% end %>
-        <% if idea.deleted? %>
+        <% if idea.rejected? %>
         <td><%= button_to 'Rejected', reject_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
         <% else %>
         <td><%= button_to 'Reject', reject_admin_path(idea), :class => 'btn btn-danger btn-xs' %></td>
