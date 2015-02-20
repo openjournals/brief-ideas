@@ -16,17 +16,17 @@
         <td><%= idea.created_at %></td>
         <td><%= link_to idea.user.nice_name, idea.user.orcid_url, :target => "_blank" %></td>
         <% if idea.published? %>
-        <td><%= button_to 'Publish', publish_admin_path(idea), :class => 'btn btn-xs btn-success', :disabled => "disabled" %></td>
+        <td><%= button_to 'Published', publish_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
         <% else %>
         <td><%= button_to 'Publish', mute_admin_path(idea), :class => 'btn btn-xs btn-success' %></td>
         <% end %>
         <% if idea.muted? %>
-        <td><%= button_to 'Mute', mute_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
+        <td><%= button_to 'Muted', mute_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
         <% else %>
         <td><%= button_to 'Mute', mute_admin_path(idea), :class => 'btn btn-warning btn-xs' %></td>
         <% end %>
         <% if idea.deleted? %>
-        <td><%= button_to 'Reject', reject_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
+        <td><%= button_to 'Rejected', reject_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
         <% else %>
         <td><%= button_to 'Reject', reject_admin_path(idea), :class => 'btn btn-danger btn-xs' %></td>
         <% end %>
