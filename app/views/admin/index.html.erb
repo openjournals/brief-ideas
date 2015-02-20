@@ -18,7 +18,7 @@
         <% if idea.published? %>
         <td><%= button_to 'Published', publish_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
         <% else %>
-        <td><%= button_to 'Publish', mute_admin_path(idea), :class => 'btn btn-xs btn-success' %></td>
+        <td><%= button_to 'Publish', publish_admin_path(idea), :class => 'btn btn-xs btn-success' %></td>
         <% end %>
         <% if idea.muted? %>
         <td><%= button_to 'Muted', mute_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
