@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (4.0.8)
     actionmailer (4.1.8)
       actionpack (= 4.1.8)
       actionview (= 4.1.8)
@@ -249,6 +250,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aasm (~> 4.0.8)
   bootstrap-typeahead-rails
   capybara (~> 2.4.4)
   coffee-rails (~> 4.0.0)

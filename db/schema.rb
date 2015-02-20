@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150218162759) do
+ActiveRecord::Schema.define(version: 20150219053225) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20150218162759) do
   add_index "ideas", ["deleted"], name: "index_ideas_on_deleted", using: :btree
   add_index "ideas", ["muted"], name: "index_ideas_on_muted", using: :btree
   add_index "ideas", ["score"], name: "index_ideas_on_score", using: :btree
+  add_index "ideas", ["state"], name: "index_ideas_on_state", using: :btree
   add_index "ideas", ["tags"], name: "index_ideas_on_tags", using: :gin
   add_index "ideas", ["view_count"], name: "index_ideas_on_view_count", using: :btree
   add_index "ideas", ["vote_count"], name: "index_ideas_on_vote_count", using: :btree

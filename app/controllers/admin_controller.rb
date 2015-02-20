@@ -9,15 +9,21 @@ class AdminController < ApplicationController
     end
   end
 
+  def publish
+    @idea = Idea.find_by_sha(params[:id])
+    @idea.publish!
+    redirect_to admin_index_url, :notice => "Idea published"
+  end
+
   def mute
     @idea = Idea.find_by_sha(params[:id])
     @idea.mute!
     redirect_to admin_index_url, :notice => "Idea muted"
   end
 
-  def delete
+  def reject
     @idea = Idea.find_by_sha(params[:id])
-    @idea.delete!
-    redirect_to admin_index_url, :notice => "Idea removed"
+    @idea.reject!
+    redirect_to admin_index_url, :notice => "Idea rejected"
   end
 end

@@ -17,7 +17,8 @@ Rails.application.routes.draw do
   resources :admin do
     member do
       post :mute
-      post :delete
+      post :reject
+      post :publish
     end
   end
 

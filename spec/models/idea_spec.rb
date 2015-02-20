@@ -13,21 +13,28 @@ describe Idea do
   it { should have_many(:citations) }
   it { should have_many(:references) }
 
-  it "should initialize properly (including queueing ZenodoWorker)" do
+  it "should initialize properly (including NOT queueing ZenodoWorker)" do
     paper = create(:idea)
 
     assert !paper.sha.nil?
     expect(paper.sha.length).to eq(32)
-    expect(ZenodoWorker.jobs.size).to eq(1)
+    expect(paper.state).to eq('pending')
+    expect(ZenodoWorker.jobs.size).to eq(0)
     expect(RatingWorker.jobs.size).to eq(0)
     expect {paper.notify}.to change { ActionMailer::Base.deliveries.count }.by(1)
   end
 
+  it "should queue ZenodoWorker when published" do
+    idea = create(:idea)
+    idea.publish!
+
+    expect(ZenodoWorker.jobs.size).to eq(1)
+  end
 
   it "should be properly ranked when searching for similar ideas" do
-    paper1 = create(:idea, :title => 'Blah', :body => "The domestic cat (Felis catus or Felis silvestris catus) is a small, usually furry, domesticated, and carnivorous mammal. It is often called a housecat when kept as an indoor pet.")
-    paper2 = create(:idea, :title => 'Foo', :body => "The domestic dog (Canis lupus familiaris) is a canid that is known as man's best friend. The dog was the first domesticated animal and has been widely kept as a working, hunting, and pet companion")
-    paper3 = create(:idea, :title => 'Foo', :body => "Dogs are friends")
+    paper1 = create(:published_idea, :title => 'Blah', :body => "The domestic cat (Felis catus or Felis silvestris catus) is a small, usually furry, domesticated, and carnivorous mammal. It is often called a housecat when kept as an indoor pet.")
+    paper2 = create(:published_idea, :title => 'Foo', :body => "The domestic dog (Canis lupus familiaris) is a canid that is known as man's best friend. The dog was the first domesticated animal and has been widely kept as a working, hunting, and pet companion")
+    paper3 = create(:published_idea, :title => 'Foo', :body => "Dogs are friends")
 
     results = Idea.similar_ideas("dogs are a man's best friend", 2)
 
@@ -93,8 +100,8 @@ describe Idea do
 
   # Tags
   it "should know what all of the tags available are" do
-    create(:idea, :tags => ['so', 'very'])
-    create(:idea, :tags => ['very', 'funky', 'yeah'])
+    create(:idea, :tags => ['so', 'very']).publish
+    create(:idea, :tags => ['very', 'funky', 'yeah']).publish
 
     ['so', 'very', 'funky', 'yeah'].each do |tag|
       assert Idea.all_tags.include?(tag)

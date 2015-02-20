@@ -17,11 +17,11 @@ describe 'ideas/show.html.erb' do
     end
   end
 
-  context 'logged in' do
+  context 'logged in as author' do
     it "should render properly" do
       user = create(:user)
       allow(view).to receive(:current_user).and_return(user)
-      idea = create(:idea, :tags => ['jelly'])
+      idea = create(:idea, :tags => ['jelly'], :user => user)
       assign(:idea, idea)
 
       render :template => "ideas/show.html.erb"
@@ -30,6 +30,24 @@ describe 'ideas/show.html.erb' do
       expect(rendered).to have_content idea.title
       expect(rendered).to have_content idea.user.nice_name
       expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
+      expect(rendered).to have_content 'pending acceptance'
+    end
+  end
+
+  context 'logged in as author' do
+    it "should render properly for rejected idea" do
+      user = create(:user)
+      allow(view).to receive(:current_user).and_return(user)
+      idea = create(:rejected_idea, :tags => ['jelly'], :user => user)
+      assign(:idea, idea)
+
+      render :template => "ideas/show.html.erb"
+
+      expect(rendered).to have_content user.nice_name
+      expect(rendered).to have_content idea.title
+      expect(rendered).to have_content idea.user.nice_name
+      expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
+      expect(rendered).to have_content 'not accepted'
     end
   end
 end

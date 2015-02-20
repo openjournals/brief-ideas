@@ -28,9 +28,9 @@ describe IdeasController, :type => :controller do
 
   describe "GET #trending" do
     it "doesn't show the muted and deleted ideas" do
-      idea = create(:idea, :muted => true, :title => "mute me")
-      idea = create(:idea, :muted => false, :title => "not muted")
-      idea = create(:idea, :deleted => true, :title => "deleted idea")
+      idea = create(:published_idea, :muted => true, :title => "mute me")
+      idea = create(:published_idea, :muted => false, :title => "not muted")
+      idea = create(:published_idea, :deleted => true, :title => "deleted idea")
 
       get :trending
 
@@ -42,9 +42,9 @@ describe IdeasController, :type => :controller do
 
   describe "GET #index" do
     it "doesn't show the muted and deleted ideas" do
-      idea = create(:idea, :muted => true, :title => "mute me")
-      idea = create(:idea, :muted => false, :title => "not muted")
-      idea = create(:idea, :deleted => true, :title => "deleted idea")
+      idea = create(:published_idea, :muted => true, :title => "mute me")
+      idea = create(:published_idea, :muted => false, :title => "not muted")
+      idea = create(:published_idea, :deleted => true, :title => "deleted idea")
 
       get :index
 
@@ -56,9 +56,9 @@ describe IdeasController, :type => :controller do
 
   describe "GET #all" do
     it "doesn't show the deleted ideas or the muted ones" do
-      idea = create(:idea, :muted => true, :title => "mute me")
-      idea = create(:idea, :muted => false, :title => "not muted")
-      idea = create(:idea, :deleted => true, :title => "deleted idea")
+      idea = create(:published_idea, :muted => true, :title => "mute me")
+      idea = create(:published_idea, :muted => false, :title => "not muted")
+      idea = create(:published_idea, :deleted => true, :title => "deleted idea")
 
       get :all
 
@@ -70,7 +70,7 @@ describe IdeasController, :type => :controller do
 
   describe "GET #index with JSON" do
     it "should respond with JSON array" do
-      idea = create(:idea, :tags => ['tag'])
+      idea = create(:published_idea, :tags => ['tag'])
       get :index, :format => :json
 
       expect(response).to be_success
@@ -81,7 +81,7 @@ describe IdeasController, :type => :controller do
 
   describe "GET #index with Atom" do
     it "should respond with an Atom feed" do
-      idea = create(:idea, :tags => ['tag'])
+      idea = create(:published_idea, :tags => ['tag'])
       get :index, :format => :atom
 
       expect(response).to be_success
@@ -93,7 +93,7 @@ describe IdeasController, :type => :controller do
 
   describe "GET #trending with JSON" do
     it "should respond with JSON array" do
-      idea = create(:idea, :tags => ['tag'], :score => 100)
+      idea = create(:published_idea, :tags => ['tag'], :score => 100)
       create(:idea, :score => 10)
       get :trending, :format => :json
 
@@ -103,31 +103,60 @@ describe IdeasController, :type => :controller do
     end
   end
 
-  describe "GET #show" do
-    it "NOT LOGGED IN responds with success" do
+  describe "GET #show for unpublished idea" do
+    it "NOT LOGGED IN responds with redirect" do
       idea = create(:idea)
+      get :show, :id => idea.to_param, :format => :html
+      expect(response).to be_redirect
+    end
+  end
+
+  describe "GET #show for published idea" do
+    it "NOT LOGGED IN responds with success" do
+      idea = create(:published_idea)
       get :show, :id => idea.to_param, :format => :html
       expect(response).to be_success
     end
   end
 
-  describe "GET #show" do
-    it "LOGGED IN responds with success" do
+  describe "GET #show for an unpublished idea" do
+    it "LOGGED IN (not as author) responds with redirect" do
       user = create(:user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
 
       idea = create(:idea)
+      get :show, :id => idea.to_param, :format => :html
+      expect(response).to be_redirect
+    end
+  end
+
+  describe "GET #show for an unpublished idea" do
+    it "LOGGED IN (as author) responds with success" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:idea, :user => user)
+      get :show, :id => idea.to_param, :format => :html
+      expect(response).to be_success
+    end
+  end
+
+  describe "GET #show for a published idea" do
+    it "LOGGED IN (not as author) responds with success" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:published_idea)
       get :show, :id => idea.to_param, :format => :html
       expect(response).to be_success
     end
   end
 
   describe "GET #show with JSON" do
-    it "responds with JSON object" do
+    it "responds with redirect" do
       idea = create(:idea)
       get :show, :id => idea.to_param, :format => :json
-      expect(response).to be_success
-      assert_equal hash_from_json(response.body)["sha"], idea.sha
+      expect(response).to be_redirect
     end
   end
 
@@ -157,6 +186,9 @@ describe IdeasController, :type => :controller do
       post :create, :idea => idea_params
       expect(response).to be_redirect # as it's created the thing
       expect(Idea.count).to eq(idea_count + 1)
+
+      # Need to call this to trigger the tag updating etc.
+      Idea.last.publish
 
       # Tags should be made lower case on creation
       assert !Idea.all_tags.include?("Hello")
@@ -193,6 +225,9 @@ describe IdeasController, :type => :controller do
       expect(parent_idea.citations.count).to eq(1)
       expect(Idea.by_date.first.references.count).to eq(1)
 
+      # Need to call this to trigger the tag updating etc.
+      Idea.last.publish
+
       # Tags should be made lower case on creation
       assert !Idea.all_tags.include?("Hello")
       assert Idea.all_tags.include?("hello")
@@ -212,7 +247,7 @@ describe IdeasController, :type => :controller do
     it "LOGGED IN should hide the idea" do
       user = create(:user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
-      idea = create(:idea, :title => "About to be hidden")
+      idea = create(:published_idea, :title => "About to be hidden")
       request.env["HTTP_REFERER"] = ideas_path
 
       post :hide, :id => idea.sha
