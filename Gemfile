@@ -25,6 +25,7 @@ gem 'sidekiq', '~> 3.2.6'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'swiftype', '~> 1.1.0'
 gem 'turbolinks'
+gem 'twitter', '~> 5.14.0'
 gem 'bootstrap-typeahead-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'unicorn'
