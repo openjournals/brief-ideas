@@ -26,4 +26,10 @@ class AdminController < ApplicationController
     @idea.reject!
     redirect_to admin_index_url, :notice => "Idea rejected"
   end
+
+  def tweet
+    @idea = Idea.find_by_sha(params[:id])
+    @idea.tweet!
+    redirect_to admin_index_url, :notice => "Idea tweeted"
+  end
 end

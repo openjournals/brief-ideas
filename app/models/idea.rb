@@ -1,4 +1,5 @@
 require 'html/pipeline'
+require 'twitter'
 
 class Idea < ActiveRecord::Base
   include AASM
@@ -67,6 +68,11 @@ class Idea < ActiveRecord::Base
     else
       return false
     end
+  end
+
+  def tweet!
+    TWITTER.update("#{title}\nBy: #{user.nice_name}\nhttp://beta.briefideas.org/ideas/#{sha}")
+    self.update_columns(:tweeted => true)
   end
 
   # TODO - test these regexes and work out what to do with non-JOBI references
