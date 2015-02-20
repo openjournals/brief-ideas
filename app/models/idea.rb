@@ -71,7 +71,7 @@ class Idea < ActiveRecord::Base
   end
 
   def tweet!
-    TWITTER.update("#{title}\nBy: #{user.nice_name}\nhttp://beta.briefideas.org/ideas/#{sha}")
+    TWITTER.update("#{title} - #{user.nice_name}\n\nhttp://beta.briefideas.org/ideas/#{sha}")
     self.update_columns(:tweeted => true)
   end
 
