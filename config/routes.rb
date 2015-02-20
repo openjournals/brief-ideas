@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get '/idea_title_lookup' , to: "ideas#lookup_title", as: 'idea_title_lookup'
 
   get '/trending', :to => 'ideas#trending', :as => 'trending'
+  get '/boom', :to => 'ideas#boom'
   get '/all', :to => 'ideas#all', :as => 'all'
   get '/about', :to => 'ideas#about', :as => 'about'
   get '/search', :to => 'search#search', :as => 'search'

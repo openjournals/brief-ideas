@@ -93,6 +93,10 @@ class IdeasController < ApplicationController
 
   end
 
+  def boom
+    raise "Hell"
+  end
+
   def lookup_title
     @results = Idea.fuzzy_search_by_title(params[:query]).limit(3)
     respond_with @results
