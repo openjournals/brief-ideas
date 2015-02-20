@@ -25,6 +25,7 @@ class Idea < ActiveRecord::Base
 
   belongs_to :user
   has_many :votes
+  has_many :audit_logs
 
   # Citations/references
   has_many :idea_references

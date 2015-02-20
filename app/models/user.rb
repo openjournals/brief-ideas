@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_many :ideas
   has_many :votes
+  has_many :audit_logs
 
   before_create :set_sha
 
