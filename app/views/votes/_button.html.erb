@@ -1,16 +1,19 @@
 <% if current_user && idea.voted_on_by?(current_user) %>
-  <button type="button" class="btn btn-default btn-xs vote voted pull-left">
+  <button type="button" class="btn btn-default btn-xs vote voted pull-left" title="You've voted for this idea." data-toggle="tooltip" data-placement="bottom">
     <%= pluralize(idea.current_vote, 'vote') %>
   </button>
+  <%= button_to({ :controller => 'ideas', :action => "hide", :id => idea.sha }, :class => "btn btn-default btn-xs dismiss pull-left", :title => "Click 'Hide' to stop showing this idea", :data => {:toggle => "tooltip", :placement => "bottom"}) do %>
+    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Hide
+  <% end %>
 <% elsif current_user %>
-  <%= button_to({ :controller => 'votes', :action => "create", :idea_id => idea.id }, :remote => true, :class => "btn btn-default btn-xs vote pull-left") do %>
+  <%= button_to({ :controller => 'votes', :action => "create", :idea_id => idea.id }, :remote => true, :class => "btn btn-default btn-xs vote pull-left", :title => "Click to vote for this idea", :data => {:toggle => "tooltip", :placement => "bottom"}) do %>
     <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <%= pluralize(idea.current_vote, 'vote') %>
   <% end %>
-  <%= button_to({ :controller => 'ideas', :action => "hide", :id => idea.sha }, :class => "btn btn-default btn-xs dismiss pull-left") do %>
+  <%= button_to({ :controller => 'ideas', :action => "hide", :id => idea.sha }, :class => "btn btn-default btn-xs dismiss pull-left", :title => "Click 'Hide' to stop showing this idea", :data => {:toggle => "tooltip", :placement => "bottom"}) do %>
     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Hide
   <% end %>
 <% else %>
-  <button type="button" class="btn btn-default btn-xs vote voted pull-left" disabled="disabled">
+  <button type="button" class="btn btn-default btn-xs vote voted pull-left" disabled="disabled" title="Sign in to vote on this idea" data-toggle="tooltip" data-placement="bottom">
     <%= pluralize(idea.current_vote, 'vote') %>
   </button>
 <% end %>

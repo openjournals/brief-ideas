@@ -3,6 +3,8 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
+  $("[data-toggle='tooltip']").tooltip()
+
   counter = ->
     value = $("#idea-body").val()
     if value.length is 0
