@@ -29,7 +29,7 @@
       <p><%= raw @idea.formatted_body %></p>
 
       <%= render :partial => 'ideas/references', :locals => { :references => @idea.references } if @idea.references.any? %>
-      <%= render :partial => 'ideas/derivatives', :locals => { :idea => @idea } if @idea.citations.any? %>
+      <%= render :partial => 'ideas/derivatives', :locals => { :idea => @idea } if @idea.citations.published.any? %>
     </div>
   </div>
   <div class="col-sm-3 col-sm-offset-1">

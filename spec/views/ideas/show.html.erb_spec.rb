@@ -41,6 +41,11 @@ describe 'ideas/show.html.erb' do
       idea = create(:rejected_idea, :tags => ['jelly'], :user => user)
       assign(:idea, idea)
 
+      3.times do
+        citing_idea = create(:published_idea)
+        citing_idea.idea_references.create(:referenced_id => idea.id)
+      end
+
       render :template => "ideas/show.html.erb"
 
       expect(rendered).to have_content user.nice_name
@@ -48,6 +53,29 @@ describe 'ideas/show.html.erb' do
       expect(rendered).to have_content idea.user.nice_name
       expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
       expect(rendered).to have_content 'not accepted'
+    end
+  end
+
+  context 'NOT logged in as viewer' do
+    it "should only show published derivatives" do
+      idea = create(:published_idea, :tags => ['jelly'])
+      assign(:idea, idea)
+
+      3.times do
+        citing_idea = create(:published_idea)
+        citing_idea.idea_references.create(:referenced_id => idea.id)
+      end
+
+      # This one shouldn't show
+      citing_idea = create(:rejected_idea, :title => "Not published")
+      citing_idea.idea_references.create(:referenced_id => idea.id)
+
+      render :template => "ideas/show.html.erb"
+
+      expect(rendered).to have_content idea.title
+      expect(rendered).to have_content idea.user.nice_name
+      expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
+      expect(rendered).not_to match /Not published/
     end
   end
 end
