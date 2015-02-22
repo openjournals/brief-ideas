@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery.swiftype.autocomplete
 //= require jquery.textcomplete
@@ -19,4 +18,3 @@
 //= require bootstrap-typeahead-rails
 //= require select2
 //= require_tree .
-//= require turbolinks

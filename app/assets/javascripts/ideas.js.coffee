@@ -40,6 +40,7 @@ $ ->
       success  : (res, status, xhr) ->
         $(e.currentTarget).find('#modalIdeaTitle').html(md_title)
         $(e.currentTarget).find('#modalIdeaBody').html(res)
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "modalIdeaBody"]);
       error    : (xhr, status, err) ->
         alert "There was a problem with the idea preview"
       complete : (xhr, status) ->
