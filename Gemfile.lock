@@ -73,6 +73,7 @@ GEM
     github-markdown (0.6.7)
     hashie (3.3.1)
     hike (1.2.3)
+    honeybadger (2.0.6)
     html-pipeline (1.11.0)
       activesupport (>= 2)
       nokogiri (~> 1.4)
@@ -273,6 +274,7 @@ DEPENDENCIES
   factory_girl_rails (~> 4.4.1)
   faraday-http-cache
   github-markdown
+  honeybadger
   html-pipeline
   impressionist (~> 1.5.1)
   informant-rails (~> 0.7.1)
