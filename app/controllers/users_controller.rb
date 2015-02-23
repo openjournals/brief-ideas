@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
   def update_email
     if current_user.update_attributes(user_params)
-      redirect_to(:back, :notice => "Email saved.")
+      redirect_to(new_idea_path, :notice => "Email saved.")
     end
   end
 

@@ -24,7 +24,6 @@ describe UsersController, :type => :controller do
 
   describe "POST #update_email" do
     it "should update their email address" do
-      request.env["HTTP_REFERER"] = new_idea_path
       user = create(:no_email_user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       params = {:email => "albert@gmail.com"}
