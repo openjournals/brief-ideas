@@ -40,7 +40,11 @@ class User < ActiveRecord::Base
   end
 
   def nice_name
-    name.split(',').collect(&:strip).reverse.join(' ')
+    if name
+      return name.split(',').collect(&:strip).reverse.join(' ')
+    else
+      return "Missing Name"
+    end
   end
 
   def orcid_url
