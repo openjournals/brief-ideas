@@ -6,7 +6,7 @@
   </div>
   <div class="form-group">
     <%= f.label :tags, :class => "full control-label" %>
-    <%= f.text_field :tags, :class => "form-control typeaheadtags", :placeholder => "Tag this idea", :value => "", :required => "" %>
+    <%= f.text_field :tags, :class => "form-control typeaheadtags", :placeholder => "Tag this idea - use a comma or tab to separate", :value => "", :required => "" %>
     <div class="help-block with-errors"></div>
   </div>
   <div class="form-group">
@@ -39,6 +39,6 @@
 <script>
   $("#new_idea .typeaheadtags").select2({
                 tags: <%= raw @tags %>,
-                tokenSeparators: [",", " "]});
+                tokenSeparators: [","]});
 
 </script>
