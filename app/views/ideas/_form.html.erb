@@ -1,3 +1,5 @@
+<%= render 'layouts/errors', :object => @idea %>
+
 <%= form_for @idea, :html => {:data => {:toggle => "validator"}} do |f| %>
   <div class="form-group">
     <%= f.label :title, :class => "control-label" %>
