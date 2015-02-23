@@ -1,0 +1,7 @@
+<%= form_tag("/users/update_email", :class => "form-inline bg-warning", :id => "email-form") do %>
+  <p>Please add an email address to your account before continuing. We'll use this to communicate the status of your idea. We promise not to spam you.</p>
+  <div class="form-group">
+    <%= email_field "user", "email", :placeholder => "your.email@example.com", :class => "form-control email-address" %>
+  </div>
+  <%= button_tag "Save", :class => "btn btn-default" %>
+<% end %>
