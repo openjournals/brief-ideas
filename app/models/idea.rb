@@ -75,11 +75,9 @@ class Idea < ActiveRecord::Base
 
   # Checks if the user has an email address on their record
   #
-  # Returns a boolean
+  # Returns nothing or false with some errors on [:base]
   def check_email
-    if self.user.email?
-      return true
-    else
+    unless self.user.email?
       errors[:base] << "You can't submit an idea without having a valid email associated with your account."
       return false
     end
