@@ -77,7 +77,8 @@ class IdeasController < ApplicationController
   def show
     @idea = Idea.find_by_sha(params[:id])
 
-    unless @idea.visible_to?(current_user)
+
+    unless @idea && @idea.visible_to?(current_user)
       redirect_to ideas_path and return
     end
 
