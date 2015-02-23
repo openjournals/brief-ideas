@@ -103,7 +103,7 @@ class IdeasController < ApplicationController
     respond_with @results
   end
 
-  private
+private
 
   def idea_params
     params.require(:idea).permit(:title, :body, :subject, :tags, :citation_ids)

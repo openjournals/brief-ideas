@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   end
 
   get '/user_lookup', to: "users#lookup", as: 'user_lookup'
+  post '/users/update_email', to: 'users#update_email'
   get '/idea_title_lookup', to: "ideas#lookup_title", as: 'idea_title_lookup'
 
   get '/admin/audits/:id', to: "admin#audits", as: 'admin_audits'

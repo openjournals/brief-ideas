@@ -34,7 +34,7 @@ class Idea < ActiveRecord::Base
   has_many :idea_citations, :class_name => 'IdeaReference', :foreign_key => 'referenced_id'
   has_many :citations, :through => :idea_citations, :source => 'idea'
 
-  before_create :set_sha, :check_user_idea_count, :parse_references
+  before_create :set_sha, :check_user_idea_count, :parse_references, :check_email
   after_create :notify
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
@@ -73,6 +73,20 @@ class Idea < ActiveRecord::Base
     end
   end
 
+  # Checks if the user has an email address on their record
+  #
+  # Returns nothing or false with some errors on [:base]
+  def check_email
+    unless self.user.email?
+      errors[:base] << "You can't submit an idea without having a valid email associated with your account."
+      return false
+    end
+  end
+
+  # Posts a tweet with the idea title, author name and link and updates the
+  # boolean 'tweeted' field
+  #
+  # Returns nothing
   def tweet!
     TWITTER.update("#{title} - #{user.nice_name}\n\nhttp://beta.briefideas.org/ideas/#{sha}")
     self.update_columns(:tweeted => true)

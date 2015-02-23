@@ -74,6 +74,13 @@ describe Idea do
     assert idea.voted_on_by?(user)
   end
 
+  it "should not be created if the owner doesn't have an email" do
+    user = create(:no_email_user)
+    idea = build(:idea, :user => user)
+    idea.save
+    expect(idea.errors[:base]).to eq(["You can't submit an idea without having a valid email associated with your account."])
+  end
+
   it "should know who its #creator is" do
     user = create(:user)
     idea = create(:idea, :user => user)
