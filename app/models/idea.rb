@@ -88,7 +88,7 @@ class Idea < ActiveRecord::Base
   #
   # Returns nothing
   def tweet!
-    TWITTER.update("#{title} - #{user.nice_name}\n\nhttp://beta.briefideas.org/ideas/#{sha}")
+    TWITTER.update("#{title.truncate(80)} - #{user.nice_name}\n\nhttp://beta.briefideas.org/ideas/#{sha}")
     self.update_columns(:tweeted => true)
   end
 
