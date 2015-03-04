@@ -37,7 +37,8 @@ class ZenodoWorker
         :creators => [{:name => idea.user.name, :affiliation => "", :orcid => idea.user.uid}],
         :keywords => idea.tags,
         :communities => [{:identifier => "briefideas"}],
-        :license => "cc-by"
+        :license => "cc-by",
+        :related_identifiers => [{:relation => "isIdenticalTo", :identifier => "http://beta.briefideas.org/ideas/#{idea.sha}"}]
       }
     }.to_json
   end
