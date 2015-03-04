@@ -7,10 +7,12 @@ describe ZenodoWorker do
   before(:each) do
     Sidekiq::Worker.clear_all
     Idea.destroy_all
+    # Don't want to regenerate the SHA for these tests (so SHA is set for mocks)
+    allow_any_instance_of(Idea).to receive(:set_sha).and_return(true)
   end
 
   it "should assign a DOI to the idea once processed." do
-    idea = build(:idea)
+    idea = build(:idea_with_sha)
     idea.save
 
     ZenodoWorker.new.perform(idea.sha)
@@ -18,7 +20,7 @@ describe ZenodoWorker do
   end
 
   it "should create the correct number of jobs" do
-    idea = build(:idea)
+    idea = build(:idea_with_sha)
     idea.save
 
     expect {
@@ -27,7 +29,7 @@ describe ZenodoWorker do
   end
 
   it "should call RestClient three times and Swiftype::Client once" do
-    idea = build(:idea)
+    idea = build(:idea_with_sha)
     idea.save
 
     RestClient.expects(:post).times(3)
