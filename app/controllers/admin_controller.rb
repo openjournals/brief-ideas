@@ -41,6 +41,13 @@ class AdminController < ApplicationController
     redirect_to admin_index_url, :notice => "Idea tweeted"
   end
 
+  def remove_comment
+    @comment = Comment.find(params[:id])
+    @idea = @comment.commentable
+    @comment.destroy
+    redirect_to idea_path(@idea), :warning => "Comment removed"
+  end
+
 protected
 
   def audit(action, user)

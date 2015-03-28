@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       post :reject
       post :publish
       post :tweet
+      get :remove_comment
     end
   end
 
