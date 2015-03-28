@@ -34,7 +34,7 @@
 
       <div id="comments_<%= @idea.sha %>">
         <% if @idea.comments.any? %>
-          <h5>Comments</h5>
+          <h4>Comments</h4>
         <% end %>
         <%= render :partial => "comment", :collection => @idea.comments %>
       </div>
