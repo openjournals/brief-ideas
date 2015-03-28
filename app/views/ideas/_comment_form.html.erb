@@ -1,5 +1,5 @@
 <% if current_user %>
-  <%= form_for idea, :url => add_comment_idea_path(idea), :method => :post, :html => {:data => {:toggle => "validator"}} do |f| %>
+  <%= form_for idea, :url => add_comment_idea_path(idea), :method => :post, :remote => true, :html => {:data => {:toggle => "validator"}} do |f| %>
   <%= text_area :comment, :comment, :rows => 5, :cols => 100, :class => "form-control", "placeholder" => "Add comment (100 words or fewer)", :required => "" %>
   <div class="help-block with-errors"></div>
 
