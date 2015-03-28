@@ -33,6 +33,9 @@
       <%= render :partial => 'ideas/derivatives', :locals => { :idea => @idea } if @idea.citations.published.any? %>
 
       <div id="comments_<%= @idea.sha %>">
+        <% if @idea.comments.any? %>
+          <h5>Comments</h5>
+        <% end %>
         <%= render :partial => "comment", :collection => @idea.comments %>
       </div>
 
