@@ -196,6 +196,20 @@ describe IdeasController, :type => :controller do
     end
   end
 
+  describe "POST #add_comment" do
+    it "LOGGED IN responds with success" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      idea = create(:published_idea)
+      comment_params = {:comment => "This is sooo good. You're the best."}
+
+      post :add_comment, :id => idea.sha, :comment => comment_params, :format => :js
+
+      expect(response).to be_success
+      expect(idea.reload.comments.size).to eq(1)
+    end
+  end
+
   describe "GET #lookup" do
     it "responds with correct fuzzy search matches" do
       idea1 = create(:idea, title:"A idea about who ideas rock")

@@ -51,6 +51,21 @@ class IdeasController < ApplicationController
     end
   end
 
+  def add_comment
+    @idea = Idea.find_by_sha(params[:id])
+    @comment = @idea.comments.build(comment_params)
+    @comment.user = current_user
+
+    if @comment.save
+      respond_to do |format|
+        format.js
+        format.html { redirect_to(:back, :notice => "Comment added")}
+      end
+    else
+      redirect_to(:back)
+    end
+  end
+
   def preview
     filter = HTML::Pipeline::MarkdownFilter.new(params[:idea])
     render :text => filter.call
@@ -107,5 +122,9 @@ private
 
   def idea_params
     params.require(:idea).permit(:title, :body, :subject, :tags, :citation_ids)
+  end
+
+  def comment_params
+    params.require(:comment).permit(:comment)
   end
 end

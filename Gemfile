@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 gem 'aasm', '~> 4.0.8'
 gem 'coffee-rails', '~> 4.0.0'
+gem 'acts_as_commentable', '~> 4.0.2'
 gem 'faraday-http-cache'
 gem 'github-markdown'
 gem 'honeybadger'

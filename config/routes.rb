@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :ideas do
     member do
       post :hide
+      post :add_comment
     end
 
     collection do
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
       post :reject
       post :publish
       post :tweet
+      get :remove_comment
     end
   end
 

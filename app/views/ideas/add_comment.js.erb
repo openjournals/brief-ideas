@@ -1,0 +1,1 @@
+$("#comments_<%= @idea.sha %>").append('<%= escape_javascript render :partial => "comment", :locals => { :comment => @comment } %>');

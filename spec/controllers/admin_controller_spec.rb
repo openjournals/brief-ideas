@@ -67,4 +67,18 @@ describe AdminController, :type => :controller do
       assert_equal idea.audit_logs.count, 1
     end
   end
+
+  describe "GET #remove_comment" do
+    it "LOGGED IN responds with success and removes the comment" do
+      user = create(:admin_user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      idea = create(:idea)
+      comment = create(:comment, :commentable_id => idea.id, :commentable_type => "Idea")
+
+      get :remove_comment, :id => comment.to_param, :format => :html
+
+      expect(response).to be_redirect # as it's removed the thing
+      assert_equal idea.comments.count, 0
+    end
+  end
 end

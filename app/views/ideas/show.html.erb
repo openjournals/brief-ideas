@@ -6,6 +6,7 @@
   <div class="col-sm-8">
     <div class="idea single">
       <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+      <%= render 'layouts/errors', :object => @idea %>
 
       <% if @idea.pending? %>
         <div class="alert alert-warning" role="alert">
@@ -30,6 +31,12 @@
 
       <%= render :partial => 'ideas/references', :locals => { :references => @idea.references } if @idea.references.any? %>
       <%= render :partial => 'ideas/derivatives', :locals => { :idea => @idea } if @idea.citations.published.any? %>
+
+      <div id="comments_<%= @idea.sha %>">
+        <%= render :partial => "comment", :collection => @idea.comments %>
+      </div>
+
+      <%= render :partial => "comment_form", :locals => { :idea => @idea } %>
     </div>
   </div>
   <div class="col-sm-3 col-sm-offset-1">

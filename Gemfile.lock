@@ -28,6 +28,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    acts_as_commentable (4.0.2)
     addressable (2.3.6)
     arel (5.0.1.20140414130214)
     bootstrap-typeahead-rails (0.10.5.1)
@@ -267,6 +268,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm (~> 4.0.8)
+  acts_as_commentable (~> 4.0.2)
   bootstrap-typeahead-rails
   capybara (~> 2.4.4)
   coffee-rails (~> 4.0.0)
