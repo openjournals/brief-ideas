@@ -76,6 +76,7 @@ describe 'ideas/show.html.erb' do
       expect(rendered).to have_content idea.user.nice_name
       expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
       expect(rendered).not_to match /Not published/
+      expect(rendered).to match /Please log in to add a comment/
     end
   end
 end

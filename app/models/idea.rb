@@ -2,6 +2,7 @@ require 'html/pipeline'
 require 'twitter'
 
 class Idea < ActiveRecord::Base
+  acts_as_commentable
   include AASM
 
   aasm :column => :state do

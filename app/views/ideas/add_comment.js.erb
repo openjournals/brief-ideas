@@ -1,0 +1,1 @@
+$("#button_<%= @idea.id %>").append('<%= escape_javascript render :partial => "comment", :locals => { :comment => @comment } %>');

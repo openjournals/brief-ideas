@@ -1,0 +1,6 @@
+<div class="media">
+  <div class="media-body">
+    <p><%= comment.comment %></p>
+    <h5 class="media-heading"><%= link_to comment.user.nice_name, comment.user.orcid_url, :target => "_blank" %>, <%= comment.created_at.strftime("%e %b, %Y") %></h5>
+  </div>
+</div>
