@@ -35,7 +35,7 @@ If we go back into the vaults of history, we find the original scientific journa
 
 ## Development status
 
-This is very much a work in progress. We've got a [milestone tracking](https://github.com/openjournals/brief-ideas/milestones) the beta release.
+This is very much a work in progress but we feel like it's in good enough shape to start using.
 
 ### Is it green?
 
