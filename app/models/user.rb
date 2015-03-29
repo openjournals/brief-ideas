@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_many :ideas
   has_many :votes
   has_many :audit_logs
+  has_many :collections
 
   before_create :set_sha
 

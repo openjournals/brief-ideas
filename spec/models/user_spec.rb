@@ -3,6 +3,7 @@ require 'rails_helper'
 describe User do
   it { should have_many(:ideas) }
   it { should have_many(:votes) }
+  it { should have_many(:collections) }
 
   it "should initialize properly" do
     user = create(:user)

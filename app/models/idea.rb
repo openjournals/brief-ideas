@@ -28,6 +28,9 @@ class Idea < ActiveRecord::Base
   has_many :votes
   has_many :audit_logs
 
+  has_many :collection_ideas
+  has_many :collections, :through => :collection_ideas
+
   # Citations/references
   has_many :idea_references
   has_many :references, :through => :idea_references, :source => 'referenced'
