@@ -48,6 +48,12 @@ describe Idea do
     expect(paper.formatted_body).to eq("<h1>Title</h1>")
   end
 
+  it "should be able to return formatted title" do
+    paper = create(:idea, :title => "**Hello**")
+
+    expect(paper.formatted_title).to eq("<p><strong>Hello</strong></p>")
+  end
+
   it "should santize bad stuff" do
     paper = create(:idea, :body => "Hello, <script>alert('I am a bad guy');</script>")
 
