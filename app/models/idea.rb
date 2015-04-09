@@ -145,6 +145,15 @@ class Idea < ActiveRecord::Base
     user
   end
 
+  def formatted_title
+    pipeline = HTML::Pipeline.new [
+      HTML::Pipeline::MarkdownFilter,
+      HTML::Pipeline::SanitizationFilter
+    ]
+    result = pipeline.call(title)
+    result[:output].to_s
+  end
+
   def formatted_body
     pipeline = HTML::Pipeline.new [
       HTML::Pipeline::MarkdownFilter,
