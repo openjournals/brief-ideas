@@ -1,6 +1,6 @@
 <div class="media">
   <div class="media-body">
-    <p><%= comment.comment %></p>
+    <p><%= raw comment.formatted_comment %></p>
     <h5 class="media-heading"><%= link_to comment.user.nice_name, comment.user.orcid_url, :target => "_blank" %> &middot; <%= comment.created_at.strftime("%e %b, %Y") %><% if current_user && current_user.admin? %> &middot; <%= link_to "Remove", remove_comment_admin_path(comment) %><% end %></h5>
   </div>
 </div>
