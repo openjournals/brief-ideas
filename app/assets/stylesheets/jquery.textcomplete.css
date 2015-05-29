@@ -16,7 +16,11 @@
 
 .dropdown-menu li:hover,
 .dropdown-menu .active {
-    background-color: rgb(110, 183, 219);
+    /*background-color: rgb(110, 183, 219);*/
+}
+
+.dropdown-menu li.new-collection a {
+    font-weight: bold;
 }
 
 

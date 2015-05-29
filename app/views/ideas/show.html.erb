@@ -56,8 +56,7 @@
           <% current_user.collections.each do |collection| %>
           <li role="presentation"><%= link_to collection.name, add_idea_collection_path(collection.sha, :idea_id => @idea.sha), :method => :post, :tabindex => "-1" %></li>
           <% end %>
-          <li role="presentation" class="divider"></li>
-          <li role="presentation"><%= link_to "Start new collection &raquo;".html_safe, new_collection_path(:idea_id => @idea.sha), :tabindex => "-1" %></li>
+          <li role="presentation" class="new-collection"><%= link_to "Start new collection &raquo;".html_safe, new_collection_path(:idea_id => @idea.sha), :tabindex => "-1" %></li>
         </ul>
       </span>
       <p class="clearfix"></p>
