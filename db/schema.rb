@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150329002736) do
+ActiveRecord::Schema.define(version: 20150529023200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20150329002736) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "sha"
+    t.text     "description"
   end
 
   add_index "collections", ["sha"], name: "index_collections_on_sha", using: :btree

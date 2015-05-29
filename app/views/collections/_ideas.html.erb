@@ -1,0 +1,14 @@
+<div class="form-group">
+  <%= form.label :ideas, :class => "control-label" %>
+
+  <% if @collection.ideas.any? %>
+  <div class="collection-ideas">
+    <button type="button" class="btn btn-default btn-sm">
+      <%= @idea.title %> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      <%= form.hidden_field :idea_id, :value => @idea.sha %>
+    </button>
+  </div>
+  <% else %>
+    <p>This collection has no ideas</p>
+  <% end %>
+</div>

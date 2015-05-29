@@ -48,7 +48,18 @@
       <% if current_user %>
       <h5>Actions</h5>
       <div id="button_<%= @idea.id %>"><%= render :partial => "votes/button", :locals => { :idea => @idea } %></div>
-
+      <span class="dropdown">
+        <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-xs dismiss pull-left dropdown-toggle">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Collect
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="position:relative">
+          <% current_user.collections.each do |collection| %>
+          <li role="presentation"><%= link_to collection.name, add_idea_collection_path(collection.sha, :idea_id => @idea.sha), :method => :post, :tabindex => "-1" %></li>
+          <% end %>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="/collections/new?idea_id=<%= @idea.sha %>">Start new collection &raquo;</a></li>
+        </ul>
+      </span>
       <p class="clearfix"></p>
       <% end %>
 

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :ideas do
     member do
       post :hide
+      post :collect
       post :add_comment
     end
 
@@ -14,6 +15,11 @@ Rails.application.routes.draw do
 
   resources :votes, :only => :create
   resources :users, :only => :show
+  resources :collections do
+    member do
+      post :add_idea
+    end
+  end
 
   resources :admin do
     member do

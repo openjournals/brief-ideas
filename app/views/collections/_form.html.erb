@@ -1,0 +1,19 @@
+<%= render 'layouts/errors', :object => @collection %>
+
+<%= form_for @collection, :html => {:data => {:toggle => "validator"}} do |f| %>
+  <div class="form-group">
+    <%= f.label :name, :class => "control-label" %>
+    <%= f.text_field :name, :class => "form-control", "placeholder" => "Enter your collection name", :required => "" %>
+    <div class="help-block with-errors"></div>
+  </div>
+
+  <!-- <div class="form-group">
+    <%= f.label "Description", :class => "control-label" %></span>
+    <%= f.text_area :description, :rows => "4", :id => "idea-body", :placeholder => "What is this collection about? (optional)", :class => "form-control auto-complete"  %>
+    <div class="help-block with-errors"></div>
+  </div> -->
+
+  <%= render :partial => "ideas", :locals => { :form => f } %>
+
+  <%= button_tag 'Create collection', :class => 'btn btn-default' %>
+<% end %>
