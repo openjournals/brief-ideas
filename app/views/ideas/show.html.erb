@@ -57,7 +57,7 @@
           <li role="presentation"><%= link_to collection.name, add_idea_collection_path(collection.sha, :idea_id => @idea.sha), :method => :post, :tabindex => "-1" %></li>
           <% end %>
           <li role="presentation" class="divider"></li>
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="/collections/new?idea_id=<%= @idea.sha %>">Start new collection &raquo;</a></li>
+          <li role="presentation"><%= link_to "Start new collection &raquo;".html_safe, new_collection_path(:idea_id => @idea.sha), :tabindex => "-1" %></li>
         </ul>
       </span>
       <p class="clearfix"></p>
