@@ -61,4 +61,29 @@ describe CollectionsController, :type => :controller do
       expect(Collection.count).to eq(collection_count)
     end
   end
+
+  describe "GET #show with JSON" do
+    it "should respond with JSON array" do
+      collection = create(:collection)
+      idea = create(:published_idea)
+      collection.ideas << idea
+      get :show, :id => collection.to_param, :format => :json
+
+      expect(response).to be_success
+      expect(response.status).to eq(200)
+      assert_equal hash_from_json(response.body)['ideas'].first["sha"], idea.sha
+    end
+  end
+
+  describe "GET #index with Atom" do
+    it "should respond with an Atom feed" do
+      collection = create(:collection)
+      idea = create(:published_idea)
+      collection.ideas << idea
+      get :show, :id => collection.to_param, :format => :atom
+
+      expect(response).to be_success
+      expect(response.status).to eq(200)
+    end
+  end
 end

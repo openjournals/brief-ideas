@@ -11,6 +11,12 @@ class CollectionsController < ApplicationController
 
   def show
     @collection = Collection.find_by_sha(params[:id])
+
+    respond_to do |format|
+      format.atom { render :atom => @collection, :include => [ :ideas ] }
+      format.json { render :json => @collection, :include => [ :ideas ] }
+      format.html
+    end
   end
 
   def create
