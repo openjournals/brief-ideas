@@ -57,7 +57,7 @@ describe CollectionsController, :type => :controller do
       collection_params = {:name => "Boo ya collection", :idea_id => "foobar"}
       post :create, :collection => collection_params
 
-      expect(response).to be_redirect # as it's created the thing
+      expect(response).to be_redirect # as it's redirecting to new
       expect(Collection.count).to eq(collection_count)
     end
   end
