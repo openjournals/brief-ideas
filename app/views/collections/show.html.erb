@@ -8,15 +8,13 @@
     <p class="lead"><em>Curated by <%= link_to @collection.user.nice_name, user_path(@collection.user) %></em></p>
 
     <% if @collection.ideas.any? %>
-      <%= render :partial => "ideas/idea", :collection => @collection.ideas %>
+      <%= render :partial => "ideas/idea", :collection => @collection.ideas.visible %>
     <% else %>
       <p>This collection doesn't have any ideas.</p>
     <% end %>
 
   </div>
   <div class="col-sm-3 col-sm-offset-1">
-    <div class="login-block">
-      <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
-    </div>
+    <%= render :partial => 'sessions/login' %>
   </div>
 </div>

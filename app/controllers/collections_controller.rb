@@ -17,11 +17,13 @@ class CollectionsController < ApplicationController
     @collection = Collection.new(collection_params)
     @collection.user = current_user
 
-    @idea = Idea.find_by_sha(params[:collection][:idea_id])
-
-    if @collection.save
-      @collection.ideas << @idea
-      redirect_to collection_path(@collection), :notice => "Collection created"
+    if @idea = Idea.find_by_sha(params[:collection][:idea_id])
+      if @collection.save
+        @collection.ideas << @idea
+        redirect_to collection_path(@collection), :notice => "Collection created"
+      end
+    else
+      redirect_to new_collection_path, :warning => "Idea not found"
     end
   end
 
