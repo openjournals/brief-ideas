@@ -1,8 +1,7 @@
-/* Sample */
-
-.dropdown-menu {
+ul.dropdown-menu {
     border: 1px solid #ddd;
     background-color: white;
+    padding: 0px;
 }
 
 .dropdown-menu li {
@@ -14,12 +13,14 @@
     border-top: none;
 }
 
-.dropdown-menu li:hover,
-.dropdown-menu .active {
-    /*background-color: rgb(110, 183, 219);*/
+ul.dropdown-menu li a,
+ul.dropdown-menu li a:hover {
+  background-color: white;
+  padding: 5px
 }
 
-.dropdown-menu li.new-collection a {
+.dropdown-menu li.new-collection a,
+.dropdown-menu li.new-collection a:hover {
     font-weight: bold;
 }
 
