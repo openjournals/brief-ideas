@@ -6,7 +6,7 @@
   <% elsif @all %>
     <h1>All ideas</h1>
   <% else %>
-    <h1>Ideas from the last week</h1>
+    <h1>Recent ideas</h1>
   <% end %>
 </div>
 
@@ -20,7 +20,7 @@
     <% end %>
 
     <div class="text-center">
-      <%= will_paginate @ideas, renderer: BootstrapPagination::Rails %>
+      <%= will_paginate @ideas, renderer: BootstrapPagination::Rails unless @recent %>
     </div>
   </div>
 

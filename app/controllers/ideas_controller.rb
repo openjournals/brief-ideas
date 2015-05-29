@@ -3,8 +3,9 @@ class IdeasController < ApplicationController
   respond_to :json, :html, :atom
 
   def index
-    @ideas = Idea.by_date.recent.visible.for_user(current_user).paginate(:page => params[:page], :per_page => 10)
-
+    @ideas = Idea.by_date.visible.for_user(current_user).limit(10)
+    @recent = true
+    
     respond_to do |format|
       format.atom
       format.json { render :json => @ideas }
