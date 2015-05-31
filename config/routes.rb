@@ -14,7 +14,14 @@ Rails.application.routes.draw do
   end
 
   resources :votes, :only => :create
-  resources :users, :only => :show
+  
+  resources :users do
+    member do
+      get :show
+      get :collections
+    end
+  end
+
   resources :collections do
     member do
       post :add_idea

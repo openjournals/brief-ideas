@@ -18,6 +18,11 @@
   <div class="col-sm-3 col-sm-offset-1">
     <%= render :partial => 'sessions/login' %>
 
+    <div class="help-block">
+      <h5>Collections</h5>
+      <p><%= link_to "View #{@user.nice_name}'s collections", collections_user_path(@user) %></p>  
+    </div>
+
     <% unless current_user %>
     <div class="help-block">
       <h5>Welcome</h5>

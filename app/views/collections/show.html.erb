@@ -16,5 +16,10 @@
   </div>
   <div class="col-sm-3 col-sm-offset-1">
     <%= render :partial => 'sessions/login' %>
+
+    <div class="help-block">
+      <h5>Subscribe</h5>
+      <p><%= image_tag "feed-icon-14x14.png" %> &middot; <%= link_to "Subscribe to this collection", collection_path(@collection, :format => :atom) %></p>
+    </div>
   </div>
 </div>
