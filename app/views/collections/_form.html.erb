@@ -7,13 +7,7 @@
     <div class="help-block with-errors"></div>
   </div>
 
-  <!-- <div class="form-group">
-    <%= f.label "Description", :class => "control-label" %></span>
-    <%= f.text_area :description, :rows => "4", :id => "idea-body", :placeholder => "What is this collection about? (optional)", :class => "form-control auto-complete"  %>
-    <div class="help-block with-errors"></div>
-  </div> -->
-
   <%= render :partial => "ideas", :locals => { :form => f } %>
 
-  <%= button_tag 'Create collection', :class => 'btn btn-default' %>
+  <%= f.button :class => 'btn btn-default' %>
 <% end %>

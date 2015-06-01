@@ -23,24 +23,46 @@ class CollectionsController < ApplicationController
     @collection = Collection.new(collection_params)
     @collection.user = current_user
 
-    if @idea = Idea.find_by_sha(params[:collection][:idea_id])
-      if @collection.save
-        @collection.ideas << @idea
-        redirect_to collection_path(@collection), :notice => "Collection created"
-      end
-    else
-      redirect_to new_collection_path, :warning => "Idea not found"
+    if @collection.save
+      set_ideas
+      redirect_to collection_path(@collection), :notice => "Collection created"
     end
   end
 
   def edit
+    @collection = Collection.find_by_sha(params[:id])
+    redirect_to collections_path, :warning => "Collection not found" unless @collection
 
+    # Redirect if not owner
+    redirect_to collection_path(@collection) unless @collection.owner == current_user
+  end
+
+  def update
+    @collection = Collection.find_by_sha(params[:id])
+    redirect_to collections_path, :warning => "Collection not found" unless @collection
+    redirect_to collection_path(@collection) unless @collection.owner == current_user
+
+    set_ideas
+
+    redirect_to collection_path(@collection), :notice => "Collection updated"
+  end
+
+  def set_ideas
+    @collection.collection_ideas.destroy_all
+
+    # This will be empty if there are no ideas
+    return true unless params['collection']['ideas']
+
+    params['collection']['ideas'].each do |_, idea_sha|
+      @idea = Idea.find_by_sha(idea_sha)
+      @collection.ideas << @idea if @idea
+    end
   end
 
   def add_idea
     @collection = Collection.find_by_sha(params[:id])
     @idea = Idea.find_by_sha(params[:idea_id])
-    @collection.ideas << @idea
+    @collection.ideas << @idea unless @collection.ideas.include?(@idea)
     redirect_to collection_path(@collection), :notice => "Idea added"
   end
 

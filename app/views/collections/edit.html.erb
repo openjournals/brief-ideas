@@ -1,0 +1,27 @@
+<div class="page-header">
+  <h1>Edit Collection</h1>
+</div>
+
+<div class="row form">
+  <div class="col-sm-8">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+    <%= render :partial => "users/email" unless current_user.email? %>
+    <%= render :partial => "form" %>
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <div class="login-block">
+      <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
+    </div>
+
+    <div class="helper-block">
+      <h5>About Collections</h5>
+      <p>Collections are a way for you to group ideas and share these curated collections with others.</p>
+    </div>
+
+    <div class="helper-block">
+      <h5>Formatting</h5>
+      <p>You can use Markdown to format your ideas. Read more about the supported syntax <a href="https://help.github.com/articles/github-flavored-markdown/" target="_blank">here</a>.</p>
+    </div>
+
+  </div>
+</div>

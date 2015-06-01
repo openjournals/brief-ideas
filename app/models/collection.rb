@@ -8,7 +8,11 @@ class Collection < ActiveRecord::Base
   def to_param
     sha
   end
-  
+
+  def owner
+    user
+  end
+
 private
 
   def set_sha

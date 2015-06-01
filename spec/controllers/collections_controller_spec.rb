@@ -41,24 +41,10 @@ describe CollectionsController, :type => :controller do
       collection_count = Collection.count
       idea = create(:published_idea)
 
-      collection_params = {:name => "Boo ya collection", :idea_id => idea.sha}
+      collection_params = {:name => "Boo ya collection", :ideas => {'0' => idea.sha}}
       post :create, :collection => collection_params
       expect(response).to be_redirect # as it's created the thing
       expect(Collection.count).to eq(collection_count + 1)
-    end
-  end
-
-  describe "POST #create with a bad idea_id" do
-    it "LOGGED IN responds with warning" do
-      user = create(:user)
-      allow(controller).to receive_message_chain(:current_user).and_return(user)
-      collection_count = Collection.count
-
-      collection_params = {:name => "Boo ya collection", :idea_id => "foobar"}
-      post :create, :collection => collection_params
-
-      expect(response).to be_redirect # as it's redirecting to new
-      expect(Collection.count).to eq(collection_count)
     end
   end
 
@@ -84,6 +70,36 @@ describe CollectionsController, :type => :controller do
 
       expect(response).to be_success
       expect(response.status).to eq(200)
+    end
+  end
+
+  describe "GET #edit" do
+    it "NOT LOGGED IN responds with a redirect" do
+      collection = create(:collection)
+      get :edit, :id => collection.to_param, :format => :html
+      expect(response).to be_redirect
+    end
+  end
+
+  describe "GET #edit" do
+    it "LOGGED IN BUT NOT OWNER responds with a redirect" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      collection = create(:collection)
+
+      get :edit, :id => collection.to_param, :format => :html
+      expect(response).to be_redirect
+    end
+  end
+
+  describe "GET #edit" do
+    it "LOGGED IN BUT AS OWNER responds with success" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      collection = create(:collection, :user => user)
+
+      get :edit, :id => collection.to_param, :format => :html
+      expect(response).to be_success
     end
   end
 end
