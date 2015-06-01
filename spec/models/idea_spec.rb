@@ -12,6 +12,8 @@ describe Idea do
   it { should have_many(:votes) }
   it { should have_many(:citations) }
   it { should have_many(:references) }
+  it { should have_many(:collection_ideas) }
+  it { should have_many(:collections) }
 
   it "should initialize properly (including NOT queueing ZenodoWorker)" do
     paper = create(:idea)

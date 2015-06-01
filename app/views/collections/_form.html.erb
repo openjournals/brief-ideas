@@ -1,0 +1,15 @@
+<%= render 'layouts/errors', :object => @collection %>
+
+<%= form_for @collection, :html => {:data => {:toggle => "validator"}} do |f| %>
+  <div class="form-group">
+    <%= f.label :name, :class => "control-label" %>
+    <%= f.text_field :name, :class => "form-control", "placeholder" => "Enter your collection name", :required => "" %>
+    <div class="help-block with-errors"></div>
+  </div>
+
+  <%= render :partial => "ideas", :locals => { :form => f } %>
+
+  <%= f.button :class => 'btn btn-default' %>
+<% end %>
+
+<%= button_to "Delete Collection", collection_path(:id => @collection.to_param), :method => :delete, :class => 'btn btn-danger', :style => "width:140px;margin-top:5px", :data => {:confirm => 'Are you sure?'} unless @collection.new_record? %>

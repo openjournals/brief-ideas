@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150326225805) do
+ActiveRecord::Schema.define(version: 20150529023200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,28 @@ ActiveRecord::Schema.define(version: 20150326225805) do
 
   add_index "audit_logs", ["idea_id"], name: "index_audit_logs_on_idea_id", using: :btree
   add_index "audit_logs", ["user_id"], name: "index_audit_logs_on_user_id", using: :btree
+
+  create_table "collection_ideas", force: true do |t|
+    t.integer  "idea_id"
+    t.integer  "collection_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "collection_ideas", ["collection_id"], name: "index_collection_ideas_on_collection_id", using: :btree
+  add_index "collection_ideas", ["idea_id"], name: "index_collection_ideas_on_idea_id", using: :btree
+
+  create_table "collections", force: true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "sha"
+    t.text     "description"
+  end
+
+  add_index "collections", ["sha"], name: "index_collections_on_sha", using: :btree
+  add_index "collections", ["user_id"], name: "index_collections_on_user_id", using: :btree
 
   create_table "comments", force: true do |t|
     t.string   "title",            limit: 50, default: ""

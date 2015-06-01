@@ -13,7 +13,7 @@ describe 'ideas/index.html.erb' do
 
       render :template => "ideas/index.html.erb"
 
-      expect(rendered).to have_content 'Ideas from the last week'
+      expect(rendered).to have_content 'Recent ideas'
       expect(rendered).to have_selector('div.idea', :count => 3)
       expect(rendered).to have_content 'Sign in with ORCID'
     end

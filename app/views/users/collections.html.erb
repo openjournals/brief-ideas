@@ -1,0 +1,35 @@
+<div class="page-header">
+  <h1><%= @user.nice_name %>'s collections</h1>
+</div>
+
+<div class="row form">
+  <div class="col-sm-8">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+    <% if @collections.any? %>
+      <% @collections.each do |collection| %>
+        <div class="idea clearfix">
+          <p class="lead idea"><%= link_to(collection.name, collection_path(collection)) %></p>
+          <p><%= pluralize(collection.ideas.size, 'idea') %>. Last updated <%= time_ago_in_words(collection.collection_ideas.last.created_at) %> ago. <%= link_to "View collection &raquo;".html_safe, collection_path(collection) %></p>
+        </div>
+
+      <% end %>
+      <div class="text-center">
+        <%= will_paginate @collections, renderer: BootstrapPagination::Rails %>
+      </div>
+    <% else %>
+    <p>This user doesn't have any collections</p>
+    <% end %>
+  </div>
+
+  <div class="col-sm-3 col-sm-offset-1">
+    <%= render :partial => 'sessions/login' %>
+
+    <% unless current_user %>
+    <div class="help-block">
+      <h5>User collections</h5>
+      <p>This is the Journal of Brief Ideas - citable ideas in fewer than 200 words.</p>
+      <p>Collections are user-curated lists of brief ideas.</p>
+    </div>
+    <% end %>
+  </div>
+</div>

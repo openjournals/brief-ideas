@@ -1,0 +1,30 @@
+<div class="page-header">
+  <h1><%= @collection.name %></h1>
+</div>
+
+<div class="row form">
+  <div class="col-sm-8">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+    <p class="lead"><em>Curated by <%= link_to @collection.user.nice_name, user_path(@collection.user) %></em></p>
+
+    <% if @collection.ideas.any? %>
+      <%= render :partial => "ideas/idea", :collection => @collection.ideas.visible %>
+    <% else %>
+      <p>This collection doesn't have any ideas.</p>
+    <% end %>
+
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <%= render :partial => 'sessions/login' %>
+
+    <div class="help-block">
+      <% if current_user && @collection.owner == current_user %>
+        <h5>Manage collection</h5>
+        <p><%= link_to "Edit collection", edit_collection_path(@collection) %></p>
+      <% end %>
+
+      <h5>Subscribe</h5>
+      <p><%= image_tag "feed-icon-14x14.png" %> &middot; <%= link_to "Subscribe to this collection", collection_path(@collection, :format => :atom) %></p>
+    </div>
+  </div>
+</div>

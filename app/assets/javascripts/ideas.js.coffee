@@ -4,6 +4,8 @@
 
 $ ->
   $("[data-toggle='tooltip']").tooltip()
+  $('.collect-toggle').dropdown()
+  $('.dropdown-toggle').dropdown()
 
   counter = ->
     value = $("#idea-body").val()
