@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   end
 
   resources :votes, :only => :create
-  
+
   resources :users do
     member do
       get :show

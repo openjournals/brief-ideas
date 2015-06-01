@@ -54,6 +54,16 @@ class CollectionsController < ApplicationController
     redirect_to collection_path(@collection), :notice => "Idea added"
   end
 
+  def destroy
+    @collection = Collection.find_by_sha(params[:id])
+    redirect_to collections_path, :warning => "Collection not found" unless @collection
+    redirect_to collection_path(@collection) unless @collection.owner == current_user
+
+    if @collection.destroy
+      redirect_to collections_path, :warning => "Collection deleted"
+    end
+  end
+
 private
 
   def set_ideas

@@ -11,3 +11,5 @@
 
   <%= f.button :class => 'btn btn-default' %>
 <% end %>
+
+<%= button_to "Delete Collection", collection_path(:id => @collection.to_param), :method => :delete, :class => 'btn btn-danger', :style => "width:140px;margin-top:5px", :data => {:confirm => 'Are you sure?'} unless @collection.new_record? %>

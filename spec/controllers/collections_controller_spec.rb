@@ -25,7 +25,7 @@ describe CollectionsController, :type => :controller do
   end
 
   describe "GET #new" do
-    it "LOGGED IN responds with a redirect" do
+    it "LOGGED IN responds with a success" do
       user = create(:user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
 
@@ -115,6 +115,20 @@ describe CollectionsController, :type => :controller do
       put :update, :id => collection.to_param, :collection => {:name => "Boo ya collection", :ideas => {'0' => new_idea.sha}}
       expect(collection.ideas.count).to eq(1)
       assert_equal collection.ideas.reload, [new_idea]
+    end
+  end
+
+  describe "delete" do
+    it "LOGGED IN AS OWNER should respond with success" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      collection = create(:collection, :user => user)
+      collection_count = Collection.count
+      idea = create(:published_idea)
+      collection.ideas << idea
+
+      post :destroy, :id => collection.to_param
+      expect(Collection.count).to eq(collection_count - 1)
     end
   end
 end
