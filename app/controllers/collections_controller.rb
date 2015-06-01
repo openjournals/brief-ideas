@@ -47,6 +47,15 @@ class CollectionsController < ApplicationController
     redirect_to collection_path(@collection), :notice => "Collection updated"
   end
 
+  def add_idea
+    @collection = Collection.find_by_sha(params[:id])
+    @idea = Idea.find_by_sha(params[:idea_id])
+    @collection.ideas << @idea unless @collection.ideas.include?(@idea)
+    redirect_to collection_path(@collection), :notice => "Idea added"
+  end
+
+private
+
   def set_ideas
     @collection.collection_ideas.destroy_all
 
@@ -58,15 +67,6 @@ class CollectionsController < ApplicationController
       @collection.ideas << @idea if @idea
     end
   end
-
-  def add_idea
-    @collection = Collection.find_by_sha(params[:id])
-    @idea = Idea.find_by_sha(params[:idea_id])
-    @collection.ideas << @idea unless @collection.ideas.include?(@idea)
-    redirect_to collection_path(@collection), :notice => "Idea added"
-  end
-
-private
 
   def collection_params
     params.require(:collection).permit(:name, :description)

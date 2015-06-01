@@ -102,4 +102,19 @@ describe CollectionsController, :type => :controller do
       expect(response).to be_success
     end
   end
+
+  describe "put #update" do
+    it "LOGGED IN BUT AS OWNER responds with success" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+      collection = create(:collection, :user => user)
+      idea = create(:published_idea)
+      collection.ideas << idea
+      new_idea = create(:published_idea)
+
+      put :update, :id => collection.to_param, :collection => {:name => "Boo ya collection", :ideas => {'0' => new_idea.sha}}
+      expect(collection.ideas.count).to eq(1)
+      assert_equal collection.ideas.reload, [new_idea]
+    end
+  end
 end
