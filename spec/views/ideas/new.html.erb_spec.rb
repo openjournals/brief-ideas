@@ -10,7 +10,7 @@ describe 'ideas/new.html.erb' do
 
       render :template => "ideas/new.html.erb"
 
-      expect(rendered).to have_content user.name
+      expect(rendered).to have_content user.nice_name
       expect(rendered).to have_selector('div.form-group', :count => 3)
       expect(rendered).to have_selector('div.references', :count => 0)
     end
