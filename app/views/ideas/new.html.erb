@@ -9,9 +9,7 @@
     <%= render :partial => "form" %>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
-    <div class="login-block">
-      <p class="name"><%= current_user.name %> &middot; <%= link_to "Sign out", signout_path %></p>
-    </div>
+    <%= render :partial => 'sessions/login' %>
 
     <div class="helper-block">
       <h5>Submission help</h5>
