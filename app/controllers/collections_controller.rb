@@ -60,7 +60,7 @@ class CollectionsController < ApplicationController
     redirect_to collection_path(@collection) unless @collection.owner == current_user
 
     if @collection.destroy
-      redirect_to collections_path, :warning => "Collection deleted"
+      redirect_to "/users/#{current_user.to_param}/collections", :warning => "Collection deleted"
     end
   end
 
