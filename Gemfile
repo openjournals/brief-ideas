@@ -24,6 +24,7 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'select2-rails'
 gem 'sidekiq', '~> 3.2.6'
 gem 'sinatra', '>= 1.3.0', :require => nil
+gem 'starburst', :path => 'vendor/engines/starburst'
 gem 'swiftype', '~> 1.1.0'
 gem 'twitter', '~> 5.14.0'
 gem 'bootstrap-typeahead-rails'
