@@ -17,4 +17,5 @@
 //= require autocompleter
 //= require bootstrap-typeahead-rails
 //= require select2
+//= require starburst/starburst
 //= require_tree .

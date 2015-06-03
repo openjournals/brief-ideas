@@ -3,6 +3,9 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  # Announcements
+  helper Starburst::AnnouncementsHelper
+
   def require_user
     redirect_to '/sessions/new' unless current_user
   end

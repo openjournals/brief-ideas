@@ -56,5 +56,8 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 
+  # Starburst
+  mount Starburst::Engine => "/starburst"
+
   root :to => 'ideas#index'
 end
