@@ -20,4 +20,23 @@ class Notification < ActionMailer::Base
     @comment = comment
     mail(:to => EDITOR_EMAILS, :subject => "New comment by #{comment.user.nice_name}")
   end
+
+  def authorship_email(idea, user)
+    @url  = "http://beta.briefideas.org/ideas/#{idea.sha}"
+    @idea = idea
+    @new_author = user
+    mail(:to => idea.submitting_author.email, :subject => "New author added to #{idea.title}")
+  end
+
+  def rejection_email(idea)
+    @url  = "http://beta.briefideas.org/ideas/#{idea.sha}"
+    @idea = idea
+    mail(:to => idea.submitting_author.email, :subject => "Your idea was rejected.")
+  end
+
+  def acceptance_email(idea)
+    @url  = "http://beta.briefideas.org/ideas/#{idea.sha}"
+    @idea = idea
+    mail(:to => idea.submitting_author.email, :subject => "Your idea was accepted.")
+  end
 end

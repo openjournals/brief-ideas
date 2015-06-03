@@ -1,5 +1,5 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :only => [ :new, :create, :hide ]
+  before_filter :require_user, :only => [ :new, :create, :hide, :accept_invite, :submit ]
   respond_to :json, :html, :atom
 
   def index
@@ -93,9 +93,8 @@ class IdeasController < ApplicationController
   def show
     @idea = Idea.find_by_sha(params[:id])
 
-
-    unless @idea && @idea.visible_to?(current_user)
-      redirect_to ideas_path and return
+    unless @idea
+      redirect_to ideas_path, :notice => "Idea not found" and return
     end
 
     impressionist(@idea)
@@ -108,6 +107,43 @@ class IdeasController < ApplicationController
 
   def about
 
+  end
+
+  def submit
+    @idea = Idea.find_by_sha(params[:id])
+
+    # Only let the submitting author submit an idea
+    unless @idea.submitting_author == current_user
+      redirect_to idea_path(@idea), :notice => "Only the submitting author can submit an idea" and return
+    end
+
+    if @idea.pending?
+      @idea.submit!
+      redirect_to idea_path(@idea), :notice => "Idea submitted"
+    else
+      redirect_to idea_path(@idea), :notice => "Your idea could not be submitted"
+    end
+  end
+
+  def accept_invite
+    @idea = Idea.find_by_sha(params[:id])
+
+    if current_user.email.blank?
+      redirect_to idea_path(@idea), :notice => "You must add an email to your account before becoming an authorship" and return
+    # Can't become and author of something that's already published.
+    elsif @idea.published?
+      redirect_to idea_path(@idea), :notice => "This idea is already published" and return
+    # Or rejected
+    elsif @idea.rejected?
+      redirect_to ideas_path, :notice => "This idea is was rejected" and return
+    # Or if you've already accepted authorship
+    elsif @idea.authors.include?(current_user)
+      redirect_to idea_path(@idea), :notice => "You're already an author of this idea" and return
+    else
+      @idea.add_author!(current_user)
+    end
+
+    redirect_to idea_path(@idea), :notice => "Authorship accepted!"
   end
 
   def boom

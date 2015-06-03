@@ -5,6 +5,7 @@ describe 'ideas/show.html.erb' do
     it "should render properly" do
       allow(view).to receive(:current_user).and_return(nil)
       idea = create(:idea, :tags => ['Funky'])
+      idea.authors << create(:user)
       assign(:idea, idea)
 
       render :template => "ideas/show.html.erb"
@@ -17,7 +18,7 @@ describe 'ideas/show.html.erb' do
     end
   end
 
-  context 'logged in as author' do
+  context 'pending, logged in as submitting author' do
     it "should render properly" do
       user = create(:user)
       allow(view).to receive(:current_user).and_return(user)
@@ -31,11 +32,51 @@ describe 'ideas/show.html.erb' do
       expect(rendered).to have_content idea.title
       expect(rendered).to have_content idea.formatted_creators
       expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
-      expect(rendered).to have_content 'pending acceptance'
+      expect(rendered).to have_content 'this idea has not yet been submitted'
+      expect(rendered).to match /Submit now/
     end
   end
 
-  context 'logged in as author' do
+  context 'pending, logged in as non-submitting author' do
+    it "should render properly" do
+      submitting_author = create(:user)
+      user = create(:user)
+      allow(view).to receive(:current_user).and_return(user)
+      idea = create(:idea, :tags => ['jelly'])
+      idea.authors << submitting_author
+      idea.authors << user
+      assign(:idea, idea)
+
+      render :template => "ideas/show.html.erb"
+
+      expect(rendered).to have_content user.nice_name
+      expect(rendered).to have_content idea.title
+      expect(rendered).to have_content idea.formatted_creators
+      expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
+      expect(rendered).to have_content 'this idea has not yet been submitted'
+      expect(rendered).to_not match /Submit now/
+    end
+  end
+
+  context 'submitted, logged in as submitting author' do
+    it "should render properly" do
+      user = create(:user)
+      allow(view).to receive(:current_user).and_return(user)
+      idea = create(:submitted_idea, :tags => ['jelly'])
+      idea.authors << user
+      assign(:idea, idea)
+
+      render :template => "ideas/show.html.erb"
+
+      expect(rendered).to have_content user.nice_name
+      expect(rendered).to have_content idea.title
+      expect(rendered).to have_content idea.formatted_creators
+      expect(rendered).to have_content idea.created_at.strftime("%e %b, %Y")
+      expect(rendered).to have_content 'this idea is pending acceptance'
+    end
+  end
+
+  context 'logged in as submitting author' do
     it "should render properly for rejected idea" do
       user = create(:user)
       allow(view).to receive(:current_user).and_return(user)
@@ -61,6 +102,7 @@ describe 'ideas/show.html.erb' do
   context 'NOT logged in as viewer' do
     it "should only show published derivatives" do
       idea = create(:published_idea, :tags => ['jelly'])
+      idea.authors << create(:user)
       assign(:idea, idea)
 
       3.times do

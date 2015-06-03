@@ -11,10 +11,14 @@ module IdeasHelper
     result[:output].to_s.html_safe
   end
 
-  def linked_authors(idea)
+  def linked_authors(idea, orcid_links)
     result = []
     idea.authors.each do |author|
-      result << link_to(author.nice_name, user_path(author))
+      if orcid_links
+        result << link_to(author.nice_name, author.orcid_url, :target => "_blank")
+      else
+        result << link_to(author.nice_name, user_path(author))
+      end
     end
     result.join(', ').html_safe
   end

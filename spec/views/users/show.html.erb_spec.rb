@@ -7,16 +7,19 @@ describe 'users/show.html.erb' do
       user = create(:user)
       assign(:user, user)
 
-      4.times do
-        idea = create(:idea, :tags => ['Funky'])
+      3.times do
+        idea = create(:published_idea, :tags => ['Funky'])
         idea.authors << user
       end
 
-      assign(:ideas, user.ideas.all.paginate(:page => 1, :per_page => 10))
+      idea = create(:idea)
+      idea.authors << user
+
+      assign(:ideas, user.ideas.published.paginate(:page => 1, :per_page => 10))
 
       render :template => "users/show.html.erb"
 
-      expect(rendered).to have_selector('div.idea', :count => 4)
+      expect(rendered).to have_selector('div.idea', :count => 3)
       expect(rendered).to have_content user.nice_name
     end
   end

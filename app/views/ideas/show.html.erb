@@ -6,18 +6,11 @@
   <div class="col-sm-8">
     <div class="idea single">
       <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+      <%= render :partial => "users/email" if current_user %>
       <%= render 'layouts/errors', :object => @idea %>
+      <%= render :partial => "ideas/notices" %>
 
-      <% if @idea.pending? %>
-        <div class="alert alert-warning" role="alert">
-          Please note, this idea is pending acceptance by the editors of the Journal of Brief Ideas.
-        </div>
-      <% elsif @idea.rejected? && @idea.authors.include?(current_user) %>
-        <div class="alert alert-danger" role="alert">
-          This idea was not accepted into the Journal of Brief Ideas.
-        </div>
-      <% end %>
-      <p class="lead"><em>By <%= linked_authors(@idea) %></em></p>
+      <p class="lead"><em>By <%= linked_authors(@idea, orcid=false) %></em></p>
 
       <% if @idea.tags.any? %>
         <p>
@@ -32,13 +25,15 @@
       <%= render :partial => 'ideas/references', :locals => { :references => @idea.references } if @idea.references.any? %>
       <%= render :partial => 'ideas/derivatives', :locals => { :idea => @idea } if @idea.citations.published.any? %>
 
-      <h4>Comments</h4>
+      <% if @idea.published? %>
+        <h4>Comments</h4>
 
-      <div id="comments_<%= @idea.sha %>">
-        <%= render :partial => "comment", :collection => @idea.comments %>
-      </div>
+        <div id="comments_<%= @idea.sha %>">
+          <%= render :partial => "comment", :collection => @idea.comments %>
+        </div>
 
-      <%= render :partial => "comment_form", :locals => { :idea => @idea } %>
+        <%= render :partial => "comment_form", :locals => { :idea => @idea } %>
+      <% end %>
     </div>
   </div>
   <div class="col-sm-3 col-sm-offset-1">
@@ -70,9 +65,7 @@
 
     <div class="help-block">
       <h5>Authors</h5>
-      <% @idea.authors.each do |author| %>
-        <p><%= link_to author.nice_name, author.orcid_url, :target => "_blank" %></p>
-      <% end %>
+      <p><%= linked_authors(@idea, orcid=true) %></p>
 
       <h5>Metadata</h5>
       <% if @idea.doi? %><p><%= link_to image_tag(@idea.doi_badge_url), @idea.doi %></p><% end %>

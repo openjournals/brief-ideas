@@ -4,6 +4,8 @@ Rails.application.routes.draw do
       post :hide
       post :collect
       post :add_comment
+      post :accept_invite
+      post :submit
     end
 
     collection do

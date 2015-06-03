@@ -14,6 +14,10 @@ FactoryGirl.define do
       sha '48d24b0158528e85ac7706aecd8cddc4'
     end
 
+    factory :submitted_idea do
+      state 'submitted'
+    end
+
     factory :published_idea do
       state 'published'
     end

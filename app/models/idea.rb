@@ -7,19 +7,33 @@ class Idea < ActiveRecord::Base
 
   aasm :column => :state do
     state :pending, :initial => true
+    state :submitted
     state :published
     state :rejected
+
+    event :submit do
+      after do
+        notify_editor
+      end
+
+      transitions :to => :submitted
+    end
 
     event :publish do
       after do
         zenodo_create
         push_tags
+        notify_acceptance
       end
 
       transitions :to => :published
     end
 
     event :reject do
+      after do
+        notify_rejection
+      end
+
       transitions :to => :rejected
     end
   end
@@ -41,13 +55,14 @@ class Idea < ActiveRecord::Base
   has_many :citations, :through => :idea_citations, :source => 'idea'
 
   before_create :set_sha, :check_user_idea_count, :parse_references, :check_email
-  after_create :notify
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
   scope :by_date, -> { order('created_at DESC') }
   scope :trending, -> { order('score DESC') }
   scope :visible, -> { where('deleted = ? and muted = ? and state = ?', false, false, 'published') }
+  # Don't want unsubmitted ideas in the admin view
+  scope :admin_visible, -> { where('state != ?', 'pending') }
   scope :for_user, lambda { |user = nil| where('id NOT IN (?)', user.seen_idea_ids) unless user.nil? }
 
   scope :has_all_tags, ->(tags){ where("ARRAY[?]::varchar[] <@ tags::varchar[]", tags) }
@@ -67,6 +82,31 @@ class Idea < ActiveRecord::Base
 
   def parent
     parents.first
+  end
+
+  def notify_acceptance
+    Notification.acceptance_email(self).deliver
+  end
+
+  def notify_rejection
+    Notification.rejection_email(self).deliver
+  end
+
+  def add_author!(new_author)
+    unless authors.include?(new_author)
+      authors << new_author
+      Notification.authorship_email(self, new_author).deliver
+    end
+  end
+
+  def submitting_author
+    authorships.order('created_at ASC').first.user
+  end
+
+  # Can authors still be invited to this paper?
+  def invitable_to?(user)
+    return false unless pending?
+    return false if authors.include?(user)
   end
 
   def visible_to?(user)
@@ -120,7 +160,7 @@ class Idea < ActiveRecord::Base
     end
   end
 
-  def notify
+  def notify_editor
     Notification.submission_email(self).deliver
   end
 

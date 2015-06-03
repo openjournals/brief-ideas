@@ -24,11 +24,18 @@ describe Idea do
     expect(paper.state).to eq('pending')
     expect(ZenodoWorker.jobs.size).to eq(0)
     expect(RatingWorker.jobs.size).to eq(0)
-    expect {paper.notify}.to change { ActionMailer::Base.deliveries.count }.by(1)
+  end
+
+  it "should email the editor when submitted" do
+    idea = create(:idea)
+    idea.authors << create(:user)
+
+    expect {idea.submit!}.to change { ActionMailer::Base.deliveries.count }.by(1)
   end
 
   it "should queue ZenodoWorker when published" do
     idea = create(:idea)
+    idea.authors << create(:user)
     idea.publish!
 
     expect(ZenodoWorker.jobs.size).to eq(1)
@@ -98,6 +105,16 @@ describe Idea do
 
     expect(idea.creator).to eq(user)
     assert idea.authors.include?(user)
+    expect(idea.submitting_author).to eq(user)
+  end
+
+  it "should know who the #submitting_author is" do
+    first_author = create(:user)
+    idea = create(:idea)
+    idea.authors << first_author
+    idea.authors << create(:user)
+
+    expect(idea.submitting_author).to eq(first_author)
   end
 
   # Zenodo stuff
@@ -119,8 +136,13 @@ describe Idea do
 
   # Tags
   it "should know what all of the tags available are" do
-    create(:idea, :tags => ['so', 'very']).publish
-    create(:idea, :tags => ['very', 'funky', 'yeah']).publish
+    idea1 = create(:idea, :tags => ['so', 'very'])
+    idea1.authors << create(:user)
+    idea1.publish
+
+    idea2 = create(:idea, :tags => ['very', 'funky', 'yeah'])
+    idea2.authors << create(:user)
+    idea2.publish
 
     ['so', 'very', 'funky', 'yeah'].each do |tag|
       assert Idea.all_tags.include?(tag)
@@ -186,6 +208,34 @@ describe Idea do
 
     expect(referenced_idea.citations).to eq([citing_idea])
     assert referenced_idea.has_citations?
+  end
+
+  # Authorships
+  it "adding author should send an email" do
+    submitting_author = create(:user)
+    idea = create(:idea)
+    idea.authors << submitting_author
+    new_author = create(:user)
+
+    expect {idea.add_author!(new_author)}.to change { ActionMailer::Base.deliveries.count }.by(1)
+  end
+
+  # Idea rejection
+  it "rejecting an idea should send a rejection email" do
+    submitting_author = create(:user)
+    idea = create(:idea)
+    idea.authors << submitting_author
+
+    expect {idea.reject!}.to change { ActionMailer::Base.deliveries.count }.by(1)
+  end
+
+  # Idea acceptance
+  it "accepting an idea should send a acceptance email" do
+    submitting_author = create(:user)
+    idea = create(:idea)
+    idea.authors << submitting_author
+
+    expect {idea.publish!}.to change { ActionMailer::Base.deliveries.count }.by(1)
   end
 
   # Citation scoring and ranking
