@@ -8,7 +8,8 @@ describe Idea do
     @redis.del("tags-#{Rails.env}")
   end
 
-  it { should belong_to(:user) }
+  it { should have_many(:authors) }
+  it { should have_many(:authorships) }
   it { should have_many(:votes) }
   it { should have_many(:citations) }
   it { should have_many(:references) }
@@ -84,16 +85,19 @@ describe Idea do
 
   it "should not be created if the owner doesn't have an email" do
     user = create(:no_email_user)
-    idea = build(:idea, :user => user)
+    idea = build(:idea)
+    idea.authors << user
     idea.save
-    expect(idea.errors[:base]).to eq(["You can't submit an idea without having a valid email associated with your account."])
+    expect(idea.errors[:base]).to eq(["You can't submit an idea without all authors having a valid email associated with their account."])
   end
 
   it "should know who its #creator is" do
     user = create(:user)
-    idea = create(:idea, :user => user)
+    idea = create(:idea)
+    idea.authors << user
 
     expect(idea.creator).to eq(user)
+    assert idea.authors.include?(user)
   end
 
   # Zenodo stuff
@@ -129,13 +133,15 @@ describe Idea do
     user = create(:user)
 
     5.times do
-      create(:idea, :user => user)
+      idea = create(:idea)
+      idea.authors << user
     end
 
-    idea = build(:idea, :user => user)
+    idea = build(:idea)
+    idea.authors << user
     idea.save
     expect(idea.errors[:base]).to eq(["You've already created 5 ideas today, please come back tomorrow."])
-    expect(Idea.count(:user_id => user.id)).to eq(5)
+    expect(Authorship.count(:user_id => user.id)).to eq(5)
   end
 
   it "should be matched by a fuzzy search" do

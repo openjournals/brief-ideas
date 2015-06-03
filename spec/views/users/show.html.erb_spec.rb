@@ -8,7 +8,8 @@ describe 'users/show.html.erb' do
       assign(:user, user)
 
       4.times do
-        create(:idea, :tags => ['Funky'], :user => user)
+        idea = create(:idea, :tags => ['Funky'])
+        idea.authors << user
       end
 
       assign(:ideas, user.ideas.all.paginate(:page => 1, :per_page => 10))

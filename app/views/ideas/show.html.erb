@@ -12,12 +12,12 @@
         <div class="alert alert-warning" role="alert">
           Please note, this idea is pending acceptance by the editors of the Journal of Brief Ideas.
         </div>
-      <% elsif @idea.rejected? && @idea.creator == current_user %>
+      <% elsif @idea.rejected? && @idea.authors.include?(current_user) %>
         <div class="alert alert-danger" role="alert">
           This idea was not accepted into the Journal of Brief Ideas.
         </div>
       <% end %>
-      <p class="lead"><em>By <%= link_to @idea.user.nice_name, user_path(@idea.user) %></em></p>
+      <p class="lead"><em>By <%= linked_authors(@idea) %></em></p>
 
       <% if @idea.tags.any? %>
         <p>
@@ -69,8 +69,10 @@
     </div>
 
     <div class="help-block">
-      <h5>Author</h5>
-      <p><%= link_to @idea.user.nice_name, @idea.user.orcid_url, :target => "_blank" %></p>
+      <h5>Authors</h5>
+      <% @idea.authors.each do |author| %>
+        <p><%= link_to author.nice_name, author.orcid_url, :target => "_blank" %></p>
+      <% end %>
 
       <h5>Metadata</h5>
       <% if @idea.doi? %><p><%= link_to image_tag(@idea.doi_badge_url), @idea.doi %></p><% end %>

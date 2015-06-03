@@ -10,4 +10,12 @@ module IdeasHelper
     result = pipeline.call(truncated_body)
     result[:output].to_s.html_safe
   end
+
+  def linked_authors(idea)
+    result = []
+    idea.authors.each do |author|
+      result << link_to(author.nice_name, user_path(author))
+    end
+    result.join(', ').html_safe
+  end
 end

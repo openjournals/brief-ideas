@@ -24,9 +24,11 @@ class Idea < ActiveRecord::Base
     end
   end
 
-  belongs_to :user
   has_many :votes
   has_many :audit_logs
+
+  has_many :authorships
+  has_many :authors, :class_name => "User", :through => :authorships, :source => 'user'
 
   has_many :collection_ideas
   has_many :collections, :through => :collection_ideas
@@ -68,7 +70,7 @@ class Idea < ActiveRecord::Base
   end
 
   def visible_to?(user)
-    if (creator == user || self.published?)
+    if (authors.include?(user) || self.published?)
       return true
     elsif user
       return true if user.admin?
@@ -81,9 +83,11 @@ class Idea < ActiveRecord::Base
   #
   # Returns nothing or false with some errors on [:base]
   def check_email
-    unless self.user.email?
-      errors[:base] << "You can't submit an idea without having a valid email associated with your account."
-      return false
+    authors.each do |author|
+      unless author.email?
+        errors[:base] << "You can't submit an idea without all authors having a valid email associated with their account."
+        return false
+      end
     end
   end
 
@@ -145,7 +149,11 @@ class Idea < ActiveRecord::Base
   end
 
   def creator
-    user
+    authors.first
+  end
+
+  def formatted_creators
+    authors.collect {|author| author.nice_name}.join(", ")
   end
 
   def formatted_title
@@ -255,9 +263,13 @@ private
   # Don't let people create more than 5 ideas in 24 hours
   def check_user_idea_count
     return true if Rails.env.development?
-    if Idea.today.where(:user_id => user.id).count >= 5
-      self.errors[:base] << "You've already created 5 ideas today, please come back tomorrow."
-      return false
+
+    # Need to check all authors
+    authors.each do |author|
+      if Authorship.today.where(:user_id => author.id).count >= 5
+        self.errors[:base] << "You've already created 5 ideas today, please come back tomorrow."
+        return false
+      end
     end
   end
 end

@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
-  has_many :ideas
+  has_many :authorships
+  has_many :ideas, :through => :authorships
+
   has_many :votes
   has_many :audit_logs
   has_many :collections
@@ -33,7 +35,7 @@ class User < ActiveRecord::Base
   end
 
   def vote_for!(idea)
-    Vote.create(:user => self, :idea => idea) unless idea.creator == self
+    Vote.create(:user => self, :idea => idea) unless idea.authors.include?(self)
   end
 
   def to_param

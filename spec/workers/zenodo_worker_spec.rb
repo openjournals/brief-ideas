@@ -13,6 +13,8 @@ describe ZenodoWorker do
 
   it "should assign a DOI to the idea once processed." do
     idea = build(:idea_with_sha)
+    user = create(:user)
+    idea.authors << user
     idea.save
 
     ZenodoWorker.new.perform(idea.sha)
@@ -21,6 +23,8 @@ describe ZenodoWorker do
 
   it "should create the correct number of jobs" do
     idea = build(:idea_with_sha)
+    user = create(:user)
+    idea.authors << user
     idea.save
 
     expect {
@@ -30,6 +34,8 @@ describe ZenodoWorker do
 
   it "should call RestClient three times and Swiftype::Client once" do
     idea = build(:idea_with_sha)
+    user = create(:user)
+    idea.authors << user
     idea.save
 
     RestClient.expects(:post).times(3)

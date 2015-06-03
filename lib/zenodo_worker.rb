@@ -27,6 +27,15 @@ class ZenodoWorker
     }
   end
 
+  def authors(idea)
+    authors = []
+    idea.authors.each do |author|
+      authors << {:name => author.name, :affiliation => "", :orcid => author.uid}
+    end
+
+    return authors
+  end
+
   def deposit_params(idea)
     {
       :metadata => {
@@ -34,7 +43,7 @@ class ZenodoWorker
         :upload_type => "publication",
         :publication_type => "article",
         :description => "A brief idea",
-        :creators => [{:name => idea.user.name, :affiliation => "", :orcid => idea.user.uid}],
+        :creators => authors(idea),
         :keywords => idea.tags,
         :communities => [{:identifier => "briefideas"}],
         :license => "cc-by",
@@ -71,6 +80,7 @@ class ZenodoWorker
     }
   end
 
+  # TODO: Check that dropping orcid id from fields doesn't cause errors
   def create_document(idea)
     client = Swiftype::Client.new
     document = client.create_document('engine', 'ideas', {
@@ -79,9 +89,8 @@ class ZenodoWorker
                   {:name => 'title', :value => idea.title, :type => 'string'},
                   {:name => 'doi', :value => idea.doi, :type => 'enum'},
                   {:name => 'body', :value => idea.body, :type => 'text'},
-                  {:name => 'author', :value => idea.user.name, :type => 'text'},
+                  {:name => 'author', :value => idea.formatted_creators, :type => 'text'},
                   {:name => 'tags', :value => idea.formatted_tags, :type => 'string'},
-                  {:name => 'orcid_id', :value => idea.user.uid, :type => 'string'}
                   ]})
     Rails.logger.info "UPLOADING TO INDEX! #{idea.sha}"
   end

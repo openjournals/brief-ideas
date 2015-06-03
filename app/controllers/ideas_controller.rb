@@ -5,7 +5,7 @@ class IdeasController < ApplicationController
   def index
     @ideas = Idea.by_date.visible.for_user(current_user).limit(10)
     @recent = true
-    
+
     respond_to do |format|
       format.atom
       format.json { render :json => @ideas }
@@ -43,7 +43,7 @@ class IdeasController < ApplicationController
   def create
     @idea = Idea.new(idea_params)
     @idea.tags = idea_params['tags'].split(',').collect(&:strip).collect(&:downcase)
-    @idea.user = current_user
+    @idea.authors << current_user
 
     if @idea.save
       redirect_to idea_path(@idea), :notice => "Idea created"

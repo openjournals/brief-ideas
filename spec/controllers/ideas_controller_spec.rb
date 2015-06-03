@@ -134,8 +134,9 @@ describe IdeasController, :type => :controller do
     it "LOGGED IN (as author) responds with success" do
       user = create(:user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
+      idea = create(:idea)
+      idea.authors << user
 
-      idea = create(:idea, :user => user)
       get :show, :id => idea.to_param, :format => :html
       expect(response).to be_success
     end

@@ -9,7 +9,6 @@ FactoryGirl.define do
     view_count  0
     created_at  { Time.now }
     updated_at  { Time.now }
-    user
 
     factory :idea_with_sha do
       sha '48d24b0158528e85ac7706aecd8cddc4'
