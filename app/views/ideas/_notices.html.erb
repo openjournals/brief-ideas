@@ -4,11 +4,11 @@
     <p><strong><%= raw idea_url(@idea) %></strong></p>
   </div>
   <div class="bg-warning accept-message">
-    Please note, this idea has not yet been submitted. <%= button_to 'Submit now &raquo;'.html_safe, submit_idea_path(@idea), :data => {:confirm => "Are you sure you want to submit this idea? You can't edit ideas once they're submitted or invite additional authors."}, :class => 'btn btn-success btn-xs' %>
+    Please note, this idea has not yet been submitted. <%= link_to 'Edit'.html_safe, edit_idea_path(@idea), :class => 'btn btn-danger btn-xs' %> <%= button_to 'Submit now &raquo;'.html_safe, submit_idea_path(@idea), :data => {:confirm => "Are you sure you want to submit this idea? You can't edit ideas once they're submitted or invite additional authors."}, :class => 'btn btn-success btn-xs' %>
   </div>
 <% elsif @idea.pending? && @idea.authors.include?(current_user) %>
-  <div class="bg-warning">
-    Please note, this idea has not yet been submitted by the submitting author.
+  <div class="bg-warning accept-message">
+    Please note, this idea has not yet been submitted by the submitting author. <%= link_to 'Edit'.html_safe, edit_idea_path(@idea), :class => 'btn btn-danger btn-xs' %>
   </div>
 <% elsif @idea.pending? && current_user %>
   <div class="bg-warning accept-message">
