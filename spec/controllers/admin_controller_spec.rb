@@ -46,6 +46,7 @@ describe AdminController, :type => :controller do
       user = create(:admin_user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       idea = create(:idea)
+      idea.authors << create(:user)
       post :publish, :id => idea.to_param, :format => :html
 
       expect(response).to be_redirect # as it's created the thing
@@ -60,6 +61,7 @@ describe AdminController, :type => :controller do
       user = create(:admin_user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       idea = create(:idea)
+      idea.authors << create(:user)
       post :reject, :id => idea.to_param, :format => :html
 
       expect(response).to be_redirect # as it's created the thing

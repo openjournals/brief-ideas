@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_sha(params[:id])
-    @ideas = @user.ideas.paginate(:page => params[:page], :per_page => 10)
+    @ideas = @user.ideas.published.paginate(:page => params[:page], :per_page => 10)
     respond_with @ideas
   end
 
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
   def update_email
     if current_user.update_attributes(user_params)
-      redirect_to(new_idea_path, :notice => "Email saved.")
+      redirect_to(:back, :notice => "Email saved.")
     end
   end
 

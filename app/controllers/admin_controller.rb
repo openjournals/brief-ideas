@@ -2,7 +2,7 @@ class AdminController < ApplicationController
   before_filter :require_admin_user
 
   def index
-    @ideas = Idea.by_date.paginate(:page => params[:page], :per_page => 20)
+    @ideas = Idea.admin_visible.by_date.paginate(:page => params[:page], :per_page => 20)
 
     respond_to do |format|
       format.html

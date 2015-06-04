@@ -4,9 +4,11 @@ describe Vote do
   it { should belong_to(:user) }
   it { should belong_to(:idea) }
 
-  it "should not allow the creator of an idea to vote on it" do
+  it "should not allow the authors of an idea to vote on it" do
     user = create(:user)
-    idea = create(:idea, :user => user)
+    idea = create(:idea)
+    idea.authors << user
+    
     user.vote_for!(idea)
 
     expect(RatingWorker.jobs.size).to eq(0)
