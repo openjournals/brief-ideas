@@ -7,26 +7,42 @@ class Idea < ActiveRecord::Base
 
   aasm :column => :state do
     state :pending, :initial => true
+    state :submitted
     state :published
     state :rejected
+
+    event :submit do
+      after do
+        notify_editor
+      end
+
+      transitions :to => :submitted
+    end
 
     event :publish do
       after do
         zenodo_create
         push_tags
+        notify_acceptance
       end
 
       transitions :to => :published
     end
 
     event :reject do
+      after do
+        notify_rejection
+      end
+
       transitions :to => :rejected
     end
   end
 
-  belongs_to :user
   has_many :votes
   has_many :audit_logs
+
+  has_many :authorships
+  has_many :authors, :class_name => "User", :through => :authorships, :source => 'user'
 
   has_many :collection_ideas
   has_many :collections, :through => :collection_ideas
@@ -39,13 +55,14 @@ class Idea < ActiveRecord::Base
   has_many :citations, :through => :idea_citations, :source => 'idea'
 
   before_create :set_sha, :check_user_idea_count, :parse_references, :check_email
-  after_create :notify
 
   scope :today, lambda { where('created_at > ?', 1.day.ago) }
   scope :recent, lambda { where('created_at > ?', 1.week.ago) }
   scope :by_date, -> { order('created_at DESC') }
   scope :trending, -> { order('score DESC') }
   scope :visible, -> { where('deleted = ? and muted = ? and state = ?', false, false, 'published') }
+  # Don't want unsubmitted ideas in the admin view
+  scope :admin_visible, -> { where('state != ?', 'pending') }
   scope :for_user, lambda { |user = nil| where('id NOT IN (?)', user.seen_idea_ids) unless user.nil? }
 
   scope :has_all_tags, ->(tags){ where("ARRAY[?]::varchar[] <@ tags::varchar[]", tags) }
@@ -58,6 +75,15 @@ class Idea < ActiveRecord::Base
   # Logging views of ideas with impressionist. Only one count per user session
   is_impressionable :counter_cache => true, :column_name => :view_count, :unique => :true
 
+  # View helper methods
+  def tags_list=(arg)
+    tags = arg.split(',').map { |v| v.strip }
+  end
+
+  def tags_list
+    tags.join(', ')
+  end
+
   # TODO - work out what do do with these
   def parents
     references
@@ -67,8 +93,45 @@ class Idea < ActiveRecord::Base
     parents.first
   end
 
+  def notify_acceptance
+    Notification.acceptance_email(self).deliver
+  end
+
+  def notify_rejection
+    Notification.rejection_email(self).deliver
+  end
+
+  def add_author!(new_author)
+    unless authors.include?(new_author)
+      authors << new_author
+      Notification.authorship_email(self, new_author).deliver
+    end
+  end
+
+  def submitting_author
+    authorships.order('created_at ASC').first.user
+  end
+
+  # Can authors still be invited to this paper?
+  def invitable_to?(user)
+    return false unless pending?
+    return false if authors.include?(user)
+  end
+
+  def can_become_author?(user)
+    if published?
+      return false, "This idea is already published"
+    elsif rejected?
+      return false, "This idea is was rejected"
+    elsif authors.include?(user)
+      return false, "You're already an author of this idea"
+    else
+      return true, "Author can be added"
+    end
+  end
+
   def visible_to?(user)
-    if (creator == user || self.published?)
+    if (authors.include?(user) || self.published?)
       return true
     elsif user
       return true if user.admin?
@@ -81,9 +144,11 @@ class Idea < ActiveRecord::Base
   #
   # Returns nothing or false with some errors on [:base]
   def check_email
-    unless self.user.email?
-      errors[:base] << "You can't submit an idea without having a valid email associated with your account."
-      return false
+    authors.each do |author|
+      unless author.email?
+        errors[:base] << "You can't submit an idea without all authors having a valid email associated with their account."
+        return false
+      end
     end
   end
 
@@ -116,7 +181,7 @@ class Idea < ActiveRecord::Base
     end
   end
 
-  def notify
+  def notify_editor
     Notification.submission_email(self).deliver
   end
 
@@ -145,7 +210,11 @@ class Idea < ActiveRecord::Base
   end
 
   def creator
-    user
+    authors.first
+  end
+
+  def formatted_creators
+    authors.collect {|author| author.nice_name}.join(", ")
   end
 
   def formatted_title
@@ -255,9 +324,13 @@ private
   # Don't let people create more than 5 ideas in 24 hours
   def check_user_idea_count
     return true if Rails.env.development?
-    if Idea.today.where(:user_id => user.id).count >= 5
-      self.errors[:base] << "You've already created 5 ideas today, please come back tomorrow."
-      return false
+
+    # Need to check all authors
+    authors.each do |author|
+      if Authorship.today.where(:user_id => author.id).count >= 5
+        self.errors[:base] << "You've already created 5 ideas today, please come back tomorrow."
+        return false
+      end
     end
   end
 end

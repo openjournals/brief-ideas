@@ -8,8 +8,11 @@ atom_feed do |feed|
       entry.doi(idea.doi)
       entry.content(idea.body, type: 'html')
 
-      entry.author do |author|
-        author.name(idea.user.name)
+      # TODO: Check this is a valid atom feed
+      idea.authors.each do |a|
+        entry.author do |author|
+          author.name(a.name)
+        end
       end
     end
   end

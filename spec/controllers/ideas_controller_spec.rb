@@ -103,30 +103,37 @@ describe IdeasController, :type => :controller do
     end
   end
 
+  # TODO: Remove this test - it's now no-longer necessary with invite system
   describe "GET #show for unpublished idea" do
-    it "NOT LOGGED IN responds with redirect" do
+    it "NOT LOGGED IN responds with success" do
       idea = create(:idea)
+      idea.authors << create(:user)
       get :show, :id => idea.to_param, :format => :html
-      expect(response).to be_redirect
+      expect(response).to be_success
     end
   end
 
   describe "GET #show for published idea" do
     it "NOT LOGGED IN responds with success" do
       idea = create(:published_idea)
+      idea.authors << create(:user)
+
       get :show, :id => idea.to_param, :format => :html
       expect(response).to be_success
     end
   end
 
+  # TODO: Remove this test - it's now no-longer necessary with invite system
   describe "GET #show for an unpublished idea" do
-    it "LOGGED IN (not as author) responds with redirect" do
+    it "LOGGED IN (not as author) responds with success" do
       user = create(:user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
 
       idea = create(:idea)
+      idea.authors << create(:user)
+
       get :show, :id => idea.to_param, :format => :html
-      expect(response).to be_redirect
+      expect(response).to be_success
     end
   end
 
@@ -134,8 +141,9 @@ describe IdeasController, :type => :controller do
     it "LOGGED IN (as author) responds with success" do
       user = create(:user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
+      idea = create(:idea)
+      idea.authors << user
 
-      idea = create(:idea, :user => user)
       get :show, :id => idea.to_param, :format => :html
       expect(response).to be_success
     end
@@ -147,16 +155,20 @@ describe IdeasController, :type => :controller do
       allow(controller).to receive_message_chain(:current_user).and_return(user)
 
       idea = create(:published_idea)
+      idea.authors << create(:user)
+
       get :show, :id => idea.to_param, :format => :html
       expect(response).to be_success
     end
   end
 
   describe "GET #show with JSON" do
-    it "responds with redirect" do
+    it "responds with success" do
       idea = create(:idea)
+      idea.authors << create(:user)
+
       get :show, :id => idea.to_param, :format => :json
-      expect(response).to be_redirect
+      expect(response).to be_success
     end
   end
 
@@ -182,7 +194,7 @@ describe IdeasController, :type => :controller do
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       idea_count = Idea.count
 
-      idea_params = {:title => "Yeah whateva", :body => "something", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is"}
+      idea_params = {:title => "Yeah whateva", :body => "something", :subject => "The > Good > Stuff", :tags_list => "Hello, my, name, is"}
       post :create, :idea => idea_params
       expect(response).to be_redirect # as it's created the thing
       expect(Idea.count).to eq(idea_count + 1)
@@ -193,6 +205,251 @@ describe IdeasController, :type => :controller do
       # Tags should be made lower case on creation
       assert !Idea.all_tags.include?("Hello")
       assert Idea.all_tags.include?("hello")
+    end
+  end
+
+  # Edits
+  describe "GET #edit" do
+    it "NOT LOGGED IN responds with redirect" do
+      idea = create(:idea)
+
+      get :edit, :id => idea.to_param, :format => :html
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /Please log in/
+    end
+  end
+
+  describe "GET #edit" do
+    it "LOGGED IN but not as author" do
+      idea = create(:idea)
+      idea.authors << create(:user)
+
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      get :edit, :id => idea.to_param, :format => :html
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /You don't have permissions to edit this idea/
+    end
+  end
+
+  describe "GET #edit" do
+    it "LOGGED IN as author but idea isn't pending" do
+      idea = create(:published_idea)
+      user = create(:user)
+      idea.authors << user
+
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      get :edit, :id => idea.to_param, :format => :html
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /This idea can't be edited/
+    end
+  end
+
+  describe "GET #edit" do
+    it "LOGGED IN as author when it should be possible to edit" do
+      idea = create(:idea, :tags => ["foo", "bar", "baz"])
+      user = create(:user)
+      idea.authors << user
+
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      get :edit, :id => idea.to_param, :format => :html
+      expect(response.body).to match /baz/
+      expect(response).to be_success
+    end
+  end
+
+  describe "POST #update" do
+    it "NOT LOGGED IN should respond with redirect" do
+      post :update, :id => "blah", :idea => {}, :format => :html
+      expect(response).to be_redirect
+    end
+  end
+
+  describe "POST #update" do
+    it "LOGGED IN but not as an author" do
+      idea = create(:idea, :tags => ["foo", "bar", "baz"])
+      user = create(:user)
+      idea.authors << create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      post :update, :id => idea.to_param, :idea => {"foo" => "bar"}, :format => :html
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /You don't have permissions to edit this idea/
+    end
+  end
+
+  describe "POST #update" do
+    it "LOGGED IN but not as an author" do
+      idea = create(:published_idea, :tags => ["foo", "bar", "baz"])
+      user = create(:user)
+      idea.authors << create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      post :update, :id => idea.to_param, :idea => {"foo" => "bar"}, :format => :html
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /This idea can't be edited/
+    end
+  end
+
+  describe "POST #update" do
+    it "LOGGED IN as an author" do
+      idea = create(:idea, :tags => ["foo", "bar", "baz"])
+      user = create(:user)
+      idea.authors << user
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea_params = {:title => "Yeah whateva", :body => "something", :subject => "The > Good > Stuff", :tags_list => "Hello, my, name, is"}
+
+      post :update, :id => idea.to_param, :idea => idea_params, :format => :html
+      expect(idea.reload.tags_list).to eq("hello, my, name, is")
+      expect(flash[:notice]).to match /Idea updated/
+    end
+  end
+
+  # Invite system
+  describe "GET #show" do
+    it "NOT LOGGED IN" do
+      idea = create(:idea)
+      idea.authors << create(:user)
+
+      get :show, :id => idea.sha
+      expect(response).to be_success # Not logged in
+      expect(response.body).to match /Please log in to accept authorship/
+    end
+  end
+
+  describe "GET #show" do
+    it "LOGGED IN for a rejected idea" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:rejected_idea)
+      idea.authors << user
+
+      get :show, :id => idea.sha
+      expect(response).to be_success # Can't accept authorship on a published idea
+      expect(response.body).to match /This idea was not accepted into the Journal of Brief Ideas/
+    end
+  end
+
+  describe "GET #accept_invite" do
+    it "NOT LOGGED IN should redirect" do
+      idea = create(:idea)
+      get :accept_invite, :id => idea.sha
+      expect(response).to be_redirect # Not logged in
+      expect(flash[:notice]).to match /Please log in/
+    end
+  end
+
+  describe "GET #accept_invite" do
+    it "LOGGED IN without email address" do
+      submitting_author = create(:user)
+      user = create(:no_email_user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:idea)
+      idea.authors << submitting_author
+
+      get :accept_invite, :id => idea.sha
+      expect(response).to be_redirect # No email
+      expect(flash[:notice]).to match /You must add an email to your account before becoming an authorship/
+    end
+  end
+
+  describe "GET #accept_invite" do
+    it "LOGGED IN but for accepted idea" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:published_idea)
+
+      get :accept_invite, :id => idea.sha
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /This idea is already published/
+    end
+  end
+
+  describe "GET #accept_invite" do
+    it "LOGGED IN but for a rejected idea" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:rejected_idea)
+
+      get :accept_invite, :id => idea.sha
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /This idea is was rejected/
+    end
+  end
+
+  describe "GET #accept_invite" do
+    it "LOGGED IN as an existing author" do
+      submitting_author = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(submitting_author)
+
+      idea = create(:idea)
+      idea.authors << submitting_author
+
+      get :accept_invite, :id => idea.sha
+      expect(response).to be_redirect # Already an author
+      expect(flash[:notice]).to match /You're already an author of this idea/
+    end
+  end
+
+  describe "GET #accept_invite" do
+    it "LOGGED IN" do
+      submitting_author = create(:user)
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:idea)
+      idea.authors << submitting_author
+
+      get :accept_invite, :id => idea.sha
+      expect(response).to be_redirect # To idea#show
+      expect(flash[:notice]).to match /Authorship accepted!/
+    end
+  end
+
+  describe "POST #submit" do
+    it "LOGGED IN but not as submitting_author" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:idea)
+      idea.authors << create(:user)
+
+      post :submit, :id => idea.sha
+      expect(response).to be_redirect # To idea#show
+      expect(flash[:notice]).to match /Only the submitting author can submit an idea/
+    end
+  end
+
+  describe "POST #submit" do
+    it "NOT LOGGED IN" do
+      idea = create(:idea)
+      idea.authors << create(:user)
+
+      post :submit, :id => idea.sha
+      expect(response).to be_redirect # To idea#show
+      expect(flash[:notice]).to match /Please log in/
+    end
+  end
+
+  describe "POST #submit" do
+    it "LOGGED IN AS submitting_author" do
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea = create(:idea)
+      idea.authors << user
+
+      post :submit, :id => idea.sha
+      expect(response).to be_redirect # To idea#show
+      expect(flash[:notice]).to match /Idea submitted/
     end
   end
 
@@ -230,7 +487,7 @@ describe IdeasController, :type => :controller do
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       idea_count = Idea.count
 
-      idea_params = {:title => "Yeah whateva", :body => "something [A citation to Arfon's work](/ideas/#{parent_idea.sha}) and some more [A citation to Arfon's work](http://external.doi)", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is"}
+      idea_params = {:title => "Yeah whateva", :body => "something [A citation to Arfon's work](/ideas/#{parent_idea.sha}) and some more [A citation to Arfon's work](http://external.doi)", :subject => "The > Good > Stuff", :tags_list => "Hello, my, name, is"}
       post :create, :idea => idea_params
       expect(response).to be_redirect # as it's created the thing
       expect(Idea.count).to eq(idea_count + 1)

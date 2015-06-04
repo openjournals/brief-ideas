@@ -1,11 +1,12 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :only => [ :new, :create, :hide ]
+  before_filter :require_user, :only => [ :new, :edit, :create, :hide, :accept_invite, :submit, :update ]
+  before_filter :load_tags, :only => [ :new, :edit ]
   respond_to :json, :html, :atom
 
   def index
     @ideas = Idea.by_date.visible.for_user(current_user).limit(10)
     @recent = true
-    
+
     respond_to do |format|
       format.atom
       format.json { render :json => @ideas }
@@ -36,19 +37,50 @@ class IdeasController < ApplicationController
   end
 
   def new
-    @tags = Idea.all_tags
     @idea = Idea.new
   end
 
   def create
     @idea = Idea.new(idea_params)
-    @idea.tags = idea_params['tags'].split(',').collect(&:strip).collect(&:downcase)
-    @idea.user = current_user
+    @idea.tags = idea_params['tags_list'].split(',').collect(&:strip).collect(&:downcase)
+    @idea.authors << current_user
 
     if @idea.save
       redirect_to idea_path(@idea), :notice => "Idea created"
     else
       render :action => "new"
+    end
+  end
+
+  def edit
+    @idea = Idea.find_by_sha(params[:id])
+
+    unless @idea.pending?
+      redirect_to ideas_path, :notice => "This idea can't be edited" and return
+    end
+
+    unless @idea.authors.include?(current_user)
+      redirect_to ideas_path, :notice => "You don't have permissions to edit this idea" and return
+    end
+  end
+
+  def update
+    @idea = Idea.find_by_sha(params[:id])
+
+    unless @idea.pending?
+      redirect_to ideas_path, :notice => "This idea can't be edited" and return
+    end
+
+    unless @idea.authors.include?(current_user)
+      redirect_to ideas_path, :notice => "You don't have permissions to edit this idea" and return
+    end
+
+    @idea.tags = idea_params['tags_list'].split(',').collect(&:strip).collect(&:downcase)
+
+    if @idea.update_attributes(idea_params)
+      redirect_to idea_path(@idea), :notice => "Idea updated"
+    else
+      render :action => "edit"
     end
   end
 
@@ -93,9 +125,8 @@ class IdeasController < ApplicationController
   def show
     @idea = Idea.find_by_sha(params[:id])
 
-
-    unless @idea && @idea.visible_to?(current_user)
-      redirect_to ideas_path and return
+    unless @idea
+      redirect_to ideas_path, :notice => "Idea not found" and return
     end
 
     impressionist(@idea)
@@ -110,6 +141,36 @@ class IdeasController < ApplicationController
 
   end
 
+  def submit
+    @idea = Idea.find_by_sha(params[:id])
+
+    # Only let the submitting author submit an idea
+    unless @idea.submitting_author == current_user
+      redirect_to idea_path(@idea), :notice => "Only the submitting author can submit an idea" and return
+    end
+
+    if @idea.pending?
+      @idea.submit!
+      redirect_to idea_path(@idea), :notice => "Idea submitted"
+    else
+      redirect_to idea_path(@idea), :notice => "Your idea could not be submitted"
+    end
+  end
+
+  def accept_invite
+    @idea = Idea.find_by_sha(params[:id])
+    valid_author, message = @idea.can_become_author?(current_user)
+
+    if current_user.email.blank?
+      redirect_to idea_path(@idea), :notice => "You must add an email to your account before becoming an authorship"
+    elsif !valid_author
+      redirect_to idea_path(@idea), :notice => message
+    else
+      @idea.add_author!(current_user)
+      redirect_to idea_path(@idea), :notice => "Authorship accepted!"
+    end
+  end
+
   def boom
     raise "Hell"
   end
@@ -122,10 +183,14 @@ class IdeasController < ApplicationController
 private
 
   def idea_params
-    params.require(:idea).permit(:title, :body, :subject, :tags, :citation_ids)
+    params.require(:idea).permit(:title, :body, :subject, :tags_list, :citation_ids)
   end
 
   def comment_params
     params.require(:comment).permit(:comment)
+  end
+
+  def load_tags
+    @all_tags = Idea.all_tags
   end
 end

@@ -5,8 +5,9 @@ class Vote < ActiveRecord::Base
   before_create :check_voter
   after_create :increment_idea_vote_count, :update_rating
 
+  # TODO: Check that authors can't vote for their own ideas
   def check_voter
-    if self.user == self.idea.creator
+    if self.idea.authors.include?(self.user)
       return false
     elsif self.user.voter_for?(self.idea)
       return false

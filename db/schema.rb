@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150603105737) do
+ActiveRecord::Schema.define(version: 20150603141805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(version: 20150603105737) do
 
   add_index "audit_logs", ["idea_id"], name: "index_audit_logs_on_idea_id", using: :btree
   add_index "audit_logs", ["user_id"], name: "index_audit_logs_on_user_id", using: :btree
+
+  create_table "authorships", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "idea_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "authorships", ["idea_id"], name: "index_authorships_on_idea_id", using: :btree
+  add_index "authorships", ["user_id"], name: "index_authorships_on_user_id", using: :btree
 
   create_table "collection_ideas", force: true do |t|
     t.integer  "idea_id"

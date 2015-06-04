@@ -27,6 +27,7 @@ describe UsersController, :type => :controller do
       user = create(:no_email_user)
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       params = {:email => "albert@gmail.com"}
+      request.env["HTTP_REFERER"] = ideas_path
 
       post :update_email, :user => params
       expect(response).to be_redirect # as it's updated the email

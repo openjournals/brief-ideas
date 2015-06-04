@@ -1,0 +1,29 @@
+<% if @idea.pending? && @idea.submitting_author == current_user %>
+  <div class="bg-info">
+    <p>You can invite additional authors by sharing this page URL with your colleagues: </p>
+    <p><strong><%= raw idea_url(@idea) %></strong></p>
+  </div>
+  <div class="bg-warning accept-message">
+    Please note, this idea has not yet been submitted. <%= link_to 'Edit'.html_safe, edit_idea_path(@idea), :class => 'btn btn-danger btn-xs' %> <%= button_to 'Submit now &raquo;'.html_safe, submit_idea_path(@idea), :data => {:confirm => "Are you sure you want to submit this idea? You can't edit ideas once they're submitted or invite additional authors."}, :class => 'btn btn-success btn-xs' %>
+  </div>
+<% elsif @idea.pending? && @idea.authors.include?(current_user) %>
+  <div class="bg-warning accept-message">
+    Please note, this idea has not yet been submitted by the submitting author. <%= link_to 'Edit'.html_safe, edit_idea_path(@idea), :class => 'btn btn-danger btn-xs' %>
+  </div>
+<% elsif @idea.pending? && current_user %>
+  <div class="bg-warning accept-message">
+    Please note, this idea has not yet been submitted. <%= button_to 'Accept authorship'.html_safe, accept_invite_idea_path(@idea), :class => 'btn btn-success btn-xs' %>
+  </div>
+<% elsif @idea.pending? %>
+  <div class="bg-warning accept-message">
+    Please note, this idea has not yet been submitted. Please log in to accept authorship.
+  </div>
+<% elsif @idea.submitted? %>
+  <div class="bg-warning">
+    Please note, this idea is pending acceptance by the editors of the Journal of Brief Ideas.
+  </div>
+<% elsif @idea.rejected? %>
+  <div class="bg-danger">
+    This idea was not accepted into the Journal of Brief Ideas.
+  </div>
+<% end %>

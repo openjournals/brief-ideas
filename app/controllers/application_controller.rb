@@ -7,7 +7,9 @@ class ApplicationController < ActionController::Base
   helper Starburst::AnnouncementsHelper
 
   def require_user
-    redirect_to '/sessions/new' unless current_user
+    unless current_user
+      redirect_to '/sessions/new', :notice => "Please log in"
+    end
   end
 
   def require_admin_user

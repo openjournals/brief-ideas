@@ -14,7 +14,7 @@
       <tr>
         <td><%= link_to truncate(idea.title, :length => 30), idea_path(idea), :target => "_blank" %></td>
         <td><%= idea.created_at %></td>
-        <td><%= link_to idea.user.nice_name, idea.user.orcid_url, :target => "_blank" %></td>
+        <td><%= link_to idea.submitting_author.nice_name, idea.submitting_author.orcid_url, :target => "_blank" %></td>
         <% if idea.published? %>
         <td><%= button_to 'Published', publish_admin_path(idea), :class => 'btn btn-xs', :disabled => "disabled" %></td>
         <% else %>
