@@ -127,23 +127,16 @@ class IdeasController < ApplicationController
 
   def accept_invite
     @idea = Idea.find_by_sha(params[:id])
+    valid_author, message = @idea.can_become_author?(current_user)
 
     if current_user.email.blank?
-      redirect_to idea_path(@idea), :notice => "You must add an email to your account before becoming an authorship" and return
-    # Can't become and author of something that's already published.
-    elsif @idea.published?
-      redirect_to idea_path(@idea), :notice => "This idea is already published" and return
-    # Or rejected
-    elsif @idea.rejected?
-      redirect_to ideas_path, :notice => "This idea is was rejected" and return
-    # Or if you've already accepted authorship
-    elsif @idea.authors.include?(current_user)
-      redirect_to idea_path(@idea), :notice => "You're already an author of this idea" and return
+      redirect_to idea_path(@idea), :notice => "You must add an email to your account before becoming an authorship"
+    elsif !valid_author
+      redirect_to idea_path(@idea), :notice => message
     else
       @idea.add_author!(current_user)
+      redirect_to idea_path(@idea), :notice => "Authorship accepted!"
     end
-
-    redirect_to idea_path(@idea), :notice => "Authorship accepted!"
   end
 
   def boom

@@ -109,6 +109,20 @@ class Idea < ActiveRecord::Base
     return false if authors.include?(user)
   end
 
+  def can_become_author?(user)
+
+    if published?
+      return false, "This idea is already published"
+    elsif rejected?
+      return false, "This idea is was rejected"
+    elsif authors.include?(user)
+      return false, "You're already an author of this idea"
+    else
+      return true, "Author can be added"
+    end
+
+  end
+
   def visible_to?(user)
     if (authors.include?(user) || self.published?)
       return true
