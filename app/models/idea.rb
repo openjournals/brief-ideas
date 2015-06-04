@@ -110,7 +110,6 @@ class Idea < ActiveRecord::Base
   end
 
   def can_become_author?(user)
-
     if published?
       return false, "This idea is already published"
     elsif rejected?
@@ -120,7 +119,6 @@ class Idea < ActiveRecord::Base
     else
       return true, "Author can be added"
     end
-
   end
 
   def visible_to?(user)
