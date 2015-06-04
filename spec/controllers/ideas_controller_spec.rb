@@ -194,7 +194,7 @@ describe IdeasController, :type => :controller do
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       idea_count = Idea.count
 
-      idea_params = {:title => "Yeah whateva", :body => "something", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is"}
+      idea_params = {:title => "Yeah whateva", :body => "something", :subject => "The > Good > Stuff", :tags_list => "Hello, my, name, is"}
       post :create, :idea => idea_params
       expect(response).to be_redirect # as it's created the thing
       expect(Idea.count).to eq(idea_count + 1)
@@ -205,6 +205,107 @@ describe IdeasController, :type => :controller do
       # Tags should be made lower case on creation
       assert !Idea.all_tags.include?("Hello")
       assert Idea.all_tags.include?("hello")
+    end
+  end
+
+  # Edits
+  describe "GET #edit" do
+    it "NOT LOGGED IN responds with redirect" do
+      idea = create(:idea)
+
+      get :edit, :id => idea.to_param, :format => :html
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /Please log in/
+    end
+  end
+
+  describe "GET #edit" do
+    it "LOGGED IN but not as author" do
+      idea = create(:idea)
+      idea.authors << create(:user)
+
+      user = create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      get :edit, :id => idea.to_param, :format => :html
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /You don't have permissions to edit this idea/
+    end
+  end
+
+  describe "GET #edit" do
+    it "LOGGED IN as author but idea isn't pending" do
+      idea = create(:published_idea)
+      user = create(:user)
+      idea.authors << user
+
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      get :edit, :id => idea.to_param, :format => :html
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /This idea can't be edited/
+    end
+  end
+
+  describe "GET #edit" do
+    it "LOGGED IN as author when it should be possible to edit" do
+      idea = create(:idea, :tags => ["foo", "bar", "baz"])
+      user = create(:user)
+      idea.authors << user
+
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      get :edit, :id => idea.to_param, :format => :html
+      expect(response.body).to match /baz/
+      expect(response).to be_success
+    end
+  end
+
+  describe "POST #update" do
+    it "NOT LOGGED IN should respond with redirect" do
+      post :update, :id => "blah", :idea => {}, :format => :html
+      expect(response).to be_redirect
+    end
+  end
+
+  describe "POST #update" do
+    it "LOGGED IN but not as an author" do
+      idea = create(:idea, :tags => ["foo", "bar", "baz"])
+      user = create(:user)
+      idea.authors << create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      post :update, :id => idea.to_param, :idea => {"foo" => "bar"}, :format => :html
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /You don't have permissions to edit this idea/
+    end
+  end
+
+  describe "POST #update" do
+    it "LOGGED IN but not as an author" do
+      idea = create(:published_idea, :tags => ["foo", "bar", "baz"])
+      user = create(:user)
+      idea.authors << create(:user)
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      post :update, :id => idea.to_param, :idea => {"foo" => "bar"}, :format => :html
+      expect(response).to be_redirect
+      expect(flash[:notice]).to match /This idea can't be edited/
+    end
+  end
+
+  describe "POST #update" do
+    it "LOGGED IN as an author" do
+      idea = create(:idea, :tags => ["foo", "bar", "baz"])
+      user = create(:user)
+      idea.authors << user
+      allow(controller).to receive_message_chain(:current_user).and_return(user)
+
+      idea_params = {:title => "Yeah whateva", :body => "something", :subject => "The > Good > Stuff", :tags_list => "Hello, my, name, is"}
+
+      post :update, :id => idea.to_param, :idea => idea_params, :format => :html
+      expect(idea.reload.tags_list).to eq("hello, my, name, is")
+      expect(flash[:notice]).to match /Idea updated/
     end
   end
 
@@ -386,7 +487,7 @@ describe IdeasController, :type => :controller do
       allow(controller).to receive_message_chain(:current_user).and_return(user)
       idea_count = Idea.count
 
-      idea_params = {:title => "Yeah whateva", :body => "something [A citation to Arfon's work](/ideas/#{parent_idea.sha}) and some more [A citation to Arfon's work](http://external.doi)", :subject => "The > Good > Stuff", :tags => "Hello, my, name, is"}
+      idea_params = {:title => "Yeah whateva", :body => "something [A citation to Arfon's work](/ideas/#{parent_idea.sha}) and some more [A citation to Arfon's work](http://external.doi)", :subject => "The > Good > Stuff", :tags_list => "Hello, my, name, is"}
       post :create, :idea => idea_params
       expect(response).to be_redirect # as it's created the thing
       expect(Idea.count).to eq(idea_count + 1)

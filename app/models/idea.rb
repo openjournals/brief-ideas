@@ -75,6 +75,15 @@ class Idea < ActiveRecord::Base
   # Logging views of ideas with impressionist. Only one count per user session
   is_impressionable :counter_cache => true, :column_name => :view_count, :unique => :true
 
+  # View helper methods
+  def tags_list=(arg)
+    tags = arg.split(',').map { |v| v.strip }
+  end
+
+  def tags_list
+    tags.join(', ')
+  end
+
   # TODO - work out what do do with these
   def parents
     references

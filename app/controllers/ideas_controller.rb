@@ -1,5 +1,6 @@
 class IdeasController < ApplicationController
-  before_filter :require_user, :only => [ :new, :create, :hide, :accept_invite, :submit ]
+  before_filter :require_user, :only => [ :new, :edit, :create, :hide, :accept_invite, :submit, :update ]
+  before_filter :load_tags, :only => [ :new, :edit ]
   respond_to :json, :html, :atom
 
   def index
@@ -36,19 +37,50 @@ class IdeasController < ApplicationController
   end
 
   def new
-    @tags = Idea.all_tags
     @idea = Idea.new
   end
 
   def create
     @idea = Idea.new(idea_params)
-    @idea.tags = idea_params['tags'].split(',').collect(&:strip).collect(&:downcase)
+    @idea.tags = idea_params['tags_list'].split(',').collect(&:strip).collect(&:downcase)
     @idea.authors << current_user
 
     if @idea.save
       redirect_to idea_path(@idea), :notice => "Idea created"
     else
       render :action => "new"
+    end
+  end
+
+  def edit
+    @idea = Idea.find_by_sha(params[:id])
+
+    unless @idea.pending?
+      redirect_to ideas_path, :notice => "This idea can't be edited" and return
+    end
+
+    unless @idea.authors.include?(current_user)
+      redirect_to ideas_path, :notice => "You don't have permissions to edit this idea" and return
+    end
+  end
+
+  def update
+    @idea = Idea.find_by_sha(params[:id])
+
+    unless @idea.pending?
+      redirect_to ideas_path, :notice => "This idea can't be edited" and return
+    end
+
+    unless @idea.authors.include?(current_user)
+      redirect_to ideas_path, :notice => "You don't have permissions to edit this idea" and return
+    end
+
+    @idea.tags = idea_params['tags_list'].split(',').collect(&:strip).collect(&:downcase)
+
+    if @idea.update_attributes(idea_params)
+      redirect_to idea_path(@idea), :notice => "Idea updated"
+    else
+      render :action => "edit"
     end
   end
 
@@ -151,10 +183,14 @@ class IdeasController < ApplicationController
 private
 
   def idea_params
-    params.require(:idea).permit(:title, :body, :subject, :tags, :citation_ids)
+    params.require(:idea).permit(:title, :body, :subject, :tags_list, :citation_ids)
   end
 
   def comment_params
     params.require(:comment).permit(:comment)
+  end
+
+  def load_tags
+    @all_tags = Idea.all_tags
   end
 end
