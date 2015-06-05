@@ -15,6 +15,13 @@ describe Idea do
   it { should have_many(:references) }
   it { should have_many(:collection_ideas) }
   it { should have_many(:collections) }
+  it { should have_attached_file(:attachment) }
+  it { should validate_attachment_content_type(:attachment).
+              allowing('image/png', 'image/gif', 'image/jpg', 'application/pdf',
+              'application/zip', 'application/x-zip',
+              'application/x-zip-compressed', 'application/octet-stream').
+              rejecting('text/plain', 'text/xml') }
+  it { should validate_attachment_size(:attachment).less_than(4.megabytes) }
 
   it "should initialize properly (including NOT queueing ZenodoWorker)" do
     paper = create(:idea)

@@ -183,7 +183,7 @@ class IdeasController < ApplicationController
 private
 
   def idea_params
-    params.require(:idea).permit(:title, :body, :subject, :tags_list, :citation_ids)
+    params.require(:idea).permit(:title, :body, :subject, :tags_list, :citation_ids, :attachment)
   end
 
   def comment_params
