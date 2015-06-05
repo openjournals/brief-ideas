@@ -19,4 +19,16 @@ module ApplicationHelper
       link_to link_text, link_path
     end
   end
+
+  def linked_authors(idea, orcid_links)
+    result = []
+    idea.authors.each do |author|
+      if orcid_links
+        result << link_to(author.nice_name, author.orcid_url, :target => "_blank")
+      else
+        result << link_to(author.nice_name, user_path(author))
+      end
+    end
+    result.join(', ').html_safe
+  end
 end

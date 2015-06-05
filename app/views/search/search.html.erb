@@ -47,7 +47,7 @@
         <% @ideas.each do |idea| %>
           <h4><em><%= link_to idea.title, idea_path(idea) %></em></h4>
           <p><%= truncate(raw(idea.body), :length => 300, :omission => "... ") %></p>
-          <p>By <%= link_to idea.user.name, idea.user %></p>
+          <p>By <%= linked_authors(idea, orcid=false) %></p>
         <% end %>
       <% end %>
     <% end %>
