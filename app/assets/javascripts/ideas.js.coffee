@@ -7,6 +7,16 @@ $ ->
   $('.collect-toggle').dropdown()
   $('.dropdown-toggle').dropdown()
 
+  $(".auto-replace").focus ->
+    val = $(this).val()
+    if val is $(this).attr('data-default')
+      $(this).val('')
+
+  $(".auto-replace").blur ->
+    val = $(this).val()
+    if val is ""
+      $(this).val($(this).attr('data-default'))
+
   counter = ->
     value = $("#idea-body").val()
     if value.length is 0
