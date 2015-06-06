@@ -5,7 +5,8 @@ class ZenodoWorker
     idea = Idea.find_by_sha(idea_id)
 
     create_deposit(idea)
-    upload_files(idea)
+    upload_body_file(idea)
+    upload_attachments(idea)
 
     # Mark as published
     publish!(idea)
@@ -21,6 +22,44 @@ class ZenodoWorker
         zenodo_response = JSON.parse(response.body)
         idea.update_attribute(:zenodo_id, zenodo_response['id'])
         Rails.logger.info "CREATED ZENODO DEPOSIT FOR #{idea.sha}, ZENODO ID #{zenodo_response['id']}"
+      else
+        response.return!(request, result, &block)
+      end
+    }
+  end
+
+  # Write out the idea body to a markdown file
+  def upload_body_file(idea)
+    # First write out a temp file with the idea contents
+    File.open("#{Rails.root}/tmp/#{idea.sha}.md", "w") {|f| f.write(idea.body.to_s) }
+
+    RestClient.post("#{Rails.configuration.zenodo_url}/api/deposit/depositions/#{idea.zenodo_id}/files?access_token=#{Rails.configuration.zenodo_token}", { :file => File.new("#{Rails.root}/tmp/#{idea.sha}.md"), :name => "#{idea.sha}.md", :multipart => true}){ |response, request, result, &block|
+      case response.code
+      when 201
+        zenodo_response = JSON.parse(response.body)
+        Rails.logger.info "UPLOADED FILES FOR #{idea.sha}, ZENODO ID #{zenodo_response['id']}"
+      else
+        response.return!(request, result, &block)
+      end
+    }
+  end
+
+  # In the future we might have more than one attachment
+  def upload_attachments(idea)
+    return unless idea.attachment.exists?
+    attachment = idea.attachment
+
+    # Grab file from S3
+    tmp_file = open(attachment.url)
+
+    # Write file to tmp
+    File.open("#{Rails.root}/tmp/#{idea.sha}-#{attachment.original_filename}", "wb") {|f| f.write(tmp_file.read) }
+
+    RestClient.post("#{Rails.configuration.zenodo_url}/api/deposit/depositions/#{idea.zenodo_id}/files?access_token=#{Rails.configuration.zenodo_token}", { :file => File.new("#{Rails.root}/tmp/#{idea.sha}-#{attachment.original_filename}"), :name => attachment.original_filename, :multipart => true}){ |response, request, result, &block|
+      case response.code
+      when 201
+        zenodo_response = JSON.parse(response.body)
+        Rails.logger.info "UPLOADED FILES FOR #{idea.sha}, ZENODO ID #{zenodo_response['id']}"
       else
         response.return!(request, result, &block)
       end
@@ -50,21 +89,6 @@ class ZenodoWorker
         :related_identifiers => [{:relation => "isIdenticalTo", :identifier => "http://beta.briefideas.org/ideas/#{idea.sha}"}]
       }
     }.to_json
-  end
-
-  def upload_files(idea)
-    # First write out a temp file with the idea contents
-    File.open("#{Rails.root}/tmp/#{idea.sha}.md", "w") {|f| f.write(idea.body.to_s) }
-
-    RestClient.post("#{Rails.configuration.zenodo_url}/api/deposit/depositions/#{idea.zenodo_id}/files?access_token=#{Rails.configuration.zenodo_token}", { :file => File.new("#{Rails.root}/tmp/#{idea.sha}.md"), :name => "#{idea.sha}.md", :multipart => true}){ |response, request, result, &block|
-      case response.code
-      when 201
-        zenodo_response = JSON.parse(response.body)
-        Rails.logger.info "UPLOADED FILES FOR #{idea.sha}, ZENODO ID #{zenodo_response['id']}"
-      else
-        response.return!(request, result, &block)
-      end
-    }
   end
 
   def publish!(idea)
