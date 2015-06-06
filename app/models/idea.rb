@@ -72,6 +72,14 @@ class Idea < ActiveRecord::Base
 
   validates_presence_of :title, :body, :tags
 
+  # File attachment
+  has_attached_file :attachment
+  validates_with AttachmentSizeValidator, :attributes => :attachment, :less_than => 4.megabytes
+  validates_attachment_content_type :attachment, :content_type =>
+    [ "application/pdf", "application/zip", "application/x-zip",
+      "application/x-zip-compressed","application/octet-stream",
+      "image/jpg","image/png", "image/gif", "image/jpeg" ]
+
   # Logging views of ideas with impressionist. Only one count per user session
   is_impressionable :counter_cache => true, :column_name => :view_count, :unique => :true
 

@@ -25,6 +25,10 @@
       <%= render :partial => 'ideas/references', :locals => { :references => @idea.references } if @idea.references.any? %>
       <%= render :partial => 'ideas/derivatives', :locals => { :idea => @idea } if @idea.citations.published.any? %>
 
+      <% if @idea.attachment? %>
+      <p><strong>Attachment:</strong> <%= link_to @idea.attachment_file_name, @idea.attachment.url %> (<%= number_to_human_size @idea.attachment_file_size %>)</p>
+      <% end %>
+
       <% if @idea.published? %>
         <h4>Comments</h4>
 

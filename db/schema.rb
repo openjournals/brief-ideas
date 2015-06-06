@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150603141805) do
+ActiveRecord::Schema.define(version: 20150605013914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,14 +29,26 @@ ActiveRecord::Schema.define(version: 20150603141805) do
   add_index "audit_logs", ["idea_id"], name: "index_audit_logs_on_idea_id", using: :btree
   add_index "audit_logs", ["user_id"], name: "index_audit_logs_on_user_id", using: :btree
 
-  create_table "authorships", force: true do |t|
+  create_table "authors", force: true do |t|
     t.integer  "user_id"
     t.integer  "idea_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "authors", ["idea_id"], name: "index_authors_on_idea_id", using: :btree
+  add_index "authors", ["user_id"], name: "index_authors_on_user_id", using: :btree
+
+  create_table "authorships", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "idea_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "state"
+  end
+
   add_index "authorships", ["idea_id"], name: "index_authorships_on_idea_id", using: :btree
+  add_index "authorships", ["state"], name: "index_authorships_on_state", using: :btree
   add_index "authorships", ["user_id"], name: "index_authorships_on_user_id", using: :btree
 
   create_table "collection_ideas", force: true do |t|
@@ -99,13 +111,17 @@ ActiveRecord::Schema.define(version: 20150603141805) do
     t.integer  "zenodo_id"
     t.string   "doi"
     t.string   "subject"
-    t.string   "tags",       default: [],    array: true
-    t.integer  "vote_count", default: 0
-    t.integer  "view_count", default: 0
-    t.float    "score",      default: 0.0
-    t.boolean  "deleted",    default: false
-    t.boolean  "muted",      default: false
-    t.boolean  "tweeted",    default: false
+    t.string   "tags",                    default: [],    array: true
+    t.integer  "vote_count",              default: 0
+    t.integer  "view_count",              default: 0
+    t.float    "score",                   default: 0.0
+    t.boolean  "deleted",                 default: false
+    t.boolean  "muted",                   default: false
+    t.boolean  "tweeted",                 default: false
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
   end
 
   add_index "ideas", ["deleted"], name: "index_ideas_on_deleted", using: :btree
