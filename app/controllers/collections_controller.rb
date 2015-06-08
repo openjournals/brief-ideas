@@ -64,6 +64,11 @@ class CollectionsController < ApplicationController
     end
   end
 
+  # Temporary hack for Convergence conference
+  def convergence
+
+  end
+  
 private
 
   def set_ideas

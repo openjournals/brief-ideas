@@ -38,6 +38,13 @@ class IdeasController < ApplicationController
 
   def new
     @idea = Idea.new
+
+    if params[:tags]
+      @idea.tags = params[:tags].split(",").collect(&:strip)
+    end
+
+    # Are we automagically adding it to a collection on creation?
+    @collection = Collection.find_by_sha(params[:collection_id]) if params[:collection_id]
   end
 
   def create
@@ -46,9 +53,17 @@ class IdeasController < ApplicationController
     @idea.authors << current_user
 
     if @idea.save
+      associate_collection
       redirect_to idea_path(@idea), :notice => "Idea created"
     else
       render :action => "new"
+    end
+  end
+
+  # FIXME - you should only be able to do this for collections you own...
+  def associate_collection
+    if params["collection_id"] && collection = Collection.find_by_sha(params["collection_id"])
+      collection.ideas << @idea
     end
   end
 

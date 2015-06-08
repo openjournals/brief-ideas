@@ -25,6 +25,7 @@
     <div class="help-block with-errors"></div>
   </div>
 
+  <%= hidden_field_tag 'collection_id', @collection.sha if @collection %>
   <%= button_tag 'Save Idea', :data => { :confirm => "Once saved, you can edit and invite authors" }, :class => 'btn btn-default' %> <button class="btn btn-primary" id="preview-button" data-toggle="modal" data-target="#myModal">Preview</button>
 
 <% end %>
