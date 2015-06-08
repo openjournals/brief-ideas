@@ -9,7 +9,7 @@ class SearchController < ApplicationController
       @ideas = @results['ideas']
     elsif params[:tags]
       @tags  = params[:tags].split(",").collect(&:strip)
-      @ideas = Idea.has_all_tags(@tags).paginate(:per_page => '10', :page => params[:page])
+      @ideas = Idea.visible.has_all_tags(@tags).paginate(:per_page => '10', :page => params[:page])
     end
 
     respond_with @ideas
