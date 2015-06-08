@@ -60,10 +60,10 @@ class IdeasController < ApplicationController
     end
   end
 
-  # FIXME - you should only be able to do this for collections you own...
+  # Add this idea to a collection if it's open
   def associate_collection
     if params["collection_id"] && collection = Collection.find_by_sha(params["collection_id"])
-      collection.ideas << @idea
+      collection.ideas << @idea if collection.open?
     end
   end
 
