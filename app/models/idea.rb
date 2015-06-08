@@ -165,8 +165,20 @@ class Idea < ActiveRecord::Base
   #
   # Returns nothing
   def tweet!
-    TWITTER.update("#{title.truncate(80)} - #{user.nice_name}\n\nhttp://beta.briefideas.org/ideas/#{sha}")
+    TWITTER.update("#{title.truncate(75)} - #{tweet_users}\n\nhttp://beta.briefideas.org/ideas/#{sha}")
     self.update_columns(:tweeted => true)
+  end
+
+  # Formatted author names for twitter depending upon how many authors there
+  # are
+  #
+  # Returns author names as a string
+  def tweet_users
+    if authors.size > 1
+      "#{submitting_author.nice_name} et al."
+    else
+      submitting_author.nice_name
+    end
   end
 
   # TODO - test these regexes and work out what to do with non-JOBI references

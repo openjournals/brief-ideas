@@ -124,6 +124,25 @@ describe Idea do
     expect(idea.submitting_author).to eq(first_author)
   end
 
+  # Twitter
+  it "should know how to format single author for Twitter" do
+    author = create(:user, :name => 'Doe, John')
+    idea = create(:idea, :title => "Yawn fest")
+    idea.authors << author
+
+    expect(idea.tweet_users).to eq(author.nice_name)
+  end
+
+  # Twitter
+  it "should know how to format multiple authors for Twitter" do
+    author = create(:user, :name => 'Doe, John')
+    second_author = create(:user, :name => "Smith, Hannibal")
+    idea = create(:idea, :title => "Yawn fest")
+    idea.authors << author
+    idea.authors << second_author
+
+    expect(idea.tweet_users).to eq("#{author.nice_name} et al.")
+  end
   # Zenodo stuff
   it "should know how to format its keywords and tags for Zenodo" do
     idea = create(:idea, :subject => "Blah > Dooo > Daa", :tags => ['so', 'very', 'funky'])
