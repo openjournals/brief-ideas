@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h1>Convergence: What is the future of physics?</h1>
+</div>
+
+<div class="row form">
+  <div class="col-sm-8">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+
+    <p>We stand at a point where many experimental breakthroughs appear imminent, and theories are abundant. But which of these might be most likely, or at least plausible, and where does that lead us in the future?</p>
+
+    <p>Leading up to the Convergence conference at <%= link_to "Perimeter Institute for Theoretical Physics", "https://www.perimeterinstitute.ca", :target => "_blank" %>, we are soliciting brief ideas that capture the excitement of what might come to be.</p>
+
+    <p>Each submission is limited to 200 words, and should reflect a possible and plausible future result in any area of experimental or theoretical physics, or should be a comment on that proposed scenario with an elaboration of where that takes the field of physics next.</p>
+
+    <p>All ideas will be stored in the <%= link_to "Convergence collection of Brief Ideas", "http://beta.briefideas.org/collections/1cdfc8c9d59a2333b637efc67b6b9e8e" %> and you should review previously submitted ideas to get inspiration and to avoid duplication.</p>
+
+    <p><strong>Some tips on a good submission:</strong>
+      <ol>
+        <li>The title should be succinct and describe the outcome so that people can see at a glance what the progress in physics might be.</li>
+        <li>The idea shouldn't be so technical that physicists in other fields are unable to read it.</li>
+        <li>The idea doesn’t need to have all the details worked out (this is a forecast of the unknowable future, after all) but it should concrete and as specific as possible.</li>
+      </ol>
+    </p>
+
+    <p><strong>What to do now:</strong>
+      <ol>
+        <li>View the <%= link_to "previously submitted ideas", "http://beta.briefideas.org/collections/1cdfc8c9d59a2333b637efc67b6b9e8e" %></li>
+        <li><strong><%= link_to "Submit your own idea", new_idea_path(:tags => "convergence", :collection_id => "1cdfc8c9d59a2333b637efc67b6b9e8e") %></strong></li>
+        <li>Comment on somebody else's idea with the next possible step</li>
+      </ol>
+    </p>
+
+    <p>All ideas will be stored permanently and have a DOI assigned so that they can be cited just like regular papers and  can appear in your ORCID record.
+    </p>
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <%= render :partial => 'sessions/login' %>
+
+    <div class="help-block">
+      <h5>Some help text</h5>
+    </div>
+  </div>
+</div>

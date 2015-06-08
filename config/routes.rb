@@ -58,6 +58,9 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 
+  # Convergence
+  get '/convergence', to: "collections#convergence", as: "convergence"
+
   # Starburst
   mount Starburst::Engine => "/starburst"
 
