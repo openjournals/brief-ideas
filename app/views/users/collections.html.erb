@@ -9,7 +9,7 @@
       <% @collections.each do |collection| %>
         <div class="idea clearfix">
           <p class="lead idea"><%= link_to(collection.name, collection_path(collection)) %></p>
-          <p><%= pluralize(collection.ideas.size, 'idea') %>. Last updated <%= time_ago_in_words(collection.collection_ideas.last.created_at) %> ago. <%= link_to "View collection &raquo;".html_safe, collection_path(collection) %></p>
+          <p><%= pluralize(collection.ideas.size, 'idea') %>. <% if collection.ideas.any? %>Last updated <%= time_ago_in_words(collection.collection_ideas.last.created_at) %> ago.<% end %> <%= link_to "View collection &raquo;".html_safe, collection_path(collection) %></p>
         </div>
 
       <% end %>
