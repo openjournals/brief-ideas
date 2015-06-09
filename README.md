@@ -35,10 +35,10 @@ If we go back into the vaults of history, we find the original scientific journa
 
 ## Development status
 
-This is very much a work in progress but we feel like it's in good enough shape to start using.
+This work in progress but is getting more feature-complete in each release. It's certainly good enough to start submitting ideas to. You can track outstanding issues [here](https://github.com/openjournals/brief-ideas/issues).
 
 ### Is it green?
 
-Hopefully/probably? You can keep an eye on Travis stuff here:
+Certainly should be. You can keep an eye on Travis stuff here:
 
 [![Build Status](https://travis-ci.org/openjournals/brief-ideas.svg?branch=master)](https://travis-ci.org/openjournals/brief-ideas)
