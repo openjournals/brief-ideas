@@ -39,6 +39,6 @@ This work in progress but is getting more feature-complete in each release. It's
 
 ### Is it green?
 
-Hopefully/probably? You can keep an eye on Travis stuff here:
+Certainly should be. You can keep an eye on Travis stuff here:
 
 [![Build Status](https://travis-ci.org/openjournals/brief-ideas.svg?branch=master)](https://travis-ci.org/openjournals/brief-ideas)
