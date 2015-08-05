@@ -1,5 +1,5 @@
 class CollectionsController < ApplicationController
-  before_filter :require_user, :except => [ :show  ]
+  before_filter :require_user, :except => [ :show, :convergence  ]
 
   def new
     @collection = Collection.new
@@ -68,7 +68,7 @@ class CollectionsController < ApplicationController
   def convergence
 
   end
-  
+
 private
 
   def set_ideas
