@@ -43,6 +43,11 @@ class IdeasController < ApplicationController
       @idea.tags = params[:tags].split(",").collect(&:strip)
     end
 
+    # Hack hack hack
+    if params[:collection_id] == "d4dbcbf82a7ba0e11b4eb5e19a59953e"
+      @idea.tags = ["open research accelerator"]
+    end
+
     # Are we automagically adding it to a collection on creation?
     @collection = Collection.find_by_sha(params[:collection_id]) if params[:collection_id]
   end

@@ -1,5 +1,5 @@
 class CollectionsController < ApplicationController
-  before_filter :require_user, :except => [ :show, :convergence  ]
+  before_filter :require_user, :except => [ :show, :convergence, :ora  ]
 
   def new
     @collection = Collection.new
@@ -66,6 +66,11 @@ class CollectionsController < ApplicationController
 
   # Temporary hack for Convergence conference
   def convergence
+
+  end
+
+  # Temporary hack for Mozilla ORAs
+  def ora
 
   end
 

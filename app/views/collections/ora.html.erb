@@ -1,0 +1,50 @@
+<div class="page-header">
+  <h1>Open Research Accelerator</h1>
+</div>
+
+<div class="row form">
+  <div class="col-sm-8">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+    <p>This year, the Science Lab is launching the Open Research Accelerator as part of <%= link_to "MozFest 2015", "https://2015.mozillafestival.org/" %>, November 6-8 in London. The Open Research Accelerator focuses on practical training getting started in open source as well as hands-on experience building collaboratively.</p>
+
+    <p><strong>Members of the Open Research Accelerator will:</strong>
+      <ul>
+        <li>Receive 1-on-1 project help and mentorship at the MozFest for their projects to get started with open source. This includes help with project roadmapping, identifying pathways for new participants, engaging with contributors, open licensing and software citation.</li>
+        <li>Run a sprint session on the final day of the MozFest as practical experience mentoring and engaging community on their project.</li>
+      </ul>
+    </p>
+
+    <p><strong>Perks</strong>
+      <ul>
+        <li>MozFest 2015 admission</li>
+        <li>Training &amp; 1-on-1 project help from leaders in open source</li>
+        <li>(optional) Facilitator training (Friday morning)</li>
+        <li>Support to help run a sprint session for your project</li>
+        <li>Access to a community of mentors, technologists and more.</li>
+      </ul>
+    </p>
+
+    <p>All ideas will be stored in the <%= link_to "Open Research Accelerator collection", collection_path(:id => "d4dbcbf82a7ba0e11b4eb5e19a59953e") %> of Brief Ideas.</p>
+
+    <p><strong>How to submit your project</strong>
+    <p>To promote open research practices, all submission are archived, assigned a DOI (<%= link_to "Zenodo", "https://zenodo.org/" %>), tied to your unique researcher identifier (<%= link_to "ORCID", "http://orcid.org/" %>) and publicly reviewed. We’re partnering with the <%= link_to "Journal of Brief Ideas", "http://beta.briefideas.org/" %> to handle submissions for the Open Research Accelerator.</p>
+
+    <ul>
+      <li><strong><%= link_to "Submit your idea here", new_idea_path(:tags => "openresearchaccelerator", :collection_id => "d4dbcbf82a7ba0e11b4eb5e19a59953e") %></strong></li>
+    </ul>
+
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <%= render :partial => 'sessions/login' %>
+
+    <div class="helper-block">
+      <h5>Welcome</h5>
+      <p>This is the Journal of Brief Ideas - citable ideas in fewer than 200 words.</p>
+    </div>
+
+    <div class="helper-block">
+      <h5>Submission help</h5>
+      <p>Watch <a href="https://www.youtube.com/embed/0fYV2cqN1yU" target="_blank">this 2-minute video</a> that will walk you through how to submit an idea.</p>
+    </div>
+  </div>
+</div>
