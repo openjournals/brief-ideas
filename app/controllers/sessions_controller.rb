@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     OrcidWorker.perform_async(user.uid)
 
     session[:user_id] = user.id
-    redirect_to root_url, :notice => "Signed in!"
+    redirect_to request.env['omniauth.origin']
   end
 
   def destroy
