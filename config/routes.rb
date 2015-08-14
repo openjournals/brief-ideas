@@ -61,6 +61,9 @@ Rails.application.routes.draw do
   # Convergence
   get '/convergence', to: "collections#convergence", as: "convergence"
 
+  # Open Research Accelerator
+  get '/open-research-accelerator', to: "collections#ora", as: "ora"
+
   # Starburst
   mount Starburst::Engine => "/starburst"
 

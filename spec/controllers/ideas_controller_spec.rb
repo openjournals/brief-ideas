@@ -215,7 +215,6 @@ describe IdeasController, :type => :controller do
 
       get :edit, :id => idea.to_param, :format => :html
       expect(response).to be_redirect
-      expect(flash[:notice]).to match /Please log in/
     end
   end
 
@@ -340,7 +339,6 @@ describe IdeasController, :type => :controller do
       idea = create(:idea)
       get :accept_invite, :id => idea.sha
       expect(response).to be_redirect # Not logged in
-      expect(flash[:notice]).to match /Please log in/
     end
   end
 
@@ -435,7 +433,6 @@ describe IdeasController, :type => :controller do
 
       post :submit, :id => idea.sha
       expect(response).to be_redirect # To idea#show
-      expect(flash[:notice]).to match /Please log in/
     end
   end
 

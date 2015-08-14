@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
 
   def require_user
     unless current_user
-      redirect_to '/sessions/new', :notice => "Please log in"
+      # Make sure we get redirected back to the page we were asking for.
+      redirect_to "/auth/orcid?origin=#{env['REQUEST_URI']}"
     end
   end
 
