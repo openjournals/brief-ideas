@@ -9,7 +9,11 @@ class SessionsController < ApplicationController
     OrcidWorker.perform_async(user.uid)
 
     session[:user_id] = user.id
-    redirect_to request.env['omniauth.origin']
+    if request.env['omniauth.origin']
+      redirect_to request.env['omniauth.origin']
+    else
+      redirect_to root_url
+    end
   end
 
   def destroy
