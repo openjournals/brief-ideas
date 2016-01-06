@@ -64,6 +64,9 @@ Rails.application.routes.draw do
   # Open Research Accelerator
   get '/open-research-accelerator', to: "collections#ora", as: "ora"
 
+  # DSLHC
+  get '/dslhc', to: "collections#dslhc", as: "dslhc"
+
   # Starburst
   mount Starburst::Engine => "/starburst"
 
