@@ -131,4 +131,13 @@ describe CollectionsController, :type => :controller do
       expect(Collection.count).to eq(collection_count - 1)
     end
   end
+
+  # Custom conference pages
+
+  describe "GET #dslhc" do
+    it "LOGGED OUT responds with a success" do
+      get :dslhc, :format => :html
+      expect(response).to be_success
+    end
+  end
 end

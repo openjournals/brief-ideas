@@ -1,0 +1,50 @@
+<div class="page-header">
+  <h1>Data Science &commat; LHC</h1>
+</div>
+
+<div class="row form">
+  <div class="col-sm-8">
+    <%= render :partial => 'shared/flashes', :locals => { :flash => flash } %>
+    <p>The Data Science &commat; LHC workshop was a resounding success. We do not plan to have traditional proceedings tied to individual talks, but we do want to capture the ideas that were generated during the workshop.</p>
+
+    <p>With that in mind, we are soliciting contributions to the Journal of Brief Ideas. Each contribution is capped at 200 words, so this provides a lightweight method of collecting ideas that came up during the workshop. They do not have to be tied to a particular talk or speaker, and you can even submit several ideas with a different set of authors.</p>
+
+    <p>The goal is to lay the groundwork for new collaborations and follow up studies, not to document completed research.</p>
+
+    <p>All ideas will be stored in the <%= link_to "Data Science @ LHC collection of Brief Ideas", "http://beta.briefideas.org/collections/f85d3c54445e300bf6b6dd41a429d048" %> and given the tag <strong>DSLHC</strong>.</p>
+
+    <p>Please <%= link_to "review previously submitted ideas", "http://beta.briefideas.org/collections/f85d3c54445e300bf6b6dd41a429d048" %> to get inspiration and to avoid duplication.</p>
+
+    <p><strong>Some tips on a good submission:</strong>
+      <ol>
+        <li>The title should be succinct and describe the outcome so that people can see at a glance what the progress in physics might be.</li>
+        <li>The idea shouldn't be so technical that physicists in other fields are unable to read it.</li>
+        <li>The idea doesn’t need to have all the details worked out (this is a forecast of the unknowable future, after all) but it should concrete and as specific as possible.</li>
+      </ol>
+    </p>
+
+    <p><strong>What to do now:</strong>
+      <ol>
+        <li>View the <%= link_to "previously submitted ideas", "http://beta.briefideas.org/collections/f85d3c54445e300bf6b6dd41a429d048" %></li>
+        <li><strong><%= link_to "Submit your own idea", new_idea_path(:tags => "dslhc", :collection_id => "f85d3c54445e300bf6b6dd41a429d048") %></strong></li>
+        <li>Comment on somebody else's idea with the next possible step</li>
+      </ol>
+    </p>
+
+    <p>All ideas will be stored permanently and have a DOI assigned so that they can be cited just like regular papers and  can appear in your ORCID record.
+    </p>
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <%= render :partial => 'sessions/login' %>
+
+    <div class="helper-block">
+      <h5>Welcome</h5>
+      <p>This is the Journal of Brief Ideas - citable ideas in fewer than 200 words.</p>
+    </div>
+
+    <div class="helper-block">
+      <h5>Submission help</h5>
+      <p>Watch <a href="https://www.youtube.com/embed/0fYV2cqN1yU" target="_blank">this 2-minute video</a> that will walk you through how to submit an idea.</p>
+    </div>
+  </div>
+</div>
