@@ -11,6 +11,12 @@ class Notification < ActionMailer::Base
     mail(:to => EDITOR_EMAILS, :subject => "New submission: #{idea.title}")
   end
 
+  def author_submission_email(idea)
+    @url  = "http://beta.briefideas.org/ideas/#{idea.sha}"
+    @idea = idea
+    mail(:to => idea.submitting_author.email, :subject => "Idea submitted: #{idea.title}")
+  end
+
   def ratings_email
     mail(:to => SYSTEM_EMAILS, :subject => "Ratings updated")
   end

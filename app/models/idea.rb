@@ -14,6 +14,7 @@ class Idea < ActiveRecord::Base
     event :submit do
       after do
         notify_editor
+        notify_author
       end
 
       transitions :to => :submitted
@@ -203,6 +204,10 @@ class Idea < ActiveRecord::Base
 
   def notify_editor
     Notification.submission_email(self).deliver
+  end
+
+  def notify_author
+    Notification.author_submission_email(self).deliver
   end
 
   def parent?
