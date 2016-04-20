@@ -33,11 +33,11 @@ describe Idea do
     expect(RatingWorker.jobs.size).to eq(0)
   end
 
-  it "should email the editor when submitted" do
+  it "should email the editor and author when submitted" do
     idea = create(:idea)
     idea.authors << create(:user)
 
-    expect {idea.submit!}.to change { ActionMailer::Base.deliveries.count }.by(1)
+    expect {idea.submit!}.to change { ActionMailer::Base.deliveries.count }.by(2)
   end
 
   it "should queue ZenodoWorker when published" do
