@@ -124,6 +124,16 @@ describe Idea do
     expect(idea.submitting_author).to eq(first_author)
   end
 
+  # Preserving the first author attribution
+  it "should preserve author ordering is" do
+    first_author = create(:user)
+    idea = create(:idea)
+    idea.authors << first_author
+    idea.authors << create(:user)
+
+    expect(idea.authors.first).to eq(first_author)
+  end
+
   # Twitter
   it "should know how to format single author for Twitter" do
     author = create(:user, :name => 'Doe, John')

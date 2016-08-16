@@ -42,7 +42,7 @@ class Idea < ActiveRecord::Base
   has_many :votes
   has_many :audit_logs
 
-  has_many :authorships
+  has_many :authorships, -> { order('created_at ASC') }
   has_many :authors, :class_name => "User", :through => :authorships, :source => 'user'
 
   has_many :collection_ideas
