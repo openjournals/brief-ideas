@@ -72,6 +72,8 @@ class Idea < ActiveRecord::Base
   scope :fuzzy_search_by_title, -> (title) { where("title ILIKE ?", "%#{title}%")}
 
   validates_presence_of :title, :body, :tags
+  validates_length_of :body, :maximum => 200, :too_long => 'Your idea must be less than 200 words.',
+                      :tokenizer => ->(str) { str.scan(/\w+/) }
 
   # File attachment
   has_attached_file :attachment
