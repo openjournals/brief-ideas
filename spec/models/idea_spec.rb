@@ -48,6 +48,15 @@ describe Idea do
     expect(ZenodoWorker.jobs.size).to eq(1)
   end
 
+  it "should not save if it has more than 200 words" do
+    long_string =
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et pharetra libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ultricies mauris posuere nisi dictum, sit amet fringilla orci lobortis. Cras accumsan egestas diam id molestie. Nulla non metus quis justo laoreet hendrerit. Integer convallis est laoreet, scelerisque neque eu, semper lectus. Vestibulum egestas enim id neque eleifend varius. Nam molestie justo sit amet massa pulvinar, ut commodo leo bibendum. Nullam id lacus ac eros sagittis ultrices. Curabitur molestie consequat dui, eget mollis eros ullamcorper et. Praesent venenatis cursus interdum. Integer velit nibh, aliquet eu felis eget, consequat tempor dui. Donec porta mi mauris, nec posuere leo dapibus sit amet. In lobortis efficitur metus, in consectetur leo mattis at. Ut varius aliquam interdum. Etiam sed sem ac lacus suscipit luctus ac id diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus euismod ante metus, ac accumsan elit tempor id. Sed fringilla nunc quis vestibulum rhoncus. Proin sodales ante eu sagittis malesuada. Nam consectetur sem in mi rutrum, a tempor lorem ullamcorper. Nam posuere quam sed felis blandit condimentum. Suspendisse condimentum neque vel egestas convallis. Cras maximus mattis justo, facilisis maximus arcu convallis a. Pellentesque non euismod arcu. Aenean ultricies, metus sit amet tempor."
+
+    idea = build(:idea, :body => long_string)
+    idea.valid?
+    expect(idea.errors[:body]).to eq(["Your idea must be less than 200 words."])
+  end
+
   it "should be properly ranked when searching for similar ideas" do
     paper1 = create(:published_idea, :title => 'Blah', :body => "The domestic cat (Felis catus or Felis silvestris catus) is a small, usually furry, domesticated, and carnivorous mammal. It is often called a housecat when kept as an indoor pet.")
     paper2 = create(:published_idea, :title => 'Foo', :body => "The domestic dog (Canis lupus familiaris) is a canid that is known as man's best friend. The dog was the first domesticated animal and has been widely kept as a working, hunting, and pet companion")
