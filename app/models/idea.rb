@@ -73,7 +73,7 @@ class Idea < ActiveRecord::Base
 
   validates_presence_of :title, :body, :tags
   validates_length_of :body, :maximum => 200, :too_long => 'Your idea must be less than 200 words.',
-                      :tokenizer => ->(str) { str.scan(/\w+/) }
+                      :tokenizer => ->(str) { str.gsub(/\[[^\]]*\]|\([^\)]*\)/, '').scan(/\s+/) }
 
   # File attachment
   has_attached_file :attachment
