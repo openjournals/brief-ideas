@@ -100,9 +100,11 @@ RSpec.configure do |config|
     Sidekiq::Worker.clear_all
 
     # ORCID username retrieval
-    stub_request(:get, "pub.orcid.org/v1.1/0000-0001-7857-2795/orcid-bio").
-      with(headers: {'Accept'=>'application/orcid+json'}).
-      to_return(status: 200, body: '{"message-version":"1.1","orcid-profile":{"orcid":null,"orcid-identifier":{"value":null,"uri":"http://sandbox-1.orcid.org/0000-0001-7857-2795","path":"0000-0001-7857-2795","host":"sandbox-1.orcid.org"},"orcid-preferences":{"locale":"EN"},"orcid-history":{"creation-method":"WEBSITE","submission-date":{"value":1359385939842},"last-modified-date":{"value":1386071959680},"claimed":{"value":true},"source":null,"visibility":null},"orcid-bio":{"personal-details":{"given-names":{"value":"Albert"},"family-name":{"value":"Einstein"}},"biography":{"value":"","visibility":null},"keywords":null,"delegation":null,"applications":null,"scope":null},"type":"USER","group-type":null,"client-type":null}}', headers: {})
+    stub_request(:get, "https://pub.orcid.org/v2.1/0000-0001-7857-2795").
+         with(:headers => {'Accept'=>'application/orcid+json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+         to_return(:status => 200, :body =>
+           '{"orcid-identifier" : {"uri" : "https://orcid.org/0000-0002-3957-2474", "path" : "0000-0002-3957-2474", "host" : "orcid.org"},"person" : {"name" : {"created-date" : {"value" : 1460758938409},"last-modified-date" : {"value" : 1460758938409},"given-names" : {"value" : "Albert"},"family-name" : {"value" : "Einstein"},"credit-name" : null,"source" : null,"visibility" : "PUBLIC","path" : "0000-0002-3957-2474"}}}', :headers => {})
+
 
     # Zenodo create_deposit
     stub_request(:post, "https://sandbox.zenodo.org/api/deposit/depositions?access_token=0000-0000-0000-0000-0000-0000-0000").

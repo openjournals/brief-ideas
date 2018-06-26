@@ -10,10 +10,10 @@ class OrcidWorker
   end
 
   def orcid_name_for(orcid_id)
-    data = JSON.parse(open("http://pub.orcid.org/v1.1/#{orcid_id}/orcid-bio", "Accept" => "application/orcid+json").read)
-    given_name = data['orcid-profile']['orcid-bio']['personal-details']['given-names']['value']
-    if data['orcid-profile']['orcid-bio']['personal-details'].has_key?('family-name')
-      surname = data['orcid-profile']['orcid-bio']['personal-details']['family-name']['value']
+    data = JSON.parse(open("https://pub.orcid.org/v2.1/#{orcid_id}", "Accept" => "application/orcid+json").read)
+    given_name = data['person']['name']['given-names']['value']
+    if data['person']['name'].has_key?('family-name')
+      surname = data['person']['name']['family-name']['value']
       return "#{surname}, #{given_name}"
     else
       return "#{given_name}"
