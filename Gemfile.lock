@@ -192,7 +192,7 @@ GEM
     redis (3.1.0)
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
-    rest_client (1.8.2)
+    rest_client (1.8.0)
       netrc (~> 0.7.7)
     rspec-core (3.1.7)
       rspec-support (~> 3.1.0)
