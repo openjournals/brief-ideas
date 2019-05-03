@@ -73,6 +73,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    commonmarker (0.20.1)
+      ruby-enum (~> 0.5)
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
     crack (0.4.3)
@@ -240,6 +242,8 @@ GEM
       rspec-mocks (~> 3.1.0)
       rspec-support (~> 3.1.0)
     rspec-support (3.1.2)
+    ruby-enum (0.7.2)
+      i18n
     safe_yaml (1.0.5)
     sanitize (3.0.4)
       crass (~> 0.2.0)
@@ -323,6 +327,7 @@ DEPENDENCIES
   bootstrap-typeahead-rails
   capybara (~> 2.4.4)
   coffee-rails (~> 4.0.0)
+  commonmarker (~> 0.20.1)
   dotenv-rails
   factory_girl_rails (~> 4.4.1)
   faraday-http-cache
