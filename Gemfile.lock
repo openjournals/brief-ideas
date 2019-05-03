@@ -335,7 +335,7 @@ DEPENDENCIES
   octokit (~> 3.4.0)
   omniauth-orcid (~> 0.6)
   paperclip (~> 4.2.1)
-  pg (~> 1.1, >= 1.1.2)
+  pg (~> 1.1, >= 1.1.4)
   pry
   rails (= 4.2.11)
   rails_12factor
