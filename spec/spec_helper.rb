@@ -122,12 +122,6 @@ RSpec.configure do |config|
     stub_request(:post, "https://sandbox.zenodo.org/api/deposit/depositions/77/actions/publish?access_token=0000-0000-0000-0000-0000-0000-0000").
       with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'Content-Length'=>'0', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'}).
       to_return(:status => 202, :body => '{"files": [{"id": "46d1420a-eacf-49bb-b97b-1ad36db4f419", "checksum": "b8b614f313a43589326deeb2821ccfcb", "filesize": "14", "filename": "unicorn.txt"}], "created": "2014-11-25T13:36:32+00:00", "title": "Blank", "modified": "2014-11-25T13:38:39+00:00", "submitted": true, "state": "done", "owner": 10, "id": 78, "metadata": {"embargo_date": null, "partof_title": null, "journal_volume": null, "grants": [], "references": [], "keywords": ["Arfon"], "publication_type": "article", "title": "Blank", "image_type": "", "partof_pages": null, "conference_url": null, "thesis_supervisors": [], "imprint_isbn": null, "imprint_place": null, "journal_issue": null, "access_right": "open", "conference_acronym": null, "conference_title": null, "description": "<p>HAHHA</p>", "journal_title": null, "upload_type": "publication", "communities": [], "publication_date": "2014-11-25", "conference_place": null, "creators": [{"orcid": "0000-0002-3957-2474", "affiliation": "", "name": "Smith, Arfon"}], "conference_session_part": null, "doi": "10.5072/zenodo.31", "license": "cc-by", "notes": "", "journal_pages": null, "conference_dates": null, "imprint_publisher": null, "conference_session": null, "related_identifiers": []}, "record_id": 31, "record_url": "https://dev.zenodo.org/record/31", "doi": "10.5072/zenodo.31", "doi_url": "http://dx.doi.org/10.5072/zenodo.31"}', :headers => {})
-
-    # Swiftype
-    stub_request(:post, "https://0000-0000-0000-0000:@api.swiftype.com/api/v1/engines/engine/document_types/ideas/documents.json").
-      with(:body => /Cows are actually very large sheep/,
-      :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/json', 'User-Agent'=>'Swiftype-Ruby/1.1.0'}).
-      to_return(:status => 200, :body => "", :headers => {})
   end
 end
 

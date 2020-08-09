@@ -32,13 +32,12 @@ describe ZenodoWorker do
     }.to change(ZenodoWorker.jobs, :size).by(1)
   end
 
-  it "should call RestClient three times and Swiftype::Client once" do
+  it "should call RestClient three times" do
     idea = build(:idea_with_sha)
     user = create(:user)
     idea.authors << user
     idea.save
 
     RestClient.expects(:post).times(3)
-    Swiftype::Client.expects(:create_document).once
   end
 end

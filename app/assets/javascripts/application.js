@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.swiftype.autocomplete
 //= require jquery.textcomplete
 //= require autocompleter
 //= require bootstrap-typeahead-rails
