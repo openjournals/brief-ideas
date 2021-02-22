@@ -10,9 +10,6 @@ class ZenodoWorker
 
     # Mark as published
     publish!(idea)
-
-    # Insert into Swiftype index
-    create_document(idea)
   end
 
   def create_deposit(idea)
@@ -102,20 +99,5 @@ class ZenodoWorker
         response.return!(request, result, &block)
       end
     }
-  end
-
-  # TODO: Check that dropping orcid id from fields doesn't cause errors
-  def create_document(idea)
-    client = Swiftype::Client.new
-    document = client.create_document('engine', 'ideas', {
-                :external_id => idea.sha,
-                :fields => [
-                  {:name => 'title', :value => idea.title, :type => 'string'},
-                  {:name => 'doi', :value => idea.doi, :type => 'enum'},
-                  {:name => 'body', :value => idea.body, :type => 'text'},
-                  {:name => 'author', :value => idea.formatted_creators, :type => 'text'},
-                  {:name => 'tags', :value => idea.formatted_tags, :type => 'string'},
-                  ]})
-    Rails.logger.info "UPLOADING TO INDEX! #{idea.sha}"
   end
 end
