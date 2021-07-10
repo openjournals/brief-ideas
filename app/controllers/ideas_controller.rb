@@ -143,7 +143,7 @@ class IdeasController < ApplicationController
   end
 
   def show
-    @idea = Idea.find_by_sha(params[:id])
+    @idea = Idea.find_by_sha(params[:id])  || Idea.find_by_doi(params[:id])
 
     unless @idea
       redirect_to ideas_path, :notice => "Idea not found" and return
